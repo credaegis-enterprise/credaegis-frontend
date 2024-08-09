@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
+import MyNavbar from "@/components/navbar/MyNavbar";
 import "./globals.css";
+import { Navbar } from "@nextui-org/react";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
     <Providers>
-      <body className={inter.className}>{children}</body>
+  
+      <body className={`${inter.className}  text-foreground bg-background`}>
+      <Toaster position="top-right" richColors={true} />
+        {children}  
+         </body>
       </Providers>
     </html>
   );

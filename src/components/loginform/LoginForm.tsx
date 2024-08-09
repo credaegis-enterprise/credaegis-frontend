@@ -1,9 +1,11 @@
 'use client'
 
+
 import { Input } from "@nextui-org/input";
 import { MyButton } from "../buttons/mybutton";
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "sonner";
 
 
 const LoginForm = () => {
@@ -12,22 +14,23 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
-    console.log(email, password);
 
-    try {
-      const response = await axios.post("http://localhost:3001/api/auth/organization/login", {
-        organization_email:email,
-        organization_password:password
-      },{withCredentials:true}
+    toast.success("logging in, checking");
 
-    );
+    // try {
+    //   const response = await axios.post("http://localhost:3001/api/auth/organization/login", {
+    //     organization_email:email,
+    //     organization_password:password
+    //   },{withCredentials:true}
 
-      console.log(response.data.message);
-      setIsLoading(false);
-    } catch (error: any) {
-      console.error(error);
-      setIsLoading(false);
-    }
+    // );
+
+    //   console.log(response.data.message);
+    //   setIsLoading(false);
+    // } catch (error: any) {
+    //   console.error(error);
+    //   setIsLoading(false);
+    // }
   };
 
   return (
