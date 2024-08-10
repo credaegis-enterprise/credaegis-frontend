@@ -3,7 +3,7 @@
 import React from "react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
 
-export default function App() {
+export default function MyNavbar() {
   return (
     <Navbar isBordered>
       <NavbarBrand>
