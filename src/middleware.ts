@@ -1,7 +1,22 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import myInstance from './utils/Axios/axios'
+import { redirect } from 'next/navigation'
+import authenticator from './utils/Auth/authenticator'
+
  
 
-export function middleware(request: NextRequest) {
-    console.log('middleware niggaaaas')
+export async function middleware (request: NextRequest) {
+     
+    // const isAuthenticated = await authenticator();
+    // if(!isAuthenticated)
+    //     return NextResponse.redirect(new URL('/login', request.url));
+    // else
+    //     return NextResponse.next();
+
+        
+}
+
+export const config = {
+    matcher: ["/dashboard"],
 }

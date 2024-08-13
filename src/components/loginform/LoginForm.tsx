@@ -27,13 +27,13 @@ const LoginForm = () => {
     let response;
     try {
       if(selected === "admin"){
-       response = await myInstance.post("/api/auth/organization/login", {
+       response = await myInstance.post("/auth/organization/login", {
         organization_email:email,
         organization_password:password
       },);
     }
     else{
-       response = await myInstance.post("/api/auth/login", {
+       response = await myInstance.post("/auth/login", {
         member_email:email,
         member_password:password
       },);
