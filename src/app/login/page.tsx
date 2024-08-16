@@ -1,4 +1,4 @@
-import LoginForm from "@/components/loginform/loginForm";
+import LoginForm from "@/components/pageComponents/loginform/loginForm";
 import { ThemeSwitcher } from "@/components/themes/themeSwitcher";
 
 const Page = async () => {

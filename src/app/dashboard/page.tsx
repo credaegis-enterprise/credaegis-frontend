@@ -6,19 +6,17 @@ import getCookies from "@/utils/cookies/getCookies";
 
 const fetchClusters = async () => {
   const cookie = getCookies();
-  console.log("cookisjssjjsjsjsjsjsjssje", cookie);
-  console.log(cookie);
-  try {
-    const response = await myInstance.get("/cluster/getall", {
-      headers: {
-        cookie: `test=${cookie}`,
-      },
-    });
-    return response.data;
-  } catch (error: any) {
-    console.log("error", error);
-    console.log(error.response?.data.message || "An error occurred");
-  }
+//   try {
+//     const response = await myInstance.get("/cluster/getall", {
+//       headers: {
+//         cookie: `test=${cookie}`,
+//       },
+//     });
+//     return response.data;
+//   } catch (error: any) {
+//     console.log("error", error);
+//     console.log(error.response?.data.message || "An error occurred");
+//   }
 
 //   redirect("/login");
 };
@@ -27,8 +25,8 @@ const Page = async () => {
 
 
 
-  const clusters = await fetchClusters();
-  console.log("clusters", clusters);
+//   const clusters = await fetchClusters();
+//   console.log("clusters", clusters);
 
 
   return (
