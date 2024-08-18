@@ -10,16 +10,15 @@ export async function middleware (request: NextRequest) {
 
     console.log("hellos sjsjshjhsjhkshkhs")
      
-    // const isAuthenticated = await authenticator();
-    // if(!isAuthenticated)
-    //     return NextResponse.redirect(new URL('/login', request.url));
-    // else
-    //     return NextResponse.next();
-  
+    const isAuthenticated = await authenticator();
+    if(!isAuthenticated)
+        return NextResponse.redirect(new URL('/login', request.url));
+    else
+        return NextResponse.next();
 
         
 }
 
 export const config = {
-    matcher: ["/dashboard"],
+    matcher: ["/credaegis/organization/dashboard"],
 }

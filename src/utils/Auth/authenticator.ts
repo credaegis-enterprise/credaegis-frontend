@@ -1,6 +1,6 @@
 "use server";
 
-import {myInstance} from "../Axios/axios";
+import {myInstanceNEXT} from "../Axios/axios";
 import getCookies from "../cookies/getCookies";
 
 
@@ -9,7 +9,7 @@ const authenticator = async()=>{
     const cookie = getCookies();
     try
     {
-        const response = await myInstance.get("/auth/checker",{
+        const response = await myInstanceNEXT.get("/auth/checker",{
             headers:{
                 cookie:`test=${cookie}`
             }

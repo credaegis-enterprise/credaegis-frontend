@@ -34,7 +34,7 @@ const LoginForm = () => {
           organization_password: password,
         });
 
-        router.push("/credaegis/organization/dashboard");
+    
       } else {
         response = await myInstance.post("/auth/login", {
           member_email: email,
@@ -43,7 +43,10 @@ const LoginForm = () => {
       }
 
       if (response.data.twoFa) setIsOpen(true);
-      else toast.success(response.data.message);
+      else {toast.success(response.data.message)
+        console.log(response.data);
+        router.push("/credaegis/organization/dashboard");
+      };
 
       setIsLoading(false);
     } catch (error: any) {
