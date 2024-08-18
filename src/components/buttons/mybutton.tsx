@@ -1,5 +1,5 @@
 
-
+'use client';
 import { extendVariants,Button } from "@nextui-org/react";
 
 export const MyButton = extendVariants(Button, {

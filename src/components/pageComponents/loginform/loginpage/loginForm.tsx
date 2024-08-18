@@ -1,10 +1,10 @@
 "use client";
 
 import { Input } from "@nextui-org/input";
-import { MyButton } from "../../buttons/mybutton";
+import { MyButton } from "@/components/buttons/mybutton";
 import { Spinner } from "@nextui-org/react";
 import { useState } from "react";
-import myInstance from "@/utils/Axios/axios";
+import {myInstance} from "@/utils/Axios/axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -33,6 +33,8 @@ const LoginForm = () => {
           organization_email: email,
           organization_password: password,
         });
+
+        router.push("/credaegis/organization/dashboard");
       } else {
         response = await myInstance.post("/auth/login", {
           member_email: email,
@@ -85,34 +87,31 @@ const LoginForm = () => {
         backdrop="blur"
         onClose={() => {
           setIsOpen(false);
-        }}
+        } }
         onOpen={() => {
           setIsOpen(true);
-        }}
+        } }
         title="Two-Factor Authentication"
-        content={<Input type="text" label="Enter OTP" size="sm" value={otp} onChange={(e)=>{setOtp(e.target.value)}} />}
-        button1={
-          <MyButton
-            className="bg-black dark:bg-white"
-            size="sm"
-            spinner={<Spinner size="sm" color="default" />}
-            isLoading={isLoading}
-            onClick={() => {
-              handleTwoFa();
-            }}
-          >
-            <span className="dark:text-black text-white text-md font-medium">
-              Submit
-            </span>
-          </MyButton>
-        }
-      />
+        content={<Input type="text" label="Enter OTP" size="sm" value={otp} onChange={(e) => { setOtp(e.target.value); } } />}
+        button1={<MyButton
+          className="bg-black dark:bg-white"
+          size="sm"
+          spinner={<Spinner size="sm" color="default" />}
+          isLoading={isLoading}
+          onClick={() => {
+            handleTwoFa();
+          } }
+        >
+          <span className="dark:text-black text-white text-md font-medium">
+            Submit
+          </span>
+        </MyButton>} button2={undefined}      />
       <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
         <div className="flex justify-end">
           <Tabs
             aria-label="options"
             selectedKey={selected}
-            onSelectionChange={setSelected}
+            onSelectionChange={(key) => setSelected(key as string)} 
           >
             <Tab key="user" title="user" />
             <Tab key="admin" title="admin" />

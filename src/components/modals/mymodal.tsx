@@ -13,7 +13,6 @@ interface MyModalProps {
   onClose: () => void;
   onOpen: () => void;
 }
-
 const MyModal: React.FC<MyModalProps> = ({ size, isOpen, onClose, onOpen,content,title,backdrop,button1,button2 }) => {
 
 
@@ -23,7 +22,7 @@ const MyModal: React.FC<MyModalProps> = ({ size, isOpen, onClose, onOpen,content
         size={size}
         isOpen={isOpen}
         onClose={onClose}
-        backdrop={backdrop}
+        // backdrop={backdrop}
       >
         <ModalContent>
           <ModalHeader className="flex flex-col gap-1 text-black dark:text-white">{title}</ModalHeader>

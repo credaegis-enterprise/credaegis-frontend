@@ -5,12 +5,15 @@ import { NextResponse } from "next/server";
 
 
 
-const myInstance = axios.create({
-    baseURL: "http://localhost:3001/api",
+export const myInstance = axios.create({
+    baseURL: "/api",
     withCredentials: true,
     });
 
    
-        
+export const myInstanceNEXT = axios.create({
+    baseURL: "http://localhost:3001/api",
+    withCredentials: true,
+    });
 
-export default myInstance;
+

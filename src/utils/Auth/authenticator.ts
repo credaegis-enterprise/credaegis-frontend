@@ -1,6 +1,6 @@
 "use server";
 
-import myInstance from "../Axios/axios";
+import {myInstance} from "../Axios/axios";
 import getCookies from "../cookies/getCookies";
 
 
