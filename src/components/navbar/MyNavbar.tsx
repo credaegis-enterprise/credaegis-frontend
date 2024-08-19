@@ -37,10 +37,10 @@ export default function MyNavbar() {
           <Link href="/credaegis/organization/dashboard">dasboard</Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="/login">login</Link>
+          <Link href="/credaegis/organization/settings">settings</Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="#"></Link>
+          <Link href="#">certificates</Link>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end" className="gap-4">
