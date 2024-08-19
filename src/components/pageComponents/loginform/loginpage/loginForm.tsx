@@ -28,7 +28,7 @@ const LoginForm = () => {
     setIsLoading(true);
     let response;
     try {
-      if (selected === "admin") {
+      if (selected === "organization") {
         response = await myInstance.post("/auth/organization/login", {
           organization_email: email,
           organization_password: password,
@@ -44,7 +44,6 @@ const LoginForm = () => {
 
       if (response.data.twoFa) setIsOpen(true);
       else {toast.success(response.data.message)
-        console.log(response.data);
         router.push("/credaegis/organization/dashboard");
       };
 
@@ -64,13 +63,14 @@ const LoginForm = () => {
       {
         response = await myInstance.post("/auth/login/twofa",{
           user_email:email,
-          otp:otp
+          otp:otp,
+          role:selected
         });
 
         toast.success(response.data.message);
         setIsLoading(false);
         setIsOpen(false);
-        router.push("/dashboard");
+        router.push("/credaegis/organization/dashboard");
       }
       catch(error:any)
       {
@@ -116,8 +116,8 @@ const LoginForm = () => {
             selectedKey={selected}
             onSelectionChange={(key) => setSelected(key as string)} 
           >
-            <Tab key="user" title="user" />
-            <Tab key="admin" title="admin" />
+            <Tab key="member" title="member" />
+            <Tab key="organization" title="organization" />
           </Tabs>
         </div>
         <Input
