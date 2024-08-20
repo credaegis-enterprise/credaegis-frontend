@@ -11,7 +11,8 @@ import EventList from "@/components/pageComponents/dashboard/eventList";
 import { MdPeople } from "react-icons/md";
 import CardHeader from "@/components/pageComponents/dashboard/cardHeader";
 import { MdEvent } from "react-icons/md";
-
+import CreateCluster from "@/components/pageComponents/dashboard/createCluster";
+import CreateEvent from "@/components/pageComponents/dashboard/createEvent";
 
 const fetchClusters = async () => {
 
@@ -69,7 +70,7 @@ const  Page =async () => {
         <div className="flex flex-col lg:w-1/3 order-2 lg:order-1 gap-6">
        
           <div className="bg-white h-1/2 dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 transition-colors duration-300 flex-1 ">
-         <CardHeader title="Manage Clusters" icon={<MdPeople size={26} />} buttonTitle="Add" />
+         <CardHeader title="Manage Clusters" icon={<MdPeople size={26} />} buttonTitle="Add" modalTitle="Create a Cluster"  modalContent={<CreateCluster/>}/>
           
           <div className="h-[300px] overflow-auto">
             <ClusterList clusters={clusters} />
@@ -77,7 +78,7 @@ const  Page =async () => {
           </div>
         
           <div className="bg-white h-1/2 dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 transition-colors duration-300 flex-1 ">
-          <CardHeader title="Manage Events" icon={<MdEvent size={26} />} buttonTitle="Add" />
+          <CardHeader title="Manage Events" icon={<MdEvent size={26} />} buttonTitle="Add" modalTitle="Add an event"  modalContent={<CreateEvent availableClusters={clusters}/>}/>
             <div className="h-[300px] overflow-y-auto">
             <EventList events={events} />
             </div>

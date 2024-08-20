@@ -21,8 +21,8 @@ export default function MyNavbar() {
   const handleLogout = async () => {
     try {
       const response = await myInstance.post("/auth/logout");
-      toast.success(response.data.message);
       router.push("/login");
+      toast.success(response.data.message);
 
     } catch (error: any) {
       console.log(error);
