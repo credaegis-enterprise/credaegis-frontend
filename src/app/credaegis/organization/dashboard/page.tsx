@@ -9,6 +9,7 @@ import getCookies from "@/utils/cookies/getCookies";
 import {Card, Skeleton} from "@nextui-org/react";
 import EventList from "@/components/pageComponents/dashboard/eventList";
 import { MdPeople } from "react-icons/md";
+import CardHeader from "@/components/pageComponents/dashboard/cardHeader";
 import { MdEvent } from "react-icons/md";
 
 
@@ -62,19 +63,13 @@ const  Page =async () => {
   return (
     
     <div className="p-6 h-screen bg-gray-50 dark:bg-black transition-colors duration-300">
-      <div className="text-3xl font-semibold">Dashboard</div>
       <div className="flex flex-col lg:flex-row h-full gap-6">
         
         
         <div className="flex flex-col lg:w-1/3 order-2 lg:order-1 gap-6">
        
           <div className="bg-white h-1/2 dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 transition-colors duration-300 flex-1 ">
-          <div className="flex gap-6">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Manage Clusters</h2>
-         
-              <MdPeople size={26} />
-          
-            </div>
+         <CardHeader title="Manage Clusters" icon={<MdPeople size={26} />} buttonTitle="Add" />
           
           <div className="h-[300px] overflow-auto">
             <ClusterList clusters={clusters} />
@@ -82,11 +77,7 @@ const  Page =async () => {
           </div>
         
           <div className="bg-white h-1/2 dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 transition-colors duration-300 flex-1 ">
-          <div className="flex gap-6 mb-2">
-            <h2 className="text-xl font-semibold mb-4  text-gray-800 dark:text-gray-200">Manage Events</h2>
-            
-                <MdEvent size={26} />
-            </div>
+          <CardHeader title="Manage Events" icon={<MdEvent size={26} />} buttonTitle="Add" />
             <div className="h-[300px] overflow-y-auto">
             <EventList events={events} />
             </div>

@@ -14,12 +14,11 @@ const authenticator = async()=>{
                 cookie:`test=${cookie}`
             }
         });
-       
         return true
     }
     catch(e)
     {
-        console.log("error");
+           console.log("error");
         return false
     }
 }
