@@ -39,6 +39,9 @@ const EventList: React.FC<EventsListProps> = ({ events }) => {
             <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
               {event.event_name}
             </h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {event.cluster_name}
+            </p>
           </motion.div>
         ))}
       </div>

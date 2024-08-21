@@ -63,9 +63,9 @@ const CreateCluster = () => {
 
         <div className='flex flex-col  gap-4 '>
       
-     
-          
+    
           <Input
+           isRequired
             type="text"
             label="Cluster Name"
             size='md'
@@ -73,6 +73,7 @@ const CreateCluster = () => {
             onChange={(e) => setClusterName(e.target.value)}
           />
             <Input
+            isRequired
             type="text"
             label="Admin Name"
             size='md'
@@ -80,6 +81,7 @@ const CreateCluster = () => {
             onChange={(e) => setAdminName(e.target.value)}
           />
             <Input
+            isRequired
             type="email"
             label="Admin Email"
             size='md'
@@ -91,6 +93,7 @@ const CreateCluster = () => {
       
       
             <MyButton 
+            
             className="bg-black dark:bg-white"
             size="md"
             spinner={<Spinner size="sm" color="default" />}

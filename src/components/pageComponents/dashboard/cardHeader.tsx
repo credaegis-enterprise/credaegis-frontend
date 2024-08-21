@@ -19,7 +19,7 @@ const CardHeader:React.FC<CardHeaderProps> = ({title,icon,buttonTitle,modalConte
 
     return(
         <div className="relative">
-        <div className="flex justify-around gap-4">
+        <div className="flex justify-between gap-4">
         <div className="flex gap-2">
         {icon}
             <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">{title}</h2>
