@@ -13,6 +13,7 @@ import CardHeader from "@/components/pageComponents/dashboard/cardHeader";
 import { MdEvent } from "react-icons/md";
 import CreateCluster from "@/components/pageComponents/dashboard/createCluster";
 import CreateEvent from "@/components/pageComponents/dashboard/createEvent";
+import ManageAll from "@/components/pageComponents/dashboard/manageAll";
 
 const fetchClusters = async () => {
 
@@ -85,7 +86,7 @@ const  Page =async () => {
           </div>
         </div>
         <div className="bg-white dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 lg:w-2/3 lg:flex-none flex-1 order-1 lg:order-2 transition-colors duration-300">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Approval</h2>
+         <ManageAll/>
           
         </div>
       </div>

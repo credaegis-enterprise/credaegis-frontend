@@ -5,15 +5,24 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import MyModal from '@/components/modals/mymodal';
+import ClusterInfo from './clusterInfo';
+import { useTabContext } from '@/context/tabContext';
+
 
 type Cluster = {
-  cluster_name: string;
   cluster_ulid: string;
-  created_at: string;
-  deactivated: boolean;
+  cluster_name: string;
   organization_ulid: string;
+  created_at: string;
+  deactivated: number;
   updated_at: string;
-};
+  member_ulid: string;
+  deleted: number;
+  member_email: string;
+  member_password: string;
+  member_name: string;
+}
+
 
 interface ClusterListProps {
   clusters: Cluster[];
@@ -21,7 +30,10 @@ interface ClusterListProps {
 
 const ClusterList: React.FC<ClusterListProps> = ({ clusters }) => {
 
-  const [isOpen, setIsOpen] = useState(false);
+
+  const {setSelectedTab} = useTabContext() ;
+
+
   return (
     <div className="relative">
     <div className="space-y-2 p-2">
@@ -34,7 +46,7 @@ const ClusterList: React.FC<ClusterListProps> = ({ clusters }) => {
           whileHover={{ scale: 1.01, boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)" }}
           whileTap={{ scale: 0.98 }}
            className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
-          onClick={() => setIsOpen(true)}
+          onClick={() => {setSelectedTab({type:"cluster",id:cluster.cluster_ulid});}}
         >
           <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
             {cluster.cluster_name}
@@ -42,21 +54,7 @@ const ClusterList: React.FC<ClusterListProps> = ({ clusters }) => {
         </motion.div>
       ))}
     </div>
-    <MyModal
-      size="md"
-      isOpen={isOpen}
-      backdrop="blur"
-      onClose={() => {
-        setIsOpen(false);
-      }}
-      onOpen={() => {
-        setIsOpen(true);
-      }}
-      title="Cluster Details"
-      content={<div>Cluster Details</div>}
-      button1={<button onClick={() => setIsOpen(false)}>Close</button>}
-      button2={undefined}
-    />
+   
     </div>
   );
 };

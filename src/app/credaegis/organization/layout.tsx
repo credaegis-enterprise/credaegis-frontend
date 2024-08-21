@@ -1,15 +1,19 @@
 import MyNavbar from "@/components/navbar/myNavbar"
+import { TabProvider } from "@/context/tabContext"
 
 
-export default function DashboardLayout({
-    children, // will be a page or nested layout
+export default function OrganizationLayout({
+    children, 
   }: {
     children: React.ReactNode
   }) {
     return (
       <section>
+    
         <MyNavbar /> 
+        <TabProvider>
         {children}
+        </TabProvider>
       </section>
     )
   }
