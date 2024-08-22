@@ -36,7 +36,7 @@ const ClusterList: React.FC<ClusterListProps> = ({ clusters }) => {
 
   return (
     <div className="relative">
-    <div className="space-y-2 p-2">
+    <div className="space-y-2 p-2 mt-1">
       {clusters.map((cluster, index) => (
         <motion.div
           key={cluster.cluster_ulid}

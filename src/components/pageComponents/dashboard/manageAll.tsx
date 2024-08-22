@@ -2,6 +2,8 @@
 import { Tab,Tabs } from "@nextui-org/react";
 import { useState,useEffect } from "react";
 import { useTabContext } from "@/context/tabContext";
+import { MdDashboard } from "react-icons/md";
+import Info from "./info";
 
 
 
@@ -16,10 +18,13 @@ const ManageAll = () => {
     }, [selectedTab])
 
     return (
-        <div className="p-4 md:p-6 lg:p-8">
-        <div className="flex flex-col lg:flex-row h-full gap-6">
+        <div className="p-2 md:p-6 lg:p-0  h-full">
+        <div className="flex flex-col lg:flex-row  gap-6">
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4 lg:gap-8">
-                <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">Dashboard</h2>
+                <div className="flex gap-2">
+                    <MdDashboard className="text-2xl text-gray-800 dark:text-gray-200" />
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Dashboard</h2>
+                </div>
                 <Tabs
                     selectedKey={selected}
                     onSelectionChange={(key) => setSelected(key as string)}
@@ -31,9 +36,12 @@ const ManageAll = () => {
                     <Tab key="info" title="Info" />
                 </Tabs>
             </div>
-            <div className="flex-1">
-                <p className="text-gray-700 dark:text-gray-300">Selected Tab ID: {selectedTab.id}</p>
-            </div>
+        </div>
+        <div className="lg:h-full">
+            {selected === "info" && selectedTab.id &&
+              <Info/>
+            }
+      
         </div>
     </div>
     );
