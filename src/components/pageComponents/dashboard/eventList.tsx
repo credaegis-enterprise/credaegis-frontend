@@ -5,14 +5,11 @@ import { motion } from 'framer-motion';
 import MyModal from '@/components/modals/mymodal';
 
 type Event = {
-  cluster_name: string;
     event_ulid: string;
     event_name: string;
-  cluster_ulid: string;
   created_at: string;
-  deactivated: boolean;
-  organization_ulid: string;
   updated_at: string;
+  deleted: boolean;
 };
 
 interface EventsListProps {
@@ -20,12 +17,13 @@ interface EventsListProps {
 }
 
 const EventList: React.FC<EventsListProps> = ({ events }) => {
+  console.log(events);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="relative">
       <div className="space-y-2 p-2">
-        {events.map((event, index) => (
+        {events && events.map((event, index) => (
           <motion.div
             key={event.event_ulid}
             initial={{ opacity: 0, y: 20 }}
@@ -39,9 +37,6 @@ const EventList: React.FC<EventsListProps> = ({ events }) => {
             <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
               {event.event_name}
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              {event.cluster_name}
-            </p>
           </motion.div>
         ))}
       </div>

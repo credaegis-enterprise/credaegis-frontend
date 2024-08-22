@@ -4,6 +4,7 @@ import { useState,useEffect } from "react";
 import { useTabContext } from "@/context/tabContext";
 import { MdDashboard } from "react-icons/md";
 import Info from "./info";
+import { myInstance } from "@/utils/Axios/axios";
 
 
 
@@ -39,7 +40,7 @@ const ManageAll = () => {
         </div>
         <div className="lg:h-full">
             {selected === "info" && selectedTab.id &&
-              <Info/>
+              <Info cluster_ulid={selectedTab.id}/>
             }
       
         </div>

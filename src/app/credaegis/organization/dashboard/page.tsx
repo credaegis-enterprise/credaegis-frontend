@@ -83,7 +83,7 @@ const  Page =async () => {
             </div>
           </div> */}
         </div>
-        <div className="h-full bg-white dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 lg:w-2/3 lg:flex-none flex-1 order-1 lg:order-2 transition-colors duration-300">
+        <div className="h-full overflow-auto bg-white dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 lg:w-2/3 lg:flex-none flex-1 order-1 lg:order-2 transition-colors duration-300">
          <ManageAll/>
           
         </div>
