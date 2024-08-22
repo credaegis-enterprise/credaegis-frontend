@@ -3,12 +3,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import MyModal from '@/components/modals/mymodal';
+import CreateEvent from './createEvent';
 
 type Event = {
-    event_ulid: string;
+  event_ulid: string;
     event_name: string;
   created_at: string;
   updated_at: string;
+  cluster_ulid: string;
   deleted: boolean;
 };
 
@@ -46,7 +48,7 @@ const EventList: React.FC<EventsListProps> = ({ events }) => {
         backdrop="blur"
         onClose={() => setIsOpen(false)}
         title="Event Details"
-        content={<div>Event Details</div>}
+        content={<div>create Event</div>}
         button1={<button onClick={() => setIsOpen(false)}>Close</button>}
         button2={undefined}
         onOpen={() => {setIsOpen(true);}}

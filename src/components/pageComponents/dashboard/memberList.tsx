@@ -20,7 +20,6 @@ interface MemberListProps {
 }
 
 const MemberList: React.FC<MemberListProps> = ({ members }) => {
-    console.log(members);
   return (
     <div className="relative">
       <div className="space-y-2 p-2 mt-1">
@@ -37,6 +36,7 @@ const MemberList: React.FC<MemberListProps> = ({ members }) => {
             <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
               {member.member_name}
             </h3>
+            <p className="text-sm text-gray-400">{member.member_email}</p>
             
           </motion.div>
         ))}

@@ -20,22 +20,22 @@ const Info = ({cluster_ulid}: InfoProps) => {
     const [eventsInfo, setEventsInfo] = useState([]);
     const [members, setMembers] = useState([]);
 
-    useEffect(() => {
-        const fetchClusterInfo = async () => {
-            try
-            {
-                const response = await myInstance.get(`/cluster/getinfo/${cluster_ulid}`);
-                console.log(response.data.clusterInfo);
-                setEventsInfo(response.data.clusterInfo.eventsInfo);
-                setMembers(response.data.clusterInfo.membersInfo);
-                
-            }
-            catch(error: any){
-                console.log(error);
-                toast.error(error.response?.data.message || "An error occurred");
-            }
+    const fetchClusterInfo = async () => {
+        try
+        {
+            const response = await myInstance.get(`/cluster/getinfo/${cluster_ulid}`);
+            console.log(response.data.clusterInfo);
+            setEventsInfo(response.data.clusterInfo.eventsInfo);
+            setMembers(response.data.clusterInfo.membersInfo);
+            
         }
+        catch(error: any){
+            console.log(error);
+            toast.error(error.response?.data.message || "An error occurred");
+        }
+    }
 
+    useEffect(() => {
         fetchClusterInfo();
     }, [cluster_ulid])
     return(
@@ -63,12 +63,11 @@ const Info = ({cluster_ulid}: InfoProps) => {
 
              ss
             </div>
-            {/* Row that only splits on large screens with flex-grow for full height */}
             <div className="flex flex-col lg:flex-row w-full gap-4 flex-grow mb-8 ">
                 <div className="flex flex-col lg:w-1/2 w-full border border-gray-200 dark:border-stone-800 rounded-lg p-4">
-            <CardHeader title="Manage Events" icon={<MdEvent size={26} />} buttonTitle="Add" modalTitle="Add an event" />
+            <CardHeader title="Manage Events" icon={<MdEvent size={26} />} buttonTitle="Add" modalTitle="Add an event" modalContent={<CreateEvent cluster_ulid={cluster_ulid} fetchClusterInfo={fetchClusterInfo}/>} />
                 <div className="flex flex-col  h-96 overflow-auto  ">
-                <EventList events={eventsInfo} />
+                <EventList events={eventsInfo}  />
          
                 </div>
                 </div>
