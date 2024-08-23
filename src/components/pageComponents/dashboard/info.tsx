@@ -1,10 +1,8 @@
 "use client";
 
-import EventList from "./eventList";
+
 import CardHeader from "./cardHeader";
-import CreateEvent from "./organization/createEvent";
-import { MdEvent } from "react-icons/md";
-import { MdPerson } from "react-icons/md";
+
 import { MdInfo } from "react-icons/md";
 import { myInstance } from "@/utils/Axios/axios";
 import { useState, useEffect } from "react";
@@ -38,7 +36,6 @@ const Info = ({ cluster_ulid }: InfoProps) => {
   }, [cluster_ulid]);
   return (
     <div className="flex flex-col h-full w-full gap-4 p-2 mt-3">
-      {/* Full-width section with fixed height */}
       <div className="flex w-full  lg:h-64  p-4 rounded-lg border border-gray-200 dark:border-stone-800">
         <CardHeader
           title="Cluster Info"
@@ -49,10 +46,10 @@ const Info = ({ cluster_ulid }: InfoProps) => {
         sjhjkshdkjsd s a fg getinfo fd ss ss ss setPasswordss ss
       </div>
       <div className="flex flex-col lg:flex-row w-full gap-4 flex-grow mb-8 ">
-        <div className="flex flex-col lg:w-1/2 w-full border border-gray-200 dark:border-stone-800 rounded-lg p-4">
+        <div className="flex flex-col h-80 overflow-auto lg:h-full lg:w-1/2 w-full border border-gray-200 dark:border-stone-800 rounded-lg p-4">
           <EventView events={eventsInfo} fetchClusterInfo={fetchClusterInfo} cluster_ulid={cluster_ulid} />
         </div>
-        <div className="flex flex-col lg:w-1/2 w-full    p-4 rounded-lg  border border-gray-200 dark:border-stone-800">
+        <div className="flex flex-col lg:w-1/2 w-full h-80 lg:h-full overflow-auto   p-4 rounded-lg  border border-gray-200 dark:border-stone-800">
           <MemberView members={members}  fetchClusterInfo={fetchClusterInfo} cluster_ulid={cluster_ulid}/>
         </div>
       </div>

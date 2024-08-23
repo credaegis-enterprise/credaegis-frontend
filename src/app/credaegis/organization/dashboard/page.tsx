@@ -70,22 +70,13 @@ const  Page =async () => {
         <div className="flex flex-col lg:w-1/3 order-2 lg:order-1 gap-6">
        
           <div className="bg-white h-full dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 transition-colors duration-300 flex-1 ">
-         {/* <CardHeader title="Clusters" icon={<MdPeople size={26} />} buttonTitle="Add" modalTitle="Create a Cluster"  modalContent={<CreateCluster/>}/>
-          
-          <div className="h-[300px] overflow-auto">
-            <ClusterList clusters={clusters} />
-          </div> */}
+        
           <ClusterView clusters={clusters}/>
           </div>
         
-          {/* <div className="bg-white h-1/2 dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 transition-colors duration-300 flex-1 ">
-          <CardHeader title="Manage Events" icon={<MdEvent size={26} />} buttonTitle="Add" modalTitle="Add an event"  modalContent={<CreateEvent availableClusters={clusters}/>}/>
-            <div className="h-[300px] overflow-y-auto">
-            <EventList events={events} />
-            </div>
-          </div> */}
+          
         </div>
-        <div className="h-full overflow-auto bg-white dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 lg:w-2/3 lg:flex-none flex-1 order-1 lg:order-2 transition-colors duration-300">
+        <div className="h-full  bg-white dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 lg:w-2/3 lg:flex-none flex-1 order-1 lg:order-2 transition-colors duration-300">
          <ManageAll/>
           
         </div>

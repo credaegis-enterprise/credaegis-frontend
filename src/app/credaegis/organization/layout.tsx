@@ -9,8 +9,9 @@ export default function OrganizationLayout({
   }) {
     return (
       <section>
-    
+       
         <MyNavbar /> 
+    
         <TabProvider>
         {children}
         </TabProvider>

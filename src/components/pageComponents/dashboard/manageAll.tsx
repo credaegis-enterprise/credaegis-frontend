@@ -38,7 +38,7 @@ const ManageAll = () => {
                 </Tabs>
             </div>
         </div>
-        <div className="lg:h-full">
+        <div className="h-80 lg:h-full overflow-auto lg:overflow-visible">
             {selected === "info" && selectedTab.id &&
               <Info cluster_ulid={selectedTab.id}/>
             }
