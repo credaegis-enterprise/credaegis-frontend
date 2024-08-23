@@ -6,12 +6,13 @@ import axios from "axios";
 import ClusterList from "@/components/pageComponents/dashboard/clusterList";
 import { Suspense } from "react";
 import getCookies from "@/utils/cookies/getCookies";
+import ClusterView from "@/components/pageComponents/dashboard/organization/clusterView";
 import {Card, Skeleton} from "@nextui-org/react";
 import EventList from "@/components/pageComponents/dashboard/eventList";
 import { MdPeople } from "react-icons/md";
 import CardHeader from "@/components/pageComponents/dashboard/cardHeader";
 import CreateCluster from "@/components/pageComponents/dashboard/createCluster";
-import CreateEvent from "@/components/pageComponents/dashboard/createEvent";
+import CreateEvent from "@/components/pageComponents/dashboard/organization/createEvent";
 import ManageAll from "@/components/pageComponents/dashboard/manageAll";
 
 const fetchClusters = async () => {
@@ -69,11 +70,12 @@ const  Page =async () => {
         <div className="flex flex-col lg:w-1/3 order-2 lg:order-1 gap-6">
        
           <div className="bg-white h-full dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 transition-colors duration-300 flex-1 ">
-         <CardHeader title="Clusters" icon={<MdPeople size={26} />} buttonTitle="Add" modalTitle="Create a Cluster"  modalContent={<CreateCluster/>}/>
+         {/* <CardHeader title="Clusters" icon={<MdPeople size={26} />} buttonTitle="Add" modalTitle="Create a Cluster"  modalContent={<CreateCluster/>}/>
           
           <div className="h-[300px] overflow-auto">
             <ClusterList clusters={clusters} />
-          </div>
+          </div> */}
+          <ClusterView clusters={clusters}/>
           </div>
         
           {/* <div className="bg-white h-1/2 dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 transition-colors duration-300 flex-1 ">

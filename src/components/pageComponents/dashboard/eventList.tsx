@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import MyModal from '@/components/modals/mymodal';
-import CreateEvent from './createEvent';
+import CreateEvent from './organization/createEvent';
 
 type Event = {
   event_ulid: string;

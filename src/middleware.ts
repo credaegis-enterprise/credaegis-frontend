@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import {myInstance} from './utils/Axios/axios'
-import { redirect } from 'next/navigation'
 import authenticator from './utils/Auth/authenticator'
 
  
