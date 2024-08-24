@@ -68,7 +68,7 @@ const Info = ({ cluster_ulid }: InfoProps) => {
     try {
       const response = await myInstance.get(`/cluster/getinfo/${cluster_ulid}`);
       const { clusterInfo } = response.data;
-      const { membersInfo, eventsInfo,...clusterDetails } = clusterInfo;
+      const { eventsInfo,...clusterDetails } = clusterInfo;
 
         setClusterDetails(clusterDetails);
       setEventsInfo(response.data.clusterInfo.eventsInfo);
@@ -90,7 +90,7 @@ const Info = ({ cluster_ulid }: InfoProps) => {
 
             <div className="row-span-2  ">
                 <div className="h-full border border-gray-200 dark:border-stone-800 p-4  rounded-lg">
-                    <ClusterInfo cluster={clusterDetails}  />
+                    <ClusterInfo cluster={clusterDetails} fetchClusterInfo={fetchClusterInfo} />
                 </div>
              </div>
              <div className="row-span-6 grid grid-cols-2 gap-4 pb-2">

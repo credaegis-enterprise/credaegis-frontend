@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useTabContext } from "@/context/tabContext";
 import { useState } from "react";
 import MyModal from "@/components/modals/mymodal";
-import CreateEvent from "./createEvent";
+import CreateEvent from "./actions/createEvent";
 
 type Event = {
   event_ulid: string;

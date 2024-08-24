@@ -5,7 +5,7 @@ import { MyButton } from "@/components/buttons/mybutton";
 import { MdPerson } from "react-icons/md";
 import MyModal from "@/components/modals/mymodal";
 import { useState } from "react";
-import CreateMember from "./createMember";
+import CreateMember from "./actions/createMember";
 
 type Member = {
   member_ulid: string;
