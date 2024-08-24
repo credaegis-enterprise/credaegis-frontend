@@ -52,8 +52,8 @@ const MemberView: React.FC<MemberViewProps> = ({
           </span>
         </MyButton>
       </div>
-      <div className="mt-2 h-[400px]">
-        <div className="space-y-2 p-2 mt-1 h-full overflow-auto">
+      <div className=" mt-2 h-full overflow-auto">
+        <div className="space-y-2 p-2 mt-1 h-full ">
           {members &&
             members.map((member, index) => (
               <motion.div

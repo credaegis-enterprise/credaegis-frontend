@@ -3,12 +3,11 @@ import React from "react";
 import { toast } from "sonner";
 import { myInstanceNEXT } from "@/utils/Axios/axios";
 import axios from "axios";
-import ClusterList from "@/components/pageComponents/dashboard/clusterList";
 import { Suspense } from "react";
 import getCookies from "@/utils/cookies/getCookies";
 import ClusterView from "@/components/pageComponents/dashboard/organization/clusterView";
 import {Card, Skeleton} from "@nextui-org/react";
-import EventList from "@/components/pageComponents/dashboard/eventList";
+
 import { MdPeople } from "react-icons/md";
 import CardHeader from "@/components/pageComponents/dashboard/cardHeader";
 import CreateCluster from "@/components/pageComponents/dashboard/createCluster";
@@ -63,24 +62,15 @@ const  Page =async () => {
 
   return (
     
-    <div className="p-6 h-screen bg-gray-50 dark:bg-black transition-colors duration-300">
-      <div className="flex flex-col lg:flex-row h-full gap-6">
-        
-        
-        <div className="flex flex-col lg:w-1/3 order-2 lg:order-1 gap-6">
-       
-          <div className="bg-white h-full dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 transition-colors duration-300 flex-1 ">
-        
-          <ClusterView clusters={clusters}/>
-          </div>
-        
-          
-        </div>
-        <div className="h-full  bg-white dark:bg-black border border-gray-200 dark:border-stone-800 rounded-lg shadow-lg p-6 lg:w-2/3 lg:flex-none flex-1 order-1 lg:order-2 transition-colors duration-300">
-         <ManageAll/>
-          
-        </div>
+    <div className="  p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300">
+     <div className="grid grid-cols-8 h-full gap-4 ">
+      <div className="lg:col-span-2 h-full col-span-full overflow-auto border border-gray-200 dark:border-stone-800 rounded-lg p-2">
+      <ClusterView clusters={clusters}/>
       </div>
+      <div className="lg:col-span-6 p-2 h-full overflow-auto col-span-full rounded-lg flex flex-col gap-4 border border-gray-200 dark:border-stone-800">
+        <ManageAll/>
+      </div>
+     </div>
     </div>
   );
 };

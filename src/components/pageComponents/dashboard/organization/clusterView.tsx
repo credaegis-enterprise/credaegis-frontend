@@ -51,8 +51,8 @@ const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
           </span>
         </MyButton>
       </div>
-      <div className="flex flex-col mt-2 ">
-      <div className="space-y-2 p-2 mt-1">
+      <div className="flex flex-col mt-2 lg:h-full h-[200px] overflow-auto  ">
+      <div className="space-y-2 p-2 mt-1 ">
       {clusters.map((cluster, index) => (
         <motion.div
           key={cluster.cluster_ulid}

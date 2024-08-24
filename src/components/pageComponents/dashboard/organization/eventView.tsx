@@ -42,8 +42,8 @@ const EventView: React.FC<EventsViewProps> = ({ events,fetchClusterInfo,cluster_
           </span>
         </MyButton>
       </div>
-      <div className=" mt-2 h-[400px] xl:h-[450px] ">
-        <div className="space-y-2 p-2 mt-1 h-full overflow-auto">
+      <div className=" mt-2  h-full  overflow-auto">
+        <div className="space-y-2 p-2 mt-1 h-full">
           {events && events.map((event, index) => (
             <motion.div
               key={event.event_ulid}

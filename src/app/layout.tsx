@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${GeistSans.className} `}>
+      <body className={`h-screen  ${GeistSans.className} `}>
         <Providers>
           <ThemeProvider attribute="class" defaultTheme="white">
           
