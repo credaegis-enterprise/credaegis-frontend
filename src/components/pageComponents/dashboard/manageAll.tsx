@@ -17,12 +17,12 @@ const ManageAll = () => {
     <div className="flex h-full p-2 ">
     <div className="flex flex-col w-full">
       <div className="flex flex-col lg:flex-row lg:gap-4">
-        <div className="flex items-center mt-1">
+        {/* <div className="flex items-center mt-1">
           <MdDashboard size={26} />
           <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 ml-2">
             Dashboard
           </h2>
-        </div>
+        </div> */}
   
         <Tabs
           selectedKey={selected}
