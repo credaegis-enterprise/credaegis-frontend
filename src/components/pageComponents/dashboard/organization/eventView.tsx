@@ -24,6 +24,10 @@ interface EventsViewProps {
 const EventView: React.FC<EventsViewProps> = ({ events,fetchClusterInfo,cluster_ulid }) => {
 
  const [isOpen, setIsOpen] = useState(false);
+
+//  if (!events) {
+//     return <div className="flex h-full justify-center items-center text-lg">No events available.</div>;
+//   }
   return (
     <div className="h-full w-full flex flex-col">
       <div className="flex justify-between p-2">
@@ -44,7 +48,14 @@ const EventView: React.FC<EventsViewProps> = ({ events,fetchClusterInfo,cluster_
       </div>
       <div className=" mt-2  h-full  overflow-auto">
         <div className="space-y-2 p-2 mt-1 h-full">
-          {events && events.map((event, index) => (
+          {!events? (
+            <div className="flex h-full justify-center items-center text-lg">
+              No events available.
+            </div>
+          ) : (
+         
+          
+          events && events.map((event, index) => (
             <motion.div
               key={event.event_ulid}
               initial={{ opacity: 0, y: 20 }}
@@ -61,8 +72,13 @@ const EventView: React.FC<EventsViewProps> = ({ events,fetchClusterInfo,cluster_
                 {event.event_name}
               </h3>
             </motion.div>
-          ))}
+          ))
+      
+          )}
         </div>
+
+      
+    
       </div>
       {isOpen && (
         <MyModal

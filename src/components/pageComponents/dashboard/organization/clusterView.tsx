@@ -53,7 +53,13 @@ const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
       </div>
       <div className="flex flex-col mt-2 lg:h-full h-[200px] overflow-auto  ">
       <div className="space-y-2 p-2 mt-1 ">
-      {clusters.map((cluster, index) => (
+        {!clusters ? (
+          <div className="flex justify-center items-center">
+            No clusters available.
+          </div>
+        ) : (
+          
+      clusters.map((cluster, index) => (
         <motion.div
           key={cluster.cluster_ulid}
           initial={{ opacity: 0, y: 20 }}
@@ -68,8 +74,12 @@ const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
             {cluster.cluster_name}
           </h3>
         </motion.div>
-      ))}
+      ))
+      
+          )}
+    
     </div>
+
       </div>
       {isOpen && <MyModal
         size="sm"

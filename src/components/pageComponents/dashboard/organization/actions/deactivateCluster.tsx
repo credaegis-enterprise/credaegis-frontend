@@ -37,14 +37,14 @@ const DeactivateCluster: React.FC<Cluster> = ({ cluster_name, cluster_ulid,setIs
                 <span className="text-yellow-500 text-sm font-semibold">Deactivating the cluster will deactivate all the members and events associated with it.</span>
             </div>
             <div className="flex justify-center gap-4 mt-4">
-                <MyButton className="" color="danger" size="md"
+                <MyButton className="" color="warning" size="md"
                 onClick={()=>{handleDeactivateCluster()}}>
-                    <span className="text-white text-md font-medium">Deactivate</span>
+                    <span className="text-black text-md font-medium">Deactivate</span>
                 </MyButton>
                 <MyButton className="bg-black dark:bg-white" size="md"
                 onClick={() => {setIsOpen(false);}}
                 >
-                    <span className="dark:text-black text-md font-medium">Cancel</span>
+                    <span className="text-white dark:text-black text-md font-medium">Cancel</span>
                 </MyButton>
             </div>
         </div>
