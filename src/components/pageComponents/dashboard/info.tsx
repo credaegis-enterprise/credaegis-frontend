@@ -9,6 +9,7 @@ import { myInstance } from "@/utils/Axios/axios";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import EventView from "./organization/eventView";
+import { useCallback } from "react";
 import MemberList from "./memberList";
 import MemberView from "./organization/memberView";
 
@@ -64,26 +65,23 @@ const Info = ({ cluster_ulid }: InfoProps) => {
   const [members, setMembers] = useState([]);
   const [clusterDetails, setClusterDetails] = useState<clusterDetails>();
 
-  const fetchClusterInfo = async () => {
+  const fetchClusterInfo = useCallback(async () => {
     try {
       const response = await myInstance.get(`/cluster/getinfo/${cluster_ulid}`);
       const { clusterInfo } = response.data;
-      const { eventsInfo,...clusterDetails } = clusterInfo;
 
-        setClusterDetails(clusterDetails);
-      setEventsInfo(response.data.clusterInfo.eventsInfo);
-      setMembers(response.data.clusterInfo.membersInfo);
-
-
+      setClusterDetails(clusterInfo);
+      setEventsInfo(clusterInfo.eventsInfo);
+      setMembers(clusterInfo.membersInfo);
     } catch (error: any) {
-      console.log(error);
+      console.error("Error fetching cluster info:", error);
       toast.error(error.response?.data.message || "An error occurred");
     }
-  };
+  }, [cluster_ulid]);
 
   useEffect(() => {
     fetchClusterInfo();
-  }, [cluster_ulid]);
+  }, [fetchClusterInfo]);
   return (
     <div className="h-full  mt-2">
         <div className="grid grid-rows-8 h-full gap-3">

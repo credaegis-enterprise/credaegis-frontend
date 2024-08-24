@@ -30,7 +30,7 @@ const DeactivateCluster: React.FC<Cluster> = ({ cluster_name, cluster_ulid,setIs
     return (
         <div className="p-4 b rounded-lg shadow-md">
             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
-                Are you sure you want to deactivate the cluster "{cluster_name}" ?
+                Are you sure you want to deactivate the cluster &quot;{cluster_name}&quot;?
             </h2>
             <div className="flex gap-2 ">
                 <MdWarning className="text-yellow-500"  size={26}/>

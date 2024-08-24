@@ -9,9 +9,6 @@ import ClusterView from "@/components/pageComponents/dashboard/organization/clus
 import {Card, Skeleton} from "@nextui-org/react";
 
 import { MdPeople } from "react-icons/md";
-import CardHeader from "@/components/pageComponents/dashboard/cardHeader";
-import CreateCluster from "@/components/pageComponents/dashboard/createCluster";
-import CreateEvent from "@/components/pageComponents/dashboard/organization/createEvent";
 import ManageAll from "@/components/pageComponents/dashboard/manageAll";
 
 const fetchClusters = async () => {
