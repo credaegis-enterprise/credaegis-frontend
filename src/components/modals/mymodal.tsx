@@ -30,8 +30,10 @@ const MyModal: React.FC<MyModalProps> = ({ size, isOpen, onClose, onOpen,content
         {content}
           </ModalBody>
           <ModalFooter>
+            <div className="flex justify-center w-full gap-2">
             {button1}
             {button2}
+            </div>
           </ModalFooter>
         </ModalContent>
       </Modal>
