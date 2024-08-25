@@ -9,8 +9,6 @@ const nextConfig = {
             },
         ];
     },
-    reactStrictMode: false,
-    fastRefresh: true,
 };
 
 export default nextConfig;

@@ -10,7 +10,6 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import EventView from "./organization/eventView";
 import { useCallback } from "react";
-import MemberList from "./memberList";
 import MemberView from "./organization/memberView";
 
 interface InfoProps {

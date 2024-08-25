@@ -6,7 +6,7 @@ import { Providers } from "./providers";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
-import MyNavbar from "@/components/navbar/myNavbar";
+
 
 const inter = Inter({ subsets: ["latin"] });
 const baloo = Baloo_Chettan_2({ subsets: ["latin"] });

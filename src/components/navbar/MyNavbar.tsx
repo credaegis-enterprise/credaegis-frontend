@@ -34,7 +34,7 @@ export default function MyNavbar() {
       <NavbarBrand></NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-12" justify="end">
         <NavbarItem>
-          <Link href="/credaegis/organization/dashboard">dasboard</Link>
+          <Link href="/credaegis/organization/dashboard">dashboard</Link>
         </NavbarItem>
         <NavbarItem>
           <Link href="/credaegis/organization/settings">settings</Link>

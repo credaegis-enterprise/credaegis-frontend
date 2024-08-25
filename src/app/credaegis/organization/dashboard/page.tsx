@@ -2,13 +2,8 @@
 import React from "react";
 import { toast } from "sonner";
 import { myInstanceNEXT } from "@/utils/Axios/axios";
-import axios from "axios";
-import { Suspense } from "react";
 import getCookies from "@/utils/cookies/getCookies";
 import ClusterView from "@/components/pageComponents/dashboard/organization/clusterView";
-import {Card, Skeleton} from "@nextui-org/react";
-
-import { MdPeople } from "react-icons/md";
 import ManageAll from "@/components/pageComponents/dashboard/manageAll";
 
 const fetchClusters = async () => {

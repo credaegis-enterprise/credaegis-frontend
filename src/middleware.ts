@@ -19,6 +19,6 @@ export async function middleware (request: NextRequest) {
 
 export const config = {
 
-    matcher: ["/credaegis/organization/dashboard"],
+    matcher: ["/credaegis/organization/:path*"],
 
 }

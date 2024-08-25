@@ -1,4 +1,4 @@
-import MyNavbar from "@/components/navbar/myNavbar";
+import MyNavbar from "@/components/navbar/MyNavbar";
 import { TabProvider } from "@/context/tabContext";
 
 export default function OrganizationLayout({
