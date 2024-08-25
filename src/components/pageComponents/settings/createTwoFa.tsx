@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Input } from "@nextui-org/react";
 import { myInstance } from "@/utils/Axios/axios";
 import { MdInfo } from "react-icons/md";
+import Image from "next/image";
 
 interface TwoFaCreateProps {
   setIsOpenTwofa: (value: boolean) => void;
@@ -50,8 +51,13 @@ const CreateTwoFa: React.FC<TwoFaCreateProps> = ({ setIsOpenTwofa }) => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col gap-4">
-        <img src={qrCode} alt="qr code" />
+      <div className="flex flex-col gap-4 w-full ">
+        <div className="flex w-full ">
+              <Image src={qrCode}  alt="qr code"
+              width={500}
+              height={500}
+              />
+       </div>
         <div className="flex gap-3">
           <MdInfo className="text-green-400" size={26}/>
           <div className=" text-green-400 text-sm">

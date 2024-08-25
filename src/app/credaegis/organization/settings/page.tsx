@@ -6,9 +6,8 @@ import Security from "@/components/pageComponents/settings/security";
 import { useState } from "react";
 
 const Page = () => {
-    const [selectedView, setSelectedView] = useState<string>("General");
+    const [selectedView, setSelectedView] = useState<string>("Security");
 
-    // Handle the click event and set the selected view
     const handleClick = (view: string) => {
         setSelectedView(view);
     };
