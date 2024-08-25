@@ -13,12 +13,13 @@ import MyModal from "@/components/modals/mymodal";
 import { FaW } from "react-icons/fa6";
 import { MdWarning } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import CreateTwoFa from "./createTwoFa";
 
 const Security = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [is2FAEnabled, setIs2FAEnabled] = useState(false);
+  const [IsOpenTwofa,setIsOpenTwofa] = useState(false);
   const [notMatch, setNotMatch] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -52,6 +53,7 @@ const Security = () => {
       toast.error(error.response?.data.message || "An error occurred");
     }
 
+    setIsOpen(false);
     setOldPassword("");
     setNewPassword("");
     setConfirmPassword("");
@@ -152,7 +154,7 @@ const Security = () => {
                 <MyButton
                   className="bg-black dark:bg-gray-200 text-white dark:text-black"
                   size="md"
-                  onClick={handleEnable2FA}
+                  onClick={()=>{setIsOpenTwofa(true);console.log(IsOpenTwofa)}}
                 >
                   Setup 2FA
                 </MyButton>
@@ -161,6 +163,7 @@ const Security = () => {
           </div>
         </div>
       </div>
+      <div>
       {isOpen && (
         <MyModal
           size="sm"
@@ -200,8 +203,28 @@ const Security = () => {
               Cancel
             </MyButton>
           }
-        ></MyModal>
+        />
       )}
+      </div>
+      <div>
+      {IsOpenTwofa && (
+        <MyModal
+        size="sm"
+        isOpen={IsOpenTwofa}
+        backdrop="blur"
+        onOpen={() => {}}
+        content={<CreateTwoFa setIsOpenTwofa={setIsOpenTwofa} />}
+        onClose={() => {
+          setIsOpenTwofa(false);
+        }
+        }
+        title="Setup 2FA"
+        button1={undefined}
+        button2={undefined}
+         />
+
+      )}
+      </div>
     </div>
   );
 
