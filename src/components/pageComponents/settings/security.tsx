@@ -6,20 +6,50 @@ import { FaKey, FaShieldAlt } from "react-icons/fa";
 import { RiShieldCheckLine } from "react-icons/ri";
 import { BiLockAlt } from "react-icons/bi";
 import { FaInfoCircle } from "react-icons/fa";
+import { myInstance } from "@/utils/Axios/axios";
+import MyModal from "@/components/modals/mymodal";
 
 const Security = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [is2FAEnabled, setIs2FAEnabled] = useState(false);
+  const [notMatch, setNotMatch] = useState(false);
 
-  const handleChangePassword = () => {
-    // Add your password change logic here
+
+  const handleChangePassword = async() => {
+
+    if(newPassword=="" || confirmPassword=="" || oldPassword === ""){
+        toast.error("Please fill all fields");
+        return;
+        }
+    if (newPassword !== confirmPassword) {
+        setNotMatch(true);
+        return;
+      }
+    try{
+
+    const response = await myInstance.patch("/settings/changepassword", {
+        old_password: oldPassword,
+        new_password: newPassword,
+        });
+    
     toast.success("Password changed successfully!");
+   
+
+    }
+    catch(error: any){
+      console.log(error);
+      toast.error(error.response?.data.message || "An error occurred");
+    }
+
+    setOldPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
   };
 
+
   const handleEnable2FA = () => {
-    // Add your 2FA enabling logic here
     toast.success("2FA enabled successfully!");
   };
 
@@ -70,6 +100,8 @@ const Security = () => {
                 label="Confirm Password"
                 type="password"
                 value={confirmPassword}
+                isInvalid={notMatch}
+                errorMessage="Passwords do not match"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 startContent={<BiLockAlt />}
               />
