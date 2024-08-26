@@ -49,7 +49,7 @@ export default function MyNavbar() {
         </NavbarItem>
         <NavbarItem>
           <MyButton
-            className=""
+            className="bg-dark dark:bg-white"
             size="sm"
             spinner={<Spinner size="sm" color="default" />}
             color="default"
