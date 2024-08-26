@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import  { AxiosError } from 'axios';
 import { myInstance } from './axios';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 function ResponseInterceptor() {
   const interceptorId = useRef<number | null>(null);
@@ -14,15 +15,11 @@ function ResponseInterceptor() {
       response => response,
       (error: AxiosError) => {
         if (error.response) {
-            console.log("error in response interceptor");
-            console.log(error.response.status);
+          toast.error((error.response.data as any)?.message || "An error occurred");
           switch (error.response.status) {
-            case 404:
-              router.push('/404');
-              break;
             case 403:
               router.push('/login');
-              break;
+            break;
             default:
               console.error("An unexpected error occurred:", error.response.status);
           }
@@ -30,7 +27,9 @@ function ResponseInterceptor() {
           console.error("No response from the server:", error);
         }
         return Promise.reject(error);
-      }
+      },
+      
+
     );
 
     return () => {

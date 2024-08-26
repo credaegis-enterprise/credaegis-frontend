@@ -74,7 +74,6 @@ const Info = ({ cluster_ulid }: InfoProps) => {
       setMembers(clusterInfo.membersInfo);
     } catch (error: any) {
       console.error("Error fetching cluster info:", error);
-      toast.error(error.response?.data.message || "An error occurred");
     }
   }, [cluster_ulid]);
 

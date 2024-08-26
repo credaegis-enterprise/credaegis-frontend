@@ -7,8 +7,12 @@ import Info from "./info";
 import { myInstance } from "@/utils/Axios/axios";
 
 const ManageAll = () => {
+
+  
   const { selectedTab } = useTabContext();
   const [selected, setSelected] = useState<string>("certificates");
+
+
   useEffect(() => {
     if (selectedTab.id) setSelected("info");
   }, [selectedTab]);

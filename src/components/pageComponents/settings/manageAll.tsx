@@ -1,6 +1,6 @@
 'use client';
 import Security from "./security";
-import { useContext,useState,useEffect } from "react";
+import {useEffect } from "react";
 import { useTabContext } from "@/context/tabContext";
 
  type Settings = {
@@ -20,9 +20,9 @@ interface manageAllProps {
 
 
 const ManageAll: React.FC<manageAllProps> = ({settings}) => {
-
-
    const {settingsTab,setSettingsTab} = useTabContext();
+
+   
     useEffect(() => {
        if(settingsTab.id===''){
               setSettingsTab({type:'settings',id:'Security'});

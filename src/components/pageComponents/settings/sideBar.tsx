@@ -5,6 +5,8 @@ import { useState, useContext } from "react";
 import { useTabContext } from "@/context/tabContext";
 const SideBar = () => {
   const { settingsTab,setSettingsTab } = useTabContext();
+
+  
   return (
     <div className="flex flex-col gap-3">
       <div

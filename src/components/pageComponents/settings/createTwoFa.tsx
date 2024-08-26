@@ -31,7 +31,7 @@ const CreateTwoFa: React.FC<TwoFaCreateProps> = ({ setIsOpenTwofa }) => {
             } catch (error: any) {
                
                 console.log(error);
-                toast.error(error.response?.data.message || "An error occurred");
+              
             }
         };
         fetchQrCode();
@@ -53,7 +53,7 @@ const CreateTwoFa: React.FC<TwoFaCreateProps> = ({ setIsOpenTwofa }) => {
 
     } catch (error: any) {
       console.log(error);
-      toast.error(error.response?.data.message || "An error occurred");
+     
     }
     router.refresh()
    

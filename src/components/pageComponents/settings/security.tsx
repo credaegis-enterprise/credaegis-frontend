@@ -59,7 +59,7 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
       router.push("/login");
     } catch (error: any) {
       console.log(error);
-      toast.error(error.response?.data.message || "An error occurred");
+    
     }
 
     setIsOpen(false);
@@ -76,7 +76,7 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
        
     } catch (error: any) {
       console.log(error);
-      toast.error(error.response?.data.message || "An error occurred");
+     
     }
 
     router.refresh();

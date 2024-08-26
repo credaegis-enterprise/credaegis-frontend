@@ -27,8 +27,10 @@ interface ClusterListProps {
 }
 
 const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
+
   const { setSelectedTab } = useTabContext();
   const [isOpen, setIsOpen] = useState(false);
+  
   return (
     <div className="h-full w-full flex flex-col">
       <div className="flex justify-between p-2">

@@ -22,7 +22,6 @@ const DeactivateCluster: React.FC<Cluster> = ({ cluster_name, cluster_ulid,setIs
             fetchClusterInfo();
             setIsOpen(false);
         } catch (error: any) {
-            toast.error(error.response?.data.message || "An error occurred");
             console.log(error);
         }
     }

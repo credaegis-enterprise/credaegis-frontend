@@ -1,8 +1,6 @@
 
 
 import { MdSettings } from "react-icons/md";
-import { FaCogs, FaLock, FaSlidersH } from "react-icons/fa";
-import Security from "@/components/pageComponents/settings/security";
 import ManageAll from "@/components/pageComponents/settings/manageAll";
 import SideBar from "@/components/pageComponents/settings/sideBar";
 import { myInstanceNEXT } from "@/utils/Axios/axios";

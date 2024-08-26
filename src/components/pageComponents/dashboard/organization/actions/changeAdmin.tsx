@@ -45,7 +45,6 @@ const [invalid, setInvalid] = useState(false);
       fetchClusterInfo();
       setIsOpen(false);
     } catch (error: any) {
-      toast.error(error.response?.data.message || "An error occurred");
       console.log(error);
     }
   }
@@ -64,7 +63,7 @@ const [invalid, setInvalid] = useState(false);
         className="w-full"
       >
      {members
-    .filter((member) => member.member_ulid !== admin_ulid) // Filter out the current admin
+    .filter((member) => member.member_ulid !== admin_ulid) 
     .map((member) => (
       <SelectItem key={member.member_ulid} value={member.member_ulid}>
         {member.member_name}

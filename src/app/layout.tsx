@@ -6,6 +6,7 @@ import { Providers } from "./providers";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
+import ResponseInterceptor from "@/utils/Axios/interceptor";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -25,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`h-screen  ${GeistSans.className} `}>
+       
         <Providers>
           <ThemeProvider attribute="class" defaultTheme="white">
           
@@ -32,6 +34,7 @@ export default function RootLayout({
               className:"font-sans text-md",
               duration:1000,
             }} />
+             <ResponseInterceptor />
             {/* <MyNavbar /> */}
             {children}
           </ThemeProvider>

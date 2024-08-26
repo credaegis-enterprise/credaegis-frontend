@@ -5,8 +5,6 @@ import authenticator from './utils/Auth/authenticator'
  
 
 export async function middleware (request: NextRequest) {
-
-    console.log("hellos sjsjshjhsjhkshkhs")
      
     const isAuthenticated = await authenticator();
     if(!isAuthenticated)

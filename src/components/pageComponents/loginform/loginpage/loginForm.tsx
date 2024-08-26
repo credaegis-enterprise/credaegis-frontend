@@ -42,15 +42,18 @@ const LoginForm = () => {
         });
       }
 
-      if (response.data.twoFa) setIsOpen(true);
-      else {toast.success(response.data.message)
+      if (response.data.twoFa)
+         setIsOpen(true);
+      else {
+        console.log(response.data);
+        toast.success(response.data.message)
         router.push("/credaegis/organization/dashboard");
       };
 
       setIsLoading(false);
     } catch (error: any) {
       console.log(error);
-      toast.error(error.response?.data.message || "An error occurred");
+   
       setIsLoading(false);
     }
   };
@@ -74,7 +77,7 @@ const LoginForm = () => {
       }
       catch(error:any)
       {
-        toast.error(error.response?.data.message || "An error occurred");
+
         console.log(error);
         if(error.response?.status===429) setIsOpen(false);
         setIsLoading(false);
