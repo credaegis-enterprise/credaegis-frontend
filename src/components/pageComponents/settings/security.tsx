@@ -73,7 +73,7 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
   const disableTwoFa = async () => {
 
     try {
-      const response = await myInstance.post("/settings/disableTwofa");
+      const response = await myInstance.delete("/settings/disableTwofa");
       toast.success(response.data.message);
       setTwoFaEnabled(false);
     } catch (error: any) {
