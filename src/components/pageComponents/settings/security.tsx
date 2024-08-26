@@ -15,11 +15,13 @@ import { MdWarning } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import CreateTwoFa from "./createTwoFa";
 
+
 interface SecurityProps {
   two_fa_enabled: boolean;
 }
 const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
-  console.log(two_fa_enabled);
+  
+
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -28,13 +30,9 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
   const [notMatch, setNotMatch] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [disablePopup, setDisablePopup] = useState(false);
-  const [twoFaEnabled, setTwoFaEnabled] = useState(false);
 
-  useEffect(() => {
-    if (two_fa_enabled) {
-      setTwoFaEnabled(true);
-    }
-  }, []);
+
+  
 
   const router = useRouter();
   const handleChecks = () => {
@@ -75,11 +73,13 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
     try {
       const response = await myInstance.delete("/settings/disableTwofa");
       toast.success(response.data.message);
-      setTwoFaEnabled(false);
+       
     } catch (error: any) {
       console.log(error);
       toast.error(error.response?.data.message || "An error occurred");
     }
+
+    router.refresh();
     setDisablePopup(false);
   };
 
@@ -170,7 +170,7 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
                 </div>
               </div>
               <div className="flex flex-col  justify-center w-full max-w-sm gap-2">
-                {!twoFaEnabled ? (
+                {!two_fa_enabled ? (
                   <MyButton
                     className="bg-black dark:bg-gray-200 text-white dark:text-black"
                     size="md"
@@ -252,7 +252,7 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
             isOpen={IsOpenTwofa}
             backdrop="blur"
             onOpen={() => {}}
-            content={<CreateTwoFa setIsOpenTwofa={setIsOpenTwofa}  setTwoFaEnabled={setTwoFaEnabled} />}
+            content={<CreateTwoFa setIsOpenTwofa={setIsOpenTwofa}   />}
             onClose={() => {
               setIsOpenTwofa(false);
             }}

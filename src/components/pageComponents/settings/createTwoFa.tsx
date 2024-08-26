@@ -6,17 +6,22 @@ import { toast } from "sonner";
 import { Input } from "@nextui-org/react";
 import { myInstance } from "@/utils/Axios/axios";
 import { MdInfo } from "react-icons/md";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
+
 
 interface TwoFaCreateProps {
   setIsOpenTwofa: (value: boolean) => void;
+  
 }
 
 const CreateTwoFa: React.FC<TwoFaCreateProps> = ({ setIsOpenTwofa }) => {
 
+    const router = useRouter();
     const [otp, setOtp] = useState("");
     const [qrCode, setQrCode] = useState("");
     const [invalid, setInvalid] = useState(false);
+
 
     useEffect(() => {
         const fetchQrCode = async () => {
@@ -43,12 +48,15 @@ const CreateTwoFa: React.FC<TwoFaCreateProps> = ({ setIsOpenTwofa }) => {
         otp: otp,
       });
       toast.success(response.data.message);
+      setIsOpenTwofa(false);
+
+
     } catch (error: any) {
       console.log(error);
       toast.error(error.response?.data.message || "An error occurred");
     }
-
-    setIsOpenTwofa(false);
+    router.refresh()
+   
 
   };
 
