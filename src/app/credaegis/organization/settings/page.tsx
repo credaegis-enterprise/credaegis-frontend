@@ -26,8 +26,7 @@ const fetchSettings = async () => {
 const Page = async () => {
 
     const settings = await fetchSettings();             
-    console.log(settings);
-
+   
     return (
         <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300">
             <div className="grid grid-cols-8 h-full gap-4">

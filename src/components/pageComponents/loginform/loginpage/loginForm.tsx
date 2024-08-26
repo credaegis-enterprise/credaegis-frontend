@@ -21,7 +21,7 @@ const LoginForm = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(selected);
+
 
   //login functions for both admin and user
   const handleLogin = async () => {

@@ -7,6 +7,7 @@ import DeactivateCluster from "./actions/deactivateCluster";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
 import ChangeAdmin from "./actions/changeAdmin";
+import { useRouter } from "next/navigation";
 
 interface AdminInfo {
   admin_email: string;
@@ -43,6 +44,7 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
   cluster,
   fetchClusterInfo,
 }) => {
+  const router = useRouter();
   const [selectedAction, setSelectedAction] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
