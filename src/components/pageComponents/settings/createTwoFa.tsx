@@ -1,3 +1,5 @@
+'use client';
+
 import { useState,useEffect } from "react";
 import { MyButton } from "@/components/buttons/mybutton";
 import { toast } from "sonner";
@@ -22,6 +24,7 @@ const CreateTwoFa: React.FC<TwoFaCreateProps> = ({ setIsOpenTwofa }) => {
                 const response = await myInstance.post("/settings/generateTwofa");
                 setQrCode(response.data.qrcode);
             } catch (error: any) {
+               
                 console.log(error);
                 toast.error(error.response?.data.message || "An error occurred");
             }

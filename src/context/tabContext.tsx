@@ -11,6 +11,8 @@ type tabDisplay = {
 interface TabContextType {
   selectedTab: tabDisplay;
   setSelectedTab: (tab: tabDisplay) => void;
+  settingsTab: tabDisplay;
+  setSettingsTab: (tab: tabDisplay) => void;
 }
 
 
@@ -27,9 +29,10 @@ export const useTabContext = () => {
 
 export const TabProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [selectedTab, setSelectedTab] = useState<tabDisplay>({ type: '', id: '' });
+    const [settingsTab, setSettingsTab] = useState<tabDisplay>({ type: 'settings', id: 'Security' });
 
   return (
-    <tabContext.Provider value={{ selectedTab, setSelectedTab }}>
+    <tabContext.Provider value={{ selectedTab, setSelectedTab,settingsTab,setSettingsTab }}>
       {children}
     </tabContext.Provider>
   );
