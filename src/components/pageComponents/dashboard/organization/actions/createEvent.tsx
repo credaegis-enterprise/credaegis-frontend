@@ -7,7 +7,6 @@ import { MyButton } from "@/components/buttons/mybutton";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
 import { Spinner } from "@nextui-org/react";
-import { Select, SelectItem } from "@nextui-org/react";
 
 interface CreateEventProps {
   cluster_ulid: string;

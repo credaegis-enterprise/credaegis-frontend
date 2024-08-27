@@ -8,18 +8,11 @@ export default function OrganizationLayout({
 }) {
   return (
     <div className="flex flex-col h-screen">
-      
       <MyNavbar />
-     
-        <div className="flex-grow lg:overflow-hidden">
- 
-        <TabProvider>
-       
-          {children}
-          </TabProvider>
-         
-        </div>
-       
+
+      <div className="flex-grow lg:overflow-hidden">
+        <TabProvider>{children}</TabProvider>
+      </div>
     </div>
   );
 }
