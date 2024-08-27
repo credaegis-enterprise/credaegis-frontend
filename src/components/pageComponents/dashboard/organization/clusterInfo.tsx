@@ -196,6 +196,25 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
         </div>
         
       </div>
+      {isOpen && (
+        <MyModal
+          size="md"
+          isOpen={isOpen}
+          onOpen={() => setIsOpen(true)}
+          backdrop="blur"
+          onClose={() => setIsOpen(false)}
+          title={
+            selectedAction === "deactivate"
+              ? "Deactivate Cluster"
+              : selectedAction === "delete"
+              ? "Delete Cluster"
+              : "Change Admin"
+          }
+          content={renderModalContent()}
+          button1={undefined}
+          button2={undefined}
+        />
+      )}
 
     </div>
   );
