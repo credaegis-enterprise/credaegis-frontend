@@ -54,7 +54,7 @@ const  Page =async () => {
 
   return (
     
-    <div className="  p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300">
+    <div className="  p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 overflow-hidden">
      <div className="grid grid-cols-8 h-full gap-4 ">
       <div className="lg:col-span-2 h-full col-span-full overflow-auto border border-gray-200 dark:border-stone-800 rounded-lg p-2">
       <ClusterView clusters={clusters}/>

@@ -85,7 +85,7 @@ const Info = ({ cluster_ulid }: InfoProps) => {
         <div className="grid grid-rows-8 h-full gap-3">
 
             <div className="row-span-2  ">
-                <div className="h-full border border-gray-200 dark:border-stone-800 p-4  rounded-lg">
+                <div className="h-full border border-gray-200 dark:border-stone-800 box-border p-6  rounded-lg">
                     <ClusterInfo cluster={clusterDetails} fetchClusterInfo={fetchClusterInfo} />
                 </div>
              </div>
@@ -101,25 +101,7 @@ const Info = ({ cluster_ulid }: InfoProps) => {
        
         </div>
 
-    // <div className="flex flex-col h-full w-full gap-4 p-2 mt-3">
-    //   <div className="flex w-full   p-4 rounded-lg border border-gray-200 dark:border-stone-800">
-    //     <CardHeader
-    //       title="Cluster Info"
-    //       icon={<MdInfo size={26} />}
-    //       modalTitle=""
-    //     />
-    //     sjhjkshdkjs sldsljds sljdhkshd sdjgjshd s,bdjkshdb sdhsjhd slkdlksj
-    //     sjhjkshdkjsd s a fg getinfo fd ss ss ss setPasswordss ss
-    //   </div>
-    //   <div className="flex flex-col lg:flex-row w-full gap-4 flex-grow h-full  ">
-    //     <div className="flex flex-col h-80 overflow-auto lg:h-full lg:w-1/2 w-full border border-gray-200 dark:border-stone-800 rounded-lg p-4">
-    //       <EventView events={eventsInfo} fetchClusterInfo={fetchClusterInfo} cluster_ulid={cluster_ulid} />
-    //     </div>
-    //     <div className="flex flex-col lg:w-1/2 w-full h-80 lg:h-full overflow-auto   p-4 rounded-lg  border border-gray-200 dark:border-stone-800">
-    //       <MemberView members={members}  fetchClusterInfo={fetchClusterInfo} cluster_ulid={cluster_ulid}/>
-    //     </div>
-    //   </div>
-    // </div>
+   
   );
 };
 

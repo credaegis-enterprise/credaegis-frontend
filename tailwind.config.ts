@@ -11,6 +11,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        lgh: {
+          raw: '(max-height: 750px)'
+        }
+      },
       fontFamily: {
         sans: ['var(--font-geist-sans)'],
         mono: ['var(--font-geist-mono)'],
