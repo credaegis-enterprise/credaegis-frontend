@@ -100,8 +100,9 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
   };
 
   return (
-    <div className="h-full p-4 rounded-lg shadow-sm flex flex-col lg:flex-row lg:items-center lg:gap-8">
-      <div className="flex flex-col lg:flex-row lg:items-center lg:gap-8 w-full">
+    <div className="h-full p-4 rounded-lg shadow-sm flex flex-col lg:flex-row lg:items-center justify-between lg:gap-8">
+      {/* <div className="flex flex-col lg:flex-row lg:items-center lg:gap-8 w-full">
+        <div className="flex items-center gap-4">
         <div className="flex items-center gap-4">
           <MdInfo size={32} className="text-blue-500" />
           <div>
@@ -114,7 +115,7 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row lg:items-center gap-2 mt-4 lg:mt-0">
+        <div className="flex  flex-row lg:items-center gap-2 mt-4 lg:mt-0">
           {cluster.deactivated === 0 ? (
             <MyButton
               className="bg-black dark:bg-white"
@@ -139,7 +140,7 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
             </MyButton>
           )}
           <MyButton
-            className="bg-black dark:bg-white"
+            className="bg-black dark:bg-white "
             size="sm"
             onClick={() => handleOpenModal("delete")}
           >
@@ -148,9 +149,9 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
             </span>
           </MyButton>
         </div>
+        </div>
       </div>
 
-      {/* Admin Info Section */}
       <div className="flex flex-col lg:flex-row lg:items-center gap-4 border-t border-gray-200 dark:border-stone-800 pt-4 lg:pt-0 lg:border-t-0 lg:border-l lg:pl-8">
         <div className="flex items-center gap-4">
           <FaUserShield size={32} className="text-green-500" />
@@ -165,7 +166,7 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
         </div>
       </div>
 
-      {/* Button to Change Admin */}
+ 
       <div className="flex justify-end mt-4 lg:mt-0">
         <MyButton
           className="bg-black dark:bg-white"
@@ -196,7 +197,7 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
           button1={undefined}
           button2={undefined}
         />
-      )}
+      )} */}
     </div>
   );
 };
