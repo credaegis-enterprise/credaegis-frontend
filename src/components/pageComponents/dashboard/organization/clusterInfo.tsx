@@ -100,7 +100,7 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
   };
 
   return (
-    <div className="h-full  rounded-lg shadow-sm lgh:overflow-scroll lg:overflow-visible">
+    <div className="h-full  rounded-lg shadow-sm overflow-auto">
       <div className="grid grid-cols-1 lg:grid-cols-9 gap-5 h-full">
         <div className="col-span-4">
           <div className="grid grid-rows-2 h-full gap-3 ">
@@ -197,103 +197,6 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
         
       </div>
 
-      {/* <div className="flex flex-col lg:flex-row lg:items-center lg:gap-8 w-full">
-        <div className="flex items-center gap-4">
-        <div className="flex items-center gap-4">
-          <MdInfo size={32} className="text-blue-500" />
-          <div>
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-              {cluster.cluster_name}
-            </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Created at: {new Date(cluster.created_at).toLocaleString()}
-            </p>
-          </div>
-        </div>
-
-        <div className="flex  flex-row lg:items-center gap-2 mt-4 lg:mt-0">
-          {cluster.deactivated === 0 ? (
-            <MyButton
-              className="bg-black dark:bg-white"
-              size="sm"
-              onClick={() => handleOpenModal("deactivate")}
-            >
-              <span className="dark:text-black text-white text-md font-medium">
-                Deactivate
-              </span>
-            </MyButton>
-          ) : (
-            <MyButton
-              className="bg-black dark:bg-white"
-              size="sm"
-              onClick={() => {
-                handleActivateCluster();
-              }}
-            >
-              <span className="dark:text-black text-white text-md font-medium">
-                Activate
-              </span>
-            </MyButton>
-          )}
-          <MyButton
-            className="bg-black dark:bg-white "
-            size="sm"
-            onClick={() => handleOpenModal("delete")}
-          >
-            <span className="dark:text-black text-white text-md font-medium">
-              Delete
-            </span>
-          </MyButton>
-        </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col lg:flex-row lg:items-center gap-4 border-t border-gray-200 dark:border-stone-800 pt-4 lg:pt-0 lg:border-t-0 lg:border-l lg:pl-8">
-        <div className="flex items-center gap-4">
-          <FaUserShield size={32} className="text-green-500" />
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-              {admin?.admin_name || "N/A"}
-            </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              {admin?.admin_email || "N/A"}
-            </p>
-          </div>
-        </div>
-      </div>
-
- 
-      <div className="flex justify-end mt-4 lg:mt-0">
-        <MyButton
-          className="bg-black dark:bg-white"
-          size="sm"
-          onClick={() => handleOpenModal("changeAdmin")}
-        >
-          <span className="dark:text-black text-white text-md font-medium">
-            Change Admin
-          </span>
-        </MyButton>
-      </div>
-
-      {isOpen && (
-        <MyModal
-          size="md"
-          isOpen={isOpen}
-          onOpen={() => setIsOpen(true)}
-          backdrop="blur"
-          onClose={() => setIsOpen(false)}
-          title={
-            selectedAction === "deactivate"
-              ? "Deactivate Cluster"
-              : selectedAction === "delete"
-              ? "Delete Cluster"
-              : "Change Admin"
-          }
-          content={renderModalContent()}
-          button1={undefined}
-          button2={undefined}
-        />
-      )} */}
     </div>
   );
 };

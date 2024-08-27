@@ -10,19 +10,15 @@ import { BiLockAlt } from "react-icons/bi";
 import { FaInfoCircle } from "react-icons/fa";
 import { myInstance } from "@/utils/Axios/axios";
 import MyModal from "@/components/modals/mymodal";
-import { FaW } from "react-icons/fa6";
 import { MdWarning } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import CreateTwoFa from "./createTwoFa";
 
-
 interface SecurityProps {
   two_fa_enabled: boolean;
 }
+
 const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
-  
-
-
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -31,10 +27,8 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [disablePopup, setDisablePopup] = useState(false);
 
-
-  
-
   const router = useRouter();
+
   const handleChecks = () => {
     if (newPassword == "" || confirmPassword == "" || oldPassword === "") {
       toast.error("Please fill all fields");
@@ -55,11 +49,10 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
         new_password: newPassword,
       });
 
-      toast.success("Password changed successfully!,Please login again");
+      toast.success("Password changed successfully! Please login again");
       router.push("/login");
     } catch (error: any) {
       console.log(error);
-    
     }
 
     setIsOpen(false);
@@ -69,14 +62,11 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
   };
 
   const disableTwoFa = async () => {
-
     try {
       const response = await myInstance.delete("/settings/disableTwofa");
       toast.success(response.data.message);
-       
     } catch (error: any) {
       console.log(error);
-     
     }
 
     router.refresh();
@@ -84,100 +74,89 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
   };
 
   return (
-    <div className="h-full">
-      <div className="grid grid-rows-2 h-full gap-3 ">
-        <div className="row-span-1 h-full ">
-          <div className="flex items-center gap-3 mb-6">
+    <div className="h-full overflow-auto p-4">
+      <div className="flex flex-col space-y-6 gap-10">
+        <div>
+          <div className="flex items-center gap-2 mb-4">
             <FaShieldAlt size={26} />
-            <h2 className="text-2xl ">Change Password</h2>
+            <h2 className="text-2xl">Change Password</h2>
           </div>
-          <div className="flex flex-col md:flex-row justify-between mb-6 border border-gray-200 dark:border-stone-800 p-6 rounded-lg">
-            <div className="flex flex-col max-w-sm  rounded-lg p-4">
-              <div className="flex flex-col  ">
-                <div className="flex justify-start gap-2">
-                  <FaInfoCircle size={26} className=" text-yellow-400" />
+          <div className="border border-gray-200 dark:border-stone-800 p-4 rounded-lg space-y-6">
+            <div className="flex flex-col gap-4 lg:flex-row lg:gap-6">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-3">
+                  <FaInfoCircle size={26} className="text-yellow-400" />
                   <h3 className="text-lg font-semibold">
                     Password Requirements
                   </h3>
                 </div>
-                <div className="mt-5 ml-3 ">
-                  <div className="text-md ">
-                    Your new password must be at least 8 characters long and
-                    contain at least one uppercase letter, one lowercase letter,
-                    one number, and one special character.
-                  </div>
-                </div>
+                <p className="text-md">
+                  Your new password must be at least 8 characters long and
+                  contain at least one uppercase letter, one lowercase letter,
+                  one number, and one special character.
+                </p>
               </div>
-            </div>
-
-            <div className="flex flex-col w-full max-w-sm gap-2">
-              <Input
-                label="Old Password"
-                type="password"
-                value={oldPassword}
-                onChange={(e) => setOldPassword(e.target.value)}
-                className=""
-                startContent={<BiLockAlt />}
-              />
-              <Input
-                label="New Password"
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                startContent={<BiLockAlt />}
-              />
-              <Input
-                label="Confirm Password"
-                type="password"
-                value={confirmPassword}
-                isInvalid={notMatch}
-                errorMessage="Passwords do not match"
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                startContent={<BiLockAlt />}
-              />
-              <MyButton
-                className="bg-black dark:bg-gray-200 text-white dark:text-black"
-                size="md"
-                onClick={() => {
-                  handleChecks();
-                }}
-              >
-                Change Password
-              </MyButton>
+              <div className="flex-1 space-y-3">
+                <Input
+                  label="Old Password"
+                  type="password"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  startContent={<BiLockAlt />}
+                />
+                <Input
+                  label="New Password"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  startContent={<BiLockAlt />}
+                />
+                <Input
+                  label="Confirm Password"
+                  type="password"
+                  value={confirmPassword}
+                  isInvalid={notMatch}
+                  errorMessage="Passwords do not match"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  startContent={<BiLockAlt />}
+                />
+                <MyButton
+                  className="bg-black w-full dark:bg-gray-200 text-white dark:text-black"
+                  size="md"
+                  onClick={handleChecks}
+                >
+                  Change Password
+                </MyButton>
+              </div>
             </div>
           </div>
         </div>
-        <div className="row-span-1  h-full">
-          <div className="flex h-full flex-col justify-center">
-            <div className="flex items-center gap-3 mb-4 ">
-              <RiShieldCheckLine size={26} />
-              <h2 className="text-2xl ">Two Factor Authentication</h2>
-            </div>
-            <div className="flex md:flex-row justify-between  border border-gray-200 dark:border-stone-800 p-6 rounded-lg">
-              <div className="flex flex-col max-w-sm  rounded-lg p-4">
-                <div className="flex flex-col ">
-                  <div className="flex justify-start gap-2">
-                    <FaInfoCircle size={26} className=" text-yellow-400" />
-                    <h3 className="text-lg font-semibold">2FA Requirements</h3>
-                  </div>
-                  <div className="mt-5 ml-3 ">
-                    <div className="text-md ">
-                      Enable Two-Factor Authentication for an extra layer of
-                      security. Compatable with Google Authenticator and other
-                      2FA apps.
-                    </div>
-                  </div>
+
+      
+        <div>
+          <div className=" flex h-full items-center gap-2 mb-4">
+            <RiShieldCheckLine size={26} />
+            <h2 className="text-2xl">Two Factor Authentication</h2>
+          </div>
+          <div className="border border-gray-200 dark:border-stone-800 p-4 rounded-lg space-y-6">
+            <div className="flex flex-col gap-4 lg:flex-row lg:gap-6">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-3">
+                  <FaInfoCircle size={26} className="text-yellow-400" />
+                  <h3 className="text-lg font-semibold">2FA Requirements</h3>
                 </div>
+                <p className="text-md">
+                  Enable Two-Factor Authentication for an extra layer of
+                  security. Compatible with Google Authenticator and other 2FA
+                  apps.
+                </p>
               </div>
-              <div className="flex flex-col  justify-center w-full max-w-sm gap-2">
+              <div className="flex-1 flex justify-center items-center">
                 {!two_fa_enabled ? (
                   <MyButton
                     className="bg-black dark:bg-gray-200 text-white dark:text-black"
                     size="md"
-                    onClick={() => {
-                      setIsOpenTwofa(true);
-                      console.log(IsOpenTwofa);
-                    }}
+                    onClick={() => setIsOpenTwofa(true)}
                   >
                     Setup 2FA
                   </MyButton>
@@ -185,9 +164,7 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
                   <MyButton
                     className="bg-black dark:bg-gray-200 text-white dark:text-black"
                     size="md"
-                    onClick={() => {
-                      setDisablePopup(true);
-                    }}
+                    onClick={() => setDisablePopup(true)}
                   >
                     Disable 2FA
                   </MyButton>
@@ -197,120 +174,102 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
           </div>
         </div>
       </div>
-      <div>
-        {isOpen && (
-          <MyModal
-            size="sm"
-            isOpen={isOpen}
-            backdrop="blur"
-            onOpen={() => {}}
-            content={
-              <div className=" flex flex-col">
-                <div className="text-xl font-semibold mb-4 text-center">
-                  Are you sure?
-                </div>
-                <div className="flex gap-2">
-                  <MdWarning size={26} className="text-yellow-400" />
-                  <p className="text-md text-yellow-400 font-medium mb-4">
-                    Changing password will immediately log you out of all
-                    devices.
-                  </p>
-                </div>
+
+      {/* Modals */}
+      {isOpen && (
+        <MyModal
+          size="sm"
+          isOpen={isOpen}
+          backdrop="blur"
+          onOpen={() => {}}
+          content={
+            <div className="flex flex-col">
+              <div className="text-xl font-semibold mb-4 text-center">
+                Are you sure?
               </div>
-            }
-            onClose={() => {
-              setIsOpen(false);
-            }}
-            title="Change Password"
-            button1={
-              <MyButton
-                className="bg-black dark:bg-gray-200 text-white dark:text-black"
-                size="md"
-                onClick={handleChangePassword}
-              >
-                Change Password
-              </MyButton>
-            }
-            button2={
-              <MyButton
-                className="bg-black dark:bg-gray-200 text-white dark:text-black"
-                size="md"
-                onClick={() => {
-                  setIsOpen(false);
-                }}
-              >
-                Cancel
-              </MyButton>
-            }
-          />
-        )}
-      </div>
-      <div>
-        {IsOpenTwofa && (
-          <MyModal
-            size="sm"
-            isOpen={IsOpenTwofa}
-            backdrop="blur"
-            onOpen={() => {}}
-            content={<CreateTwoFa setIsOpenTwofa={setIsOpenTwofa}   />}
-            onClose={() => {
-              setIsOpenTwofa(false);
-            }}
-            title="Setup 2FA"
-            button1={undefined}
-            button2={undefined}
-          />
-        )}
-      </div>
-      <div>
-        {disablePopup && (
-          <MyModal
-            size="sm"
-            isOpen={disablePopup}
-            backdrop="blur"
-            onOpen={() => {
-              setDisablePopup(true);
-            }}
-            content={
-              <div className=" flex flex-col">
-                <div className="text-xl font-semibold mb-4 text-center">
-                  Are you sure?
-                </div>
-                <div className="flex gap-2">
-                  <MdWarning size={26} className="text-yellow-400" />
-                  <p className="text-md text-yellow-400 font-medium mb-4">
-                    Disabling 2FA will make your account less secure.
-                  </p>
-                </div>
+              <div className="flex gap-2">
+                <MdWarning size={26} className="text-yellow-400" />
+                <p className="text-md text-yellow-400 font-medium mb-4">
+                  Changing password will immediately log you out of all devices.
+                </p>
               </div>
-            }
-            onClose={() => {
-              setDisablePopup(false);
-            }}
-            title="Disable 2FA"
-            button1={
-              <MyButton
-                className="bg-black dark:bg-gray-200 text-white dark:text-black"
-                size="md"
-                onClick={disableTwoFa}
-              >
-                Disable 2FA
-              </MyButton>
-            }
-            button2={
-              <MyButton
-                className="bg-black dark:bg-gray-200 text-white dark:text-black"
-                size="md"
-                onClick={() => {
-                  setDisablePopup(false);
-                }}
-              >
-                Cancel
-              </MyButton>
-            }
-          />
-        )}
-      </div>
+            </div>
+          }
+          onClose={() => setIsOpen(false)}
+          title="Change Password"
+          button1={
+            <MyButton
+              className="bg-black dark:bg-gray-200 text-white dark:text-black"
+              size="md"
+              onClick={handleChangePassword}
+            >
+              Change Password
+            </MyButton>
+          }
+          button2={
+            <MyButton
+              className="bg-black dark:bg-gray-200 text-white dark:text-black"
+              size="md"
+              onClick={() => setIsOpen(false)}
+            >
+              Cancel
+            </MyButton>
+          }
+        />
+      )}
+
+      {IsOpenTwofa && (
+        <MyModal
+          size="sm"
+          isOpen={IsOpenTwofa}
+          backdrop="blur"
+          onOpen={() => { } }
+          content={<CreateTwoFa setIsOpenTwofa={setIsOpenTwofa} />}
+          onClose={() => setIsOpenTwofa(false)}
+          title="Setup 2FA" button1={undefined} button2={undefined}        />
+      )}
+
+      {disablePopup && (
+        <MyModal
+          size="sm"
+          isOpen={disablePopup}
+          backdrop="blur"
+          onOpen={() => setDisablePopup(true)}
+          content={
+            <div className="flex flex-col">
+              <div className="text-xl font-semibold mb-4 text-center">
+                Are you sure?
+              </div>
+              <div className="flex gap-2">
+                <MdWarning size={26} className="text-yellow-400" />
+                <p className="text-md text-yellow-400 font-medium mb-4">
+                  Disabling 2FA will make your account less secure.
+                </p>
+              </div>
+            </div>
+          }
+          onClose={() => setDisablePopup(false)}
+          title="Disable 2FA"
+          button1={
+            <MyButton
+              className="bg-black dark:bg-gray-200 text-white dark:text-black"
+              size="md"
+              onClick={disableTwoFa}
+            >
+              Disable 2FA
+            </MyButton>
+          }
+          button2={
+            <MyButton
+              className="bg-black dark:bg-gray-200 text-white dark:text-black"
+              size="md"
+              onClick={() => setDisablePopup(false)}
+            >
+              Cancel
+            </MyButton>
+          }
+        />
+      )}
     </div>
   );
 };
