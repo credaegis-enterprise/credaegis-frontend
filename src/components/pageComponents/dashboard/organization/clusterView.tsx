@@ -29,7 +29,7 @@ interface ClusterListProps {
 const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
 
   const { setSelectedTab } = useTabContext();
-  const [isOpen, setIsOpen] = useState(false);
+ const [isOpen, setIsOpen] = useState(false);
   
   return (
     <div className="h-full w-full flex flex-col">
@@ -95,7 +95,7 @@ const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
             setIsOpen(true);
           }}
           title="Create Cluster"
-          content={<CreateCluster />}
+          content={<CreateCluster setIsOpen={setIsOpen}/>}
           button1={<button onClick={() => setIsOpen(false)}>Close</button>}
           button2={undefined}
         />
