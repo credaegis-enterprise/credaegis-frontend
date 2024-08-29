@@ -37,7 +37,7 @@ export default function MyNavbar() {
           <Link href="/credaegis/organization/dashboard">dashboard</Link>
         </NavbarItem>
         <NavbarItem>
-          <Link href="/credaegis/organization/settings">settings</Link>
+          <Link href="/credaegis/member/settings">settings</Link>
         </NavbarItem>
         <NavbarItem>
           <Link href="#">certificates</Link>

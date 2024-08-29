@@ -46,15 +46,16 @@ const Page = async () => {
         {/* Left Section */}
         <div className="lg:col-span-2 flex flex-col gap-5 overflow-auto">
           <div className="flex-1 border border-gray-200 dark:border-stone-800 box-border p-2 rounded-lg overflow-auto">
-            <EventView
-              events={events}
-              cluster_ulid={events[0]?.cluster_ulid}
-            />
-          </div>
-          <div className="flex-1 border border-gray-200 dark:border-stone-800 box-border p-2 rounded-lg overflow-auto">
-            <MemberView
+          <MemberView
               members={members}
               cluster_ulid={members[0]?.cluster_ulid}
+            />
+           
+          </div>
+          <div className="flex-1 border border-gray-200 dark:border-stone-800 box-border p-2 rounded-lg overflow-auto">
+          <EventView
+              events={events}
+              cluster_ulid={events[0]?.cluster_ulid}
             />
           </div>
         </div>

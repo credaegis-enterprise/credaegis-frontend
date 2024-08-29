@@ -5,7 +5,8 @@ import { MyButton } from "@/components/buttons/mybutton";
 import { MdPerson } from "react-icons/md";
 import MyModal from "@/components/modals/mymodal";
 import { useState } from "react";
-import MemberInfoCard from "../organization/MemberInfoCard";
+import MemberInfoCard from "./memberInfoCard";
+import CreateMember from "./createMember";
 
 
 export type Member = {
@@ -90,7 +91,7 @@ const MemberView: React.FC<MemberViewProps> = ({
             ))}
         </div>
       </div>
-      {/* {isOpen && (
+      {isOpen && (
         <MyModal
           size="md"
           isOpen={isOpen}
@@ -99,7 +100,6 @@ const MemberView: React.FC<MemberViewProps> = ({
           title="Add Member"
           content={
             <CreateMember
-              fetchClusterInfo={fetchClusterInfo}
               cluster_ulid={cluster_ulid}
               setIsOpen={setIsOpen}
             />
@@ -110,22 +110,22 @@ const MemberView: React.FC<MemberViewProps> = ({
             setIsOpen(true);
           }}
         />
-      )} */}
-      {/* {isInfoOpen && (
+      )}
+      {isInfoOpen && (
         <MyModal
           size="sm"
           isOpen={isInfoOpen}
           backdrop="blur"
           onClose={() => setIsInfoOpen(false)}
           title="Member Info"
-          content={<MemberInfoCard member={selectedMember || undefined} setIsOpen={setIsInfoOpen} fetchClusterInfo={fetchClusterInfo}/>}
+          content={<MemberInfoCard member={selectedMember || undefined} setIsOpen={setIsInfoOpen} />}
           button1={undefined}
           button2={undefined}
           onOpen={() => {
             setIsInfoOpen(true);
           }}
         />
-      )} */}
+      )}
     </div>
   );
 };

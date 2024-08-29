@@ -1,4 +1,5 @@
 import MyNavbar from "@/components/navbar/MyNavbar";
+import { TabProvider } from "@/context/tabContext";
 
 
 export default function MemberLayout({
@@ -11,7 +12,9 @@ export default function MemberLayout({
       <MyNavbar />
 
       <div className="flex-grow lg:overflow-hidden">
+        <TabProvider>
          {children}
+        </TabProvider>
       </div>
     </div>
   );

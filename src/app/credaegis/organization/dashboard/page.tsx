@@ -1,6 +1,6 @@
 
 import React from "react";
-import { toast } from "sonner";
+
 import { myInstanceNEXT } from "@/utils/Axios/axios";
 import getCookies from "@/utils/cookies/getCookies";
 import ClusterView from "@/components/pageComponents/dashboard/organization/clusterView";
@@ -20,7 +20,6 @@ const fetchClusters = async () => {
   }
   catch(error: any){
     console.log(error);
-    toast.error(error.response?.data.message || "An error occurred");
   }
   
 }
@@ -38,7 +37,6 @@ const fetchEvents = async () => {
     }
     catch(error: any){
       console.log(error);
-      toast.error(error.response?.data.message || "An error occurred");
     }
 }
 
