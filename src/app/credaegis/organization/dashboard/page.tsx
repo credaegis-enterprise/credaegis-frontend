@@ -4,7 +4,7 @@ import React from "react";
 import { myInstanceNEXT } from "@/utils/Axios/axios";
 import getCookies from "@/utils/cookies/getCookies";
 import ClusterView from "@/components/pageComponents/dashboard/organization/clusterView";
-import ManageAll from "@/components/pageComponents/dashboard/manageAll";
+import ManageAll from "@/components/pageComponents/dashboard/organization/manageAll";
 
 const fetchClusters = async () => {
 

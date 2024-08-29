@@ -4,13 +4,13 @@
 
 
 
-import ClusterInfo from "./organization/clusterInfo";
+import ClusterInfo from "./clusterInfo";
 import { myInstance } from "@/utils/Axios/axios";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import EventView from "./organization/eventView";
+import EventView from "./eventView";
 import { useCallback } from "react";
-import MemberView from "./organization/memberView";
+import MemberView from "./memberView";
 
 interface InfoProps {
   cluster_ulid: string;
