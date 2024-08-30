@@ -6,7 +6,7 @@ import { MdPerson } from "react-icons/md";
 import MyModal from "@/components/modals/mymodal";
 import { useState } from "react";
 import MemberInfoCard from "./memberInfoCard";
-import CreateMember from "./createMember";
+import CreateMember from "./actions/createMember";
 
 
 export type Member = {

@@ -13,10 +13,29 @@ import Link from "next/link";
 import { myInstance } from "@/utils/Axios/axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useEffect,useState } from "react";
+
 
 export default function MyNavbar() {
 
   const router = useRouter();
+  const [accountType, setAccountType] = useState<string>("");
+  const [role, setRole] = useState<string>("");
+
+  useEffect(() => {
+    const getUserRoles = async () => {
+      try {
+        const response = await myInstance.get("/auth/checker");
+        console.log(response.data);
+        setAccountType(response.data.type);
+        setRole(response.data.role);
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
+    getUserRoles();
+  }, [router]);
+
 
   const handleLogout = async () => {
     try {
@@ -33,11 +52,13 @@ export default function MyNavbar() {
     <Navbar className="justify-center" maxWidth="full">
       <NavbarBrand></NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-12" justify="end">
+        {accountType === "member" && role !== "member" && (
         <NavbarItem>
-          <Link href="/credaegis/organization/dashboard">dashboard</Link>
+          <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
         </NavbarItem>
+        )}
         <NavbarItem>
-          <Link href="/credaegis/member/settings">settings</Link>
+          <Link href={`/credaegis/${accountType}/settings`}>settings</Link>
         </NavbarItem>
         <NavbarItem>
           <Link href="#">certificates</Link>

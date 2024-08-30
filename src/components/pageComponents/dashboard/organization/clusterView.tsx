@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { useTabContext } from "@/context/tabContext";
 import { useState } from "react";
 import MyModal from "@/components/modals/mymodal";
-import CreateCluster from "./createCluster";
+import CreateCluster from "./actions/createCluster";
 
 type Cluster = {
   cluster_ulid: string;
