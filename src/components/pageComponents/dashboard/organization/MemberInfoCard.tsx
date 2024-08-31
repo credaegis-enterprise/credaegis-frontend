@@ -25,7 +25,6 @@ const MemberInfoCard: React.FC<MemberInfoProps> = ({ member,setIsOpen,fetchClust
       setIsOpen(false);
       fetchClusterInfo()
     } catch (error: any) {
-      toast.error(error.response?.data.message || "An error occurred");
       console.log(error);
     }
   };
@@ -39,7 +38,6 @@ const MemberInfoCard: React.FC<MemberInfoProps> = ({ member,setIsOpen,fetchClust
       setIsOpen(false);
       fetchClusterInfo()
     } catch (error: any) {
-      toast.error(error.response?.data.message || "An error occurred");
       console.log(error);
     }
   }

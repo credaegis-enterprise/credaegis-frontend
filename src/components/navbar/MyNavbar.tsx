@@ -52,7 +52,7 @@ export default function MyNavbar() {
     <Navbar className="justify-center" maxWidth="full">
       <NavbarBrand></NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-12" justify="end">
-        {accountType === "member" && role !== "member" && (
+        {role !== "member" && (
         <NavbarItem>
           <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
         </NavbarItem>
