@@ -47,10 +47,12 @@ const LoginForm = () => {
       else {
         console.log(response.data);
         toast.success(response.data.message)
+        console.log(response.data.role);
         if(response.data.role==="organization")
           router.push("/credaegis/organization/dashboard")
         else
           router.push("/credaegis/member/dashboard")
+        
       };
 
       setIsLoading(false);

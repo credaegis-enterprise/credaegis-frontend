@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
     async rewrites () {
-        const baseUrl = 'http://localhost:3001';
+        const baseUrl = 'http://allenbastian.ddns.net:3001';
         return [
             {
                 source: '/api/:path*',
