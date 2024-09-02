@@ -8,6 +8,7 @@ export async function middleware (request: NextRequest) {
      
     console.log("middleware Invoked");
     const isAuthenticated = await authenticator();
+    console.log(isAuthenticated);
     if(!isAuthenticated)
         return NextResponse.redirect(new URL('/login', request.url));
     else
