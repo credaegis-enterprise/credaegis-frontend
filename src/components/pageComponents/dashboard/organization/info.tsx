@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import EventView from "./eventView";
 import { useCallback } from "react";
 import MemberView from "./memberView";
+import { myInstanceNEXT } from "@/utils/Axios/axios";
 
 interface InfoProps {
   cluster_ulid: string;
@@ -66,6 +67,8 @@ const Info = ({ cluster_ulid }: InfoProps) => {
 
   const fetchClusterInfo = useCallback(async () => {
     try {
+
+
       const response = await myInstance.get(`/cluster/getinfo/${cluster_ulid}`);
       const { clusterInfo } = response.data;
 
