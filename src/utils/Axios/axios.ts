@@ -10,7 +10,7 @@ export const myInstance = axios.create({
 
    
 export const myInstanceNEXT = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_backendurl,
+    baseURL: process.env.NEXT_PUBLIC_devbackendurl,
     withCredentials: true,
     });
 
