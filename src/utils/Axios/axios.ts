@@ -10,7 +10,7 @@ export const myInstance = axios.create({
 
    
 export const myInstanceNEXT = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_devbackendurl,
+    baseURL: `${process.env.NEXT_PUBLIC_devbackendurl}/api`,
     withCredentials: true,
     });
 
