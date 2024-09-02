@@ -10,7 +10,7 @@ const authenticator = async()=>{
     const cookie = getCookies();
     try
     {
-        const response = await myInstanceNEXT.get("/auth/checker",{
+        const response = await myInstanceNEXT.get("/api/auth/checker",{
             headers:{
                 cookie:`test=${cookie}`
             }
