@@ -2,7 +2,7 @@
 
 const nextConfig = {
     async rewrites () {
-        const baseUrl = 'http://allenbastian.ddns.net:3001';
+        const baseUrl = process.env.NEXT_PUBLIC_backendurl;
         return [
             {
                 source: '/api/:path*',

@@ -10,7 +10,7 @@ export const myInstance = axios.create({
 
    
 export const myInstanceNEXT = axios.create({
-    baseURL: "http://allenbastian.ddns.net:3001/api",
+    baseURL: process.env.NEXT_PUBLIC_backendurl,
     withCredentials: true,
     });
 
