@@ -1,7 +1,6 @@
 'use client'
 
 import { FaCogs, FaLock, FaSlidersH } from "react-icons/fa";
-import { useState, useContext } from "react";
 import { useTabContext } from "@/context/tabContext";
 const SideBar = () => {
   const { settingsTab,setSettingsTab } = useTabContext();

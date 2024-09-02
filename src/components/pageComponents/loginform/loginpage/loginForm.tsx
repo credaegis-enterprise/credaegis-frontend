@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import MyModal from "@/components/modals/mymodal";
 import { Tab, Tabs } from "@nextui-org/react";
-import { error } from "console";
+
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");

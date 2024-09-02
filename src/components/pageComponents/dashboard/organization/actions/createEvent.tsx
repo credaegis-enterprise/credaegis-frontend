@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { MdAdd } from "react-icons/md";
 import { Button, Input } from "@nextui-org/react";
 import { MyButton } from "@/components/buttons/mybutton";
 import { myInstance } from "@/utils/Axios/axios";

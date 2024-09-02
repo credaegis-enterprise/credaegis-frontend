@@ -14,8 +14,6 @@ interface MemberInfoProps {
 
 const MemberInfoCard: React.FC<MemberInfoProps> = ({ member,setIsOpen,fetchClusterInfo }) => {
 
-  const  [deactivate,setDeactivate] = useState(false);
-  const [deleteMember,setDeleteMember] = useState(false);
   const handleDeactivateMember = async () => {
     try {
       const response = await myInstance.patch("/member/deactivate", {

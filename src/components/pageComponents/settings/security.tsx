@@ -1,10 +1,10 @@
 "ise client";
 
 import { Input } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { toast } from "sonner";
 import { MyButton } from "@/components/buttons/mybutton";
-import { FaKey, FaShieldAlt } from "react-icons/fa";
+import {  FaShieldAlt } from "react-icons/fa";
 import { RiShieldCheckLine } from "react-icons/ri";
 import { BiLockAlt } from "react-icons/bi";
 import { FaInfoCircle } from "react-icons/fa";
