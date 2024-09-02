@@ -2,7 +2,7 @@
 
 const nextConfig = {
     async rewrites () {
-        const baseUrl = process.env.NEXT_PUBLIC_devbackendurl;
+        const baseUrl = process.env.NEXT_PUBLIC_backendurl;
         return [
             {
                 source: '/api/:path*',
