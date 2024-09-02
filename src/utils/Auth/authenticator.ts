@@ -6,6 +6,7 @@ import getCookies from "../cookies/getCookies";
 
 const authenticator = async()=>{
 
+    console.log("Authenticator Invoked");
     const cookie = getCookies();
     try
     {
@@ -18,7 +19,6 @@ const authenticator = async()=>{
     }
     catch(e)
     {
-           console.log("error");
         return false
     }
 }
