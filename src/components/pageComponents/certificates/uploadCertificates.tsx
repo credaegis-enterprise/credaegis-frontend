@@ -2,17 +2,20 @@
 'use client';
 import MyFileList from "./myFileList"
 import  {  useState } from "react";
-import { Event } from "@/types/global.types";
+import { Event,FileInfo } from "@/types/global.types";
+import MyFileMeta from "./myfileMeta";
 
 
 interface UploadCertificatesProps {
     eventInfo: Event[];
   }
 
+
+
 const UploadCertificates: React.FC<UploadCertificatesProps> = ({ eventInfo }) => {
 
 
-    const [fileUrl, setFileUrl] = useState<string | null>(null);
+    const [fileUrl, setFileUrl] = useState<FileInfo | null>(null);
     console.log(fileUrl)
 
 
@@ -20,13 +23,22 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({ eventInfo }) =>
         <div className="h-full">
            <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 h-full">
             <div className="col-span-2 border dark:border-stone-800 rounded-lg">
-            <MyFileList eventInfo={eventInfo} setFileUrl={setFileUrl} />
+            <MyFileList eventInfo={eventInfo} setFileUrl={setFileUrl} fileUrl={fileUrl} />
             </div>
             <div className="col-span-2 border dark:border-stone-800 rounded-lg">
-                shjdhsk
-                </div>
+            <MyFileMeta />
+            </div>
             <div className="col-span-3 border dark:border-stone-800 rounded-lg">
-       
+                {fileUrl ? (
+                <iframe src={fileUrl?.fileurl || ""} className="w-full h-full"></iframe>
+                ):(
+
+                    <div className="flex items-center justify-center h-full">
+                        <h1 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+                            No file selected
+                        </h1>
+                    </div>
+                )}
                 </div>
             </div>
         </div>

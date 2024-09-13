@@ -8,3 +8,9 @@ export interface Event {
     deleted: boolean;
     cluster_ulid: string;
     }
+
+
+ export   interface FileInfo{
+        fileurl: string|null;
+        filename: string;
+    }

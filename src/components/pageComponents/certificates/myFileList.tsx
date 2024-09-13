@@ -7,15 +7,16 @@ import { motion } from "framer-motion";
 import { MyButton } from "@/components/buttons/mybutton";
 import { MdClose } from "react-icons/md";
 import { toast } from "sonner";
-import { Event } from "@/types/global.types";
+import { Event,FileInfo} from "@/types/global.types";
 
 
 interface MyFileListProps {
     eventInfo: Event[];
-    setFileUrl: (url: string | null) => void;
+    setFileUrl: (file: FileInfo | null) => void;
+    fileUrl: FileInfo | null;
 }
 
-const MyFileList: React.FC<MyFileListProps> = ({ eventInfo,setFileUrl }) => {
+const MyFileList: React.FC<MyFileListProps> = ({ eventInfo,setFileUrl,fileUrl }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   console.log(eventInfo);
   const inputFile = useRef<HTMLInputElement>(null);
@@ -27,26 +28,45 @@ const MyFileList: React.FC<MyFileListProps> = ({ eventInfo,setFileUrl }) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files);
-        if (filesArray.length > 10)  {
+            if(selectedFiles.length === 0){
+                setFileUrl({
+                    filename: filesArray[0].name,
+                    fileurl: URL.createObjectURL(filesArray[0]),
+                });
+            }
 
-            filesArray.splice(10, filesArray.length - 10);
-            toast.warning("You can only upload a maximum of 10 files at a time");
+            if(selectedFiles.length < 10){
+
+                if(filesArray.length + selectedFiles.length > 10){
+                    toast.warning("You can only upload a maximum of 10 files at a time");
+                }
+
+                const newFiles = filesArray.slice(0, 10 - selectedFiles.length);
+                console.log(newFiles);
+                setSelectedFiles((prev) => [...prev, ...newFiles]);
+                
+            }
+            else{
+                toast.warning("You can only upload a maximum of 10 files at a time");
+            }
         
-        }
-        if (selectedFiles.length + filesArray.length > 10) {
-            const remaining = 10 - selectedFiles.length;
-            filesArray.splice(remaining, filesArray.length - remaining);
-            toast.warning("You can only upload a maximum of 10 files at a time");
-        }
-      setSelectedFiles((prev) => [...prev, ...filesArray]);
     }
   };
 
 
   const handleFileRemove = (index: number) => {
+
+    if(fileUrl?.filename === selectedFiles[index].name){
+        setFileUrl(null);
+    }
+
+    if(selectedFiles.length === 1){
+        setFileUrl(null);
+    }
     const newFiles = [...selectedFiles];
     newFiles.splice(index, 1);
     setSelectedFiles(newFiles);
+   
   }
 
   console.log(selectedFiles);
@@ -101,7 +121,7 @@ const MyFileList: React.FC<MyFileListProps> = ({ eventInfo,setFileUrl }) => {
       <div className=" mt-2  h-full  overflow-auto">
         <div className="space-y-2 p-2 mt-1 h-full">
           {selectedFiles.length === 0 ? (
-            <div className="flex h-full justify-center items-center text-lg">
+            <div className="flex h-full justify-center items-center text-lg  ">
               No files uploaded.
             </div>
           ) : (
@@ -119,8 +139,13 @@ const MyFileList: React.FC<MyFileListProps> = ({ eventInfo,setFileUrl }) => {
 
                 whileTap={{ scale: 0.98 }}
                 className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
-                onClick={() => { 
-                    
+                onClick={(e) => { 
+
+                   
+                    setFileUrl({
+                        filename: file.name,
+                        fileurl: URL.createObjectURL(file),
+                    });
                 }}
               >
                 <div className="flex justify-between">
@@ -132,7 +157,10 @@ const MyFileList: React.FC<MyFileListProps> = ({ eventInfo,setFileUrl }) => {
                       <MdClose
                         size={20}
                         className="text-white group-hover:text-black dark:group-hover:text-white"
-                        onClick={() => handleFileRemove(index)}
+                        onClick={(event) => 
+                        {
+                            event.stopPropagation();
+                            handleFileRemove(index)}}
                       />
                     </div>
                   </div>
