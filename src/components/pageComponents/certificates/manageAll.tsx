@@ -2,9 +2,17 @@
 import { Tab, Tabs } from "@nextui-org/react";
 import { useState } from "react";
 import UploadCertificates from "./uploadCertificates";
+import { Event } from "@/types/global.types";
 
-const ManageAll = () => {
+interface ManageAllProps {
+  eventInfo: Event[];
+}
+
+
+const ManageAll: React.FC<ManageAllProps> = ({ eventInfo }) => {
   const [selected, setSelected] = useState<string>("upload certificate");
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
 
   return (
     <div className="h-full flex flex-col">
@@ -24,7 +32,7 @@ const ManageAll = () => {
    
       <div className="flex-grow flex flex-col lg:flex-row  mt-4">
         <div className="flex-grow p-4">
-          {selected === "upload certificates" && <UploadCertificates />}
+          {selected === "upload certificates" && <UploadCertificates eventInfo={eventInfo} />}
          </div>
       </div>
     </div>

@@ -7,9 +7,17 @@ import { motion } from "framer-motion";
 import { MyButton } from "@/components/buttons/mybutton";
 import { MdClose } from "react-icons/md";
 import { toast } from "sonner";
+import { Event } from "@/types/global.types";
 
-const MyFileList = () => {
+
+interface MyFileListProps {
+    eventInfo: Event[];
+    setFileUrl: (url: string | null) => void;
+}
+
+const MyFileList: React.FC<MyFileListProps> = ({ eventInfo,setFileUrl }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  console.log(eventInfo);
   const inputFile = useRef<HTMLInputElement>(null);
   const handleUploadClick = () => {
     console.log("clicked");
@@ -19,11 +27,16 @@ const MyFileList = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files);
-        if (filesArray.length > 10 || selectedFiles.length + filesArray.length > 10) {
+        if (filesArray.length > 10)  {
 
             filesArray.splice(10, filesArray.length - 10);
             toast.warning("You can only upload a maximum of 10 files at a time");
         
+        }
+        if (selectedFiles.length + filesArray.length > 10) {
+            const remaining = 10 - selectedFiles.length;
+            filesArray.splice(remaining, filesArray.length - remaining);
+            toast.warning("You can only upload a maximum of 10 files at a time");
         }
       setSelectedFiles((prev) => [...prev, ...filesArray]);
     }
@@ -77,10 +90,12 @@ const MyFileList = () => {
           size="sm"
           className=""
         >
-          <SelectItem key="cat">Cat</SelectItem>
-          <SelectItem key="dog">Dog</SelectItem>
-          <SelectItem key="rabbit">Rabbit</SelectItem>
-          <SelectItem key="hamster">Hamster</SelectItem>
+            {eventInfo.map((event, index) => (
+                <SelectItem key={event.event_ulid} value={event.event_name}>
+                {event.event_name}
+                </SelectItem>
+            ))}
+         
         </Select>
       </div>
       <div className=" mt-2  h-full  overflow-auto">
@@ -101,8 +116,12 @@ const MyFileList = () => {
                   scale: 1.01,
                   boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
                 }}
+
                 whileTap={{ scale: 0.98 }}
                 className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
+                onClick={() => { 
+                    
+                }}
               >
                 <div className="flex justify-between">
                   <div className="text-sm font-medium text-gray-900 dark:text-gray-100">

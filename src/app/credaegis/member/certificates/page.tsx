@@ -26,10 +26,9 @@ const Page = async () => {
 
     const events = await fetchEvents()
     console.log(events)
-
     return (
         <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 overflow-hidden">
-          <ManageAll/>
+          <ManageAll eventInfo={events}/>
         </div>
     )
 }
