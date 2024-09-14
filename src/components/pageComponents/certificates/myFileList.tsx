@@ -7,7 +7,12 @@ import { motion } from "framer-motion";
 import { MyButton } from "@/components/buttons/mybutton";
 import { MdClose } from "react-icons/md";
 import { toast } from "sonner";
-import { Event, FileInfo,filesMetaType } from "@/types/global.types";
+import {
+  Event,
+  FileInfo,
+  filesMetaType,
+  MyFileType,
+} from "@/types/global.types";
 import { ulid } from "ulid";
 
 interface MyFileListProps {
@@ -16,12 +21,11 @@ interface MyFileListProps {
   fileUrl: FileInfo | null;
   filesMetaInfo: filesMetaType[] | null;
   setFileCount: (count: number) => void;
-setFilesMetaInfo: (filesMetaInfo: filesMetaType[] | []) => void;
-}
-
-
-interface MyFile extends File {
-    id: string;
+  setFilesMetaInfo: (filesMetaInfo: filesMetaType[] | []) => void;
+  uploadCertificatesForApproval: (
+    selectedFiles: MyFileType[],
+    event_ulid: string
+  ) => void;
 }
 
 const MyFileList: React.FC<MyFileListProps> = ({
@@ -29,10 +33,12 @@ const MyFileList: React.FC<MyFileListProps> = ({
   setFileUrl,
   fileUrl,
   setFileCount,
-    filesMetaInfo,
-    setFilesMetaInfo
+  filesMetaInfo,
+  setFilesMetaInfo,
+  uploadCertificatesForApproval,
 }) => {
-  const [selectedFiles, setSelectedFiles] = useState<MyFile[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<MyFileType[]>([]);
+  const [event, setEvent] = useState("");
   console.log(eventInfo);
   const inputFile = useRef<HTMLInputElement>(null);
   const handleUploadClick = () => {
@@ -43,20 +49,18 @@ const MyFileList: React.FC<MyFileListProps> = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files).map((file) => {
-        const newFile = file as MyFile;
+        const newFile = file as MyFileType;
         newFile.id = ulid();
         return newFile;
-
       });
 
       console.log(filesArray);
-     
-    
+
       if (selectedFiles && selectedFiles.length === 0) {
         setFileUrl({
           filename: filesArray[0].name,
           fileurl: URL.createObjectURL(filesArray[0]),
-            fileindex: filesArray[0].id,
+          fileindex: filesArray[0].id,
         });
       }
 
@@ -68,18 +72,17 @@ const MyFileList: React.FC<MyFileListProps> = ({
         const newFiles = filesArray.slice(0, 10 - selectedFiles.length);
         console.log(newFiles);
         const tempFiles = [...selectedFiles, ...newFiles];
-        // const fileSet = new Set;
-        // for (const file of tempFiles) {
-        //     if (!fileSet.has(file.name)) {
-        //         fileSet.add(file.name);
-        //     }
-        //     else {
-        //         toast.warning("Duplicate file names are not allowed")
-        //         return;
-        //     }
-        // }
-            
-        
+        const fileSet = new Set;
+        for (const file of tempFiles) {
+            if (!fileSet.has(file.name)) {
+                fileSet.add(file.name);
+            }
+            else {
+                toast.warning("Duplicate file names are not allowed")
+                return;
+            }
+        }
+
         setSelectedFiles((prev) => [...prev, ...newFiles]);
         setFileCount(newFiles.length + selectedFiles.length);
       } else {
@@ -89,13 +92,15 @@ const MyFileList: React.FC<MyFileListProps> = ({
   };
 
   const handleFileRemove = (index: number) => {
-    console.log(filesMetaInfo)
+    console.log(filesMetaInfo);
     setFileCount(selectedFiles.length - 1);
     if (fileUrl?.filename === selectedFiles[index].name) {
       setFileUrl(null);
     }
     const newFiles = [...selectedFiles];
-    const updatedFilesMetaInfo = filesMetaInfo?.filter((meta) => meta.id !== selectedFiles[index].id);
+    const updatedFilesMetaInfo = filesMetaInfo?.filter(
+      (meta) => meta.id !== selectedFiles[index].id
+    );
     setFilesMetaInfo(updatedFilesMetaInfo || []);
     newFiles.splice(index, 1);
     setSelectedFiles(newFiles);
@@ -141,6 +146,10 @@ const MyFileList: React.FC<MyFileListProps> = ({
           placeholder="Select an Event in your cluster to upload"
           size="sm"
           className=""
+            selectedKeys={[event]}
+            onChange={(e) => {
+              setEvent(e.target.value);
+            }}
         >
           {eventInfo &&
             eventInfo.map((event, index) => (
@@ -200,35 +209,38 @@ const MyFileList: React.FC<MyFileListProps> = ({
           )}
         </div>
         <div className="">
-            {selectedFiles.length > 0 && (
-                <div className="flex justify-center mt-4 gap-2">
-            <MyButton
+          {selectedFiles.length > 0 && (
+            <div className="flex justify-center mt-4 gap-2">
+              <MyButton
                 className="bg-black dark:bg-white"
                 size="md"
                 onClick={() => {
-                setSelectedFiles([]);
-                setFileUrl(null);
-                setFileCount(0);
+                  setSelectedFiles([]);
+                  setFileUrl(null);
+                  setFileCount(0);
                 }}
-            >
+              >
                 <span className="dark:text-black text-white text-md font-medium">
-                Clear All
+                  Clear All
                 </span>
-            </MyButton>
-            <MyButton
+              </MyButton>
+              <MyButton
                 className="bg-black dark:bg-white"
                 size="md"
                 onClick={() => {
-                console.log(selectedFiles);
+                  uploadCertificatesForApproval(
+                    selectedFiles,
+                     event
+                    );
                 }}
-            >
+              >
                 <span className="dark:text-black text-white text-md font-medium">
-                Upload All files
+                  Upload All files
                 </span>
-            </MyButton>
+              </MyButton>
             </div>
-            )}
-            </div>
+          )}
+        </div>
       </div>
     </div>
   );

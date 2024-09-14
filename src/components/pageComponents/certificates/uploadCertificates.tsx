@@ -2,10 +2,12 @@
 'use client';
 import MyFileList from "./myFileList"
 import  {  useState } from "react";
-import { Event,FileInfo } from "@/types/global.types";
+import { Event,FileInfo,MyFileType } from "@/types/global.types";
 import MyFileMeta from "./myfileMeta";
-import exp from "constants";
 import { filesMetaType } from "@/types/global.types";
+import { myInstance } from "@/utils/Axios/axios";
+import { toast } from "sonner";
+
 
 
 
@@ -23,11 +25,53 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({ eventInfo }) =>
     const [filesMetaInfo, setFilesMetaInfo] = useState<filesMetaType[]>([]);
 
 
+    const uploadCertificatesForApproval = async (selectedFiles:MyFileType[],event_ulid:string) => {
+
+        const formData = new FormData();
+        selectedFiles.forEach((file) => {
+            formData.append("approvals", file);
+        });
+      
+        const meta = filesMetaInfo.map((file) => {
+            return {
+                filename: file.filename,
+                name: file.name,
+                email: file.email,
+                expiryDate: file.expiryDate || null,
+                comment: file.Comment || null,
+                
+            }
+        })
+
+        formData.append("metadata", JSON.stringify(meta));
+        console.log(event_ulid)
+
+
+        try {
+            const response = await myInstance.post(`/certificates/upload/${event_ulid}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            console.log(response);
+            if (response.data.success) {
+                toast.success(response.data.message);
+           
+            }
+        } catch (error) {
+            console.log(error);
+
+        }
+        
+      }
+
+
     return(
         <div className="h-full overflow-hidden">
            <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 h-full">
             <div className="col-span-2 border dark:border-stone-800 rounded-lg overflow-auto">
-            <MyFileList eventInfo={eventInfo} setFileUrl={setFileUrl} fileUrl={fileUrl} setFileCount={setFileCount}  filesMetaInfo={filesMetaInfo} setFilesMetaInfo={setFilesMetaInfo} />
+            <MyFileList eventInfo={eventInfo} setFileUrl={setFileUrl} fileUrl={fileUrl} setFileCount={setFileCount}  filesMetaInfo={filesMetaInfo} setFilesMetaInfo={setFilesMetaInfo}
+             uploadCertificatesForApproval={uploadCertificatesForApproval} />
             </div>
             <div className="col-span-2 border dark:border-stone-800 rounded-lg ">
             <MyFileMeta fileUrl={fileUrl} fileCount={fileCount} filesMetaInfo={filesMetaInfo} setFilesMetaInfo={setFilesMetaInfo} />

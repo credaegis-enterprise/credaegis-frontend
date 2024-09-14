@@ -20,9 +20,10 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
   setFilesMetaInfo,
   filesMetaInfo,
 }) => {
+  const [filename, setFilename] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [comments, setComments] = useState("");
+  const [comments, setComments] = useState<string | null>(null);
   const [expiryDate, setExpiryDate] = useState<string | null>(null);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
      else {
       setName("");
       setEmail("");
-      setComments("");
+      setComments(null);
       setExpiryDate(null);
     }
 }
@@ -53,7 +54,8 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
         name,
         email,
         expiryDate: expiryDate || "",
-        Comment: comments,
+        Comment: comments || "",
+        filename: fileUrl.filename,
       };
 
       console.log(updatedFileMeta);
@@ -115,7 +117,7 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
             className="w-full"
             size="sm"
             description="Add any comments or notes if any"
-            value={comments}
+            value={comments? comments : ""}
             onChange={(e) => setComments(e.target.value)}
           />
 
