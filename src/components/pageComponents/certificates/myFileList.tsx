@@ -98,9 +98,12 @@ const MyFileList: React.FC<MyFileListProps> = ({
       setFileUrl(null);
     }
     const newFiles = [...selectedFiles];
-    const updatedFilesMetaInfo = filesMetaInfo?.filter(
+    const updatedFilesMetaInfo =filesMetaInfo?.filter(
       (meta) => meta.id !== selectedFiles[index].id
     );
+
+    console.log("upjsjted",updatedFilesMetaInfo);
+
     setFilesMetaInfo(updatedFilesMetaInfo || []);
     newFiles.splice(index, 1);
     setSelectedFiles(newFiles);

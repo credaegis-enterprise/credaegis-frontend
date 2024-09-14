@@ -27,25 +27,35 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
   const [expiryDate, setExpiryDate] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log("Files Meta Info Length:", filesMetaInfo?.length);
+    console.log("File URL:", fileUrl);
 
-    if (fileUrl && filesMetaInfo && filesMetaInfo.length > 0) {
-      const index = filesMetaInfo.findIndex((meta) => meta.id === fileUrl.fileindex);
-      if(index !== -1){
-      const meta = filesMetaInfo[index]; 
-      setName(meta.name);
-      setEmail(meta.email);
-      setComments(meta.Comment);
-      setExpiryDate(meta.expiryDate);
-      }
+    if (fileUrl && Array.isArray(filesMetaInfo) && filesMetaInfo.length > 0) {
+        console.log("Processing file meta info");
         
-     else {
-      setName("");
-      setEmail("");
-      setComments(null);
-      setExpiryDate(null);
+        const index = filesMetaInfo.findIndex((meta) => meta.id === fileUrl.fileindex);
+        
+        if (index !== -1) {
+            const meta = filesMetaInfo[index]; 
+            setName(meta.name);
+            setEmail(meta.email);
+            setComments(meta.Comment);
+            setExpiryDate(meta.expiryDate);
+        } else {
+            console.log("No file meta found for the given file index");
+            setName("");
+            setEmail("");
+            setComments(null);
+            setExpiryDate(null);
+        }
+    } else {
+        console.log("Condition not met for fileUrl or filesMetaInfo");
+        setName("");
+        setEmail("");
+        setComments(null);
+        setExpiryDate(null);
     }
-}
-} , [fileUrl, filesMetaInfo]);
+}, [fileUrl, filesMetaInfo, fileCount]);
 
   const handleSave = () => {
     if (fileUrl) {
