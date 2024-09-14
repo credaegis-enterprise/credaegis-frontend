@@ -27,7 +27,7 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({ eventInfo }) =>
         <div className="h-full">
            <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 h-full">
             <div className="col-span-2 border dark:border-stone-800 rounded-lg">
-            <MyFileList eventInfo={eventInfo} setFileUrl={setFileUrl} fileUrl={fileUrl} setFileCount={setFileCount} />
+            <MyFileList eventInfo={eventInfo} setFileUrl={setFileUrl} fileUrl={fileUrl} setFileCount={setFileCount}  filesMetaInfo={filesMetaInfo} setFilesMetaInfo={setFilesMetaInfo} />
             </div>
             <div className="col-span-2 border dark:border-stone-800 rounded-lg">
             <MyFileMeta fileUrl={fileUrl} fileCount={fileCount} filesMetaInfo={filesMetaInfo} setFilesMetaInfo={setFilesMetaInfo} />

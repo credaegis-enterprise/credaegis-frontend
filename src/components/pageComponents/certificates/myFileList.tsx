@@ -7,13 +7,21 @@ import { motion } from "framer-motion";
 import { MyButton } from "@/components/buttons/mybutton";
 import { MdClose } from "react-icons/md";
 import { toast } from "sonner";
-import { Event, FileInfo } from "@/types/global.types";
+import { Event, FileInfo,filesMetaType } from "@/types/global.types";
+import { ulid } from "ulid";
 
 interface MyFileListProps {
   eventInfo: Event[];
   setFileUrl: (file: FileInfo | null) => void;
   fileUrl: FileInfo | null;
+  filesMetaInfo: filesMetaType[] | null;
   setFileCount: (count: number) => void;
+setFilesMetaInfo: (filesMetaInfo: filesMetaType[] | []) => void;
+}
+
+
+interface MyFile extends File {
+    id: string;
 }
 
 const MyFileList: React.FC<MyFileListProps> = ({
@@ -21,8 +29,10 @@ const MyFileList: React.FC<MyFileListProps> = ({
   setFileUrl,
   fileUrl,
   setFileCount,
+    filesMetaInfo,
+    setFilesMetaInfo
 }) => {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<MyFile[]>([]);
   console.log(eventInfo);
   const inputFile = useRef<HTMLInputElement>(null);
   const handleUploadClick = () => {
@@ -32,12 +42,21 @@ const MyFileList: React.FC<MyFileListProps> = ({
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const filesArray = Array.from(e.target.files);
+      const filesArray = Array.from(e.target.files).map((file) => {
+        const newFile = file as MyFile;
+        newFile.id = ulid();
+        return newFile;
+
+      });
+
+      console.log(filesArray);
+     
+    
       if (selectedFiles.length === 0) {
         setFileUrl({
           filename: filesArray[0].name,
           fileurl: URL.createObjectURL(filesArray[0]),
-          fileindex: 0,
+            fileindex: filesArray[0].id,
         });
       }
 
@@ -48,6 +67,19 @@ const MyFileList: React.FC<MyFileListProps> = ({
 
         const newFiles = filesArray.slice(0, 10 - selectedFiles.length);
         console.log(newFiles);
+        const tempFiles = [...selectedFiles, ...newFiles];
+        // const fileSet = new Set;
+        // for (const file of tempFiles) {
+        //     if (!fileSet.has(file.name)) {
+        //         fileSet.add(file.name);
+        //     }
+        //     else {
+        //         toast.warning("Duplicate file names are not allowed")
+        //         return;
+        //     }
+        // }
+            
+        
         setSelectedFiles((prev) => [...prev, ...newFiles]);
         setFileCount(newFiles.length + selectedFiles.length);
       } else {
@@ -57,12 +89,14 @@ const MyFileList: React.FC<MyFileListProps> = ({
   };
 
   const handleFileRemove = (index: number) => {
+    console.log(filesMetaInfo)
     setFileCount(selectedFiles.length - 1);
     if (fileUrl?.filename === selectedFiles[index].name) {
       setFileUrl(null);
     }
-
     const newFiles = [...selectedFiles];
+    const updatedFilesMetaInfo = filesMetaInfo?.filter((meta) => meta.id !== selectedFiles[index].id);
+    setFilesMetaInfo(updatedFilesMetaInfo || []);
     newFiles.splice(index, 1);
     setSelectedFiles(newFiles);
   };
@@ -140,7 +174,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
                   setFileUrl({
                     filename: file.name,
                     fileurl: URL.createObjectURL(file),
-                    fileindex: index,
+                    fileindex: file.id,
                   });
                 }}
               >

@@ -10,7 +10,7 @@ export interface Event {
 export interface FileInfo {
   fileurl: string | null;
   filename: string;
-  fileindex: number;
+  fileindex: string;
 }
 
 export interface filesMetaType {

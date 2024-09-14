@@ -26,27 +26,30 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
   const [expiryDate, setExpiryDate] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log(fileUrl)
 
-    if (fileUrl && filesMetaInfo && filesMetaInfo[fileUrl.fileindex]) {
-      
-      const meta = filesMetaInfo[fileUrl.fileindex]; 
+    if (fileUrl && filesMetaInfo && filesMetaInfo.length > 0) {
+      const index = filesMetaInfo.findIndex((meta) => meta.id === fileUrl.fileindex);
+      if(index !== -1){
+      const meta = filesMetaInfo[index]; 
       setName(meta.name);
       setEmail(meta.email);
       setComments(meta.Comment);
       setExpiryDate(meta.expiryDate);
-    } else {
+      }
+        
+     else {
       setName("");
       setEmail("");
       setComments("");
       setExpiryDate(null);
     }
-  }, [fileUrl, filesMetaInfo]);
+}
+} , [fileUrl, filesMetaInfo]);
 
   const handleSave = () => {
     if (fileUrl) {
       const updatedFileMeta: filesMetaType = {
-        id: fileUrl.fileindex.toString(), 
+        id: fileUrl.fileindex,
         name,
         email,
         expiryDate: expiryDate || "",
@@ -57,7 +60,12 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
 
       if (filesMetaInfo) {
         const updatedMetaInfo = [...filesMetaInfo];
-        updatedMetaInfo[fileUrl.fileindex] = updatedFileMeta;
+        const index = updatedMetaInfo.findIndex((meta) => meta.id === fileUrl.fileindex);
+        if (index === -1) {
+          updatedMetaInfo.push(updatedFileMeta);
+        }
+        else
+            updatedMetaInfo[index] = updatedFileMeta;
         setFilesMetaInfo(updatedMetaInfo);
       }
     }
@@ -72,10 +80,10 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
             Fill information
           </div>
           {fileUrl && (
-            <div className="ml-3 text-xl font-medium text-gray-800 dark:text-yellow-400">
-              {fileUrl.fileindex + 1}/{fileCount}
-            </div>
-          )}
+  <div className={`ml-3 text-xl font-medium text-gray-800 ${filesMetaInfo && filesMetaInfo.length / fileCount === 1 ? 'dark:text-green-400' : 'dark:text-yellow-400'}`}>
+    {filesMetaInfo?.length}/{fileCount}
+  </div>
+)}
         </div>
       </div>
 
