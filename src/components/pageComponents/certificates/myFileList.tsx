@@ -162,7 +162,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
             ))}
         </Select>
       </div>
-      <div className=" mt-2  h-full max-h-96 ">
+      <div className=" mt-2  h-full max-h-[50vh] lg:max-h-[55vh] ">
         <div className="space-y-2 p-2 mt-1 h-full overflow-auto">
           {selectedFiles.length === 0 ? (
             <div className="flex h-full justify-center items-center text-lg  ">
