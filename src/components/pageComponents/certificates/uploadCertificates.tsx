@@ -24,12 +24,12 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({ eventInfo }) =>
 
 
     return(
-        <div className="h-full">
+        <div className="h-full overflow-hidden">
            <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 h-full">
-            <div className="col-span-2 border dark:border-stone-800 rounded-lg">
+            <div className="col-span-2 border dark:border-stone-800 rounded-lg overflow-auto">
             <MyFileList eventInfo={eventInfo} setFileUrl={setFileUrl} fileUrl={fileUrl} setFileCount={setFileCount}  filesMetaInfo={filesMetaInfo} setFilesMetaInfo={setFilesMetaInfo} />
             </div>
-            <div className="col-span-2 border dark:border-stone-800 rounded-lg">
+            <div className="col-span-2 border dark:border-stone-800 rounded-lg ">
             <MyFileMeta fileUrl={fileUrl} fileCount={fileCount} filesMetaInfo={filesMetaInfo} setFilesMetaInfo={setFilesMetaInfo} />
             </div>
             <div className="col-span-3 border dark:border-stone-800 rounded-lg">
