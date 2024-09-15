@@ -165,37 +165,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
           ))}
         </Autocomplete>
       </div>
-      <div className="">
-          {selectedFiles.length > 0 && (
-            <div className="flex justify-center mt-4 gap-2">
-              <MyButton
-                className="bg-black dark:bg-white"
-                size="md"
-                onClick={() => {
-                  setSelectedFiles([]);
-                  setFileUrl(null);
-                  setFileCount(0);
-                    setFilesMetaInfo([]);
-                }}
-              >
-                <span className="dark:text-black text-white text-md font-medium">
-                  Clear All
-                </span>
-              </MyButton>
-              <MyButton
-                className="bg-black dark:bg-white"
-                size="md"
-                onClick={() => {
-                  uploadCertificatesForApproval(selectedFiles, event || "");
-                }}
-              >
-                <span className="dark:text-black text-white text-md font-medium">
-                  Upload All files
-                </span>
-              </MyButton>
-            </div>
-          )}
-        </div>
+     
       <div className=" flex flex-col lg:h-full h-[200px] overflow-auto mt-2 ">
         <div className="space-y-2 p-2 mt-1 h-full ">
           {selectedFiles.length === 0 ? (
@@ -258,8 +228,40 @@ const MyFileList: React.FC<MyFileListProps> = ({
             ))
           )}
         </div>
+
        
       </div>
+      <div className="mb-3">
+          {selectedFiles.length > 0 && (
+            <div className="flex justify-center mt-4 gap-2">
+              <MyButton
+                className="bg-black dark:bg-white"
+                size="md"
+                onClick={() => {
+                  setSelectedFiles([]);
+                  setFileUrl(null);
+                  setFileCount(0);
+                    setFilesMetaInfo([]);
+                }}
+              >
+                <span className="dark:text-black text-white text-md font-medium">
+                  Clear All
+                </span>
+              </MyButton>
+              <MyButton
+                className="bg-black dark:bg-white"
+                size="md"
+                onClick={() => {
+                  uploadCertificatesForApproval(selectedFiles, event || "");
+                }}
+              >
+                <span className="dark:text-black text-white text-md font-medium">
+                  Upload All files
+                </span>
+              </MyButton>
+            </div>
+          )}
+        </div>
     </div>
   );
 };
