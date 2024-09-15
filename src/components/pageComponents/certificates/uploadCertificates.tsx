@@ -17,6 +17,7 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({
   const [fileUrl, setFileUrl] = useState<FileInfo | null>(null);
   const [fileCount, setFileCount] = useState<number>(0);
   const [filesMetaInfo, setFilesMetaInfo] = useState<filesMetaType[]>([]);
+ const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
 
   const uploadCertificatesForApproval = async (
     selectedFiles: MyFileType[],
@@ -64,6 +65,8 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({
       console.log(response);
       if (response.data.success) {
         toast.success(response.data.message);
+        setUploadSuccess((prev) => !prev);
+        
       }
     } catch (error) {
       console.log(error);
@@ -81,6 +84,7 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({
             setFileCount={setFileCount}
             filesMetaInfo={filesMetaInfo}
             setFilesMetaInfo={setFilesMetaInfo}
+            uploadSuccess={uploadSuccess}
             uploadCertificatesForApproval={uploadCertificatesForApproval}
           />
         </div>

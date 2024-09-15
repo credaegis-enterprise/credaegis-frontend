@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, use, useEffect } from "react";
 import { HiDocumentText } from "react-icons/hi";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { motion } from "framer-motion";
@@ -26,6 +26,7 @@ interface MyFileListProps {
     selectedFiles: MyFileType[],
     event_ulid: string
   ) => void;
+    uploadSuccess: boolean;
 }
 
 const MyFileList: React.FC<MyFileListProps> = ({
@@ -36,6 +37,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
   filesMetaInfo,
   setFilesMetaInfo,
   uploadCertificatesForApproval,
+  uploadSuccess,
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<MyFileType[]>([]);
   const [event, setEvent] = useState<string | null>(null);
@@ -44,6 +46,17 @@ const MyFileList: React.FC<MyFileListProps> = ({
     console.log("clicked");
     inputFile.current?.click();
   };
+
+
+  useEffect(() => { 
+    
+      setSelectedFiles([]);
+      setFileUrl(null);
+      setFileCount(0);
+      setFilesMetaInfo([]);
+      setEvent(null);
+
+  }, [uploadSuccess]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
