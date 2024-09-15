@@ -15,7 +15,8 @@ const ManageAll: React.FC<ManageAllProps> = ({ eventInfo }) => {
 
 
   return (
-    <div className="h-full flex flex-col ">
+    <div className="h-full flex p-2 ">
+      <div className="flex flex-col w-full">
       <div className="flex flex-col lg:flex-row lg:gap-4">
         <Tabs
           selectedKey={selected}
@@ -30,12 +31,11 @@ const ManageAll: React.FC<ManageAllProps> = ({ eventInfo }) => {
       </div>
 
    
-      <div className="flex-grow flex flex-col lg:flex-row  mt-4 ">
-        <div className="flex-grow p-4">
+      <div className="flex flex-col h-full overflow-hidden mt-4 ">
           {selected === "upload certificates" && <UploadCertificates eventInfo={eventInfo} />}
-         </div>
       </div>
     </div>
+  </div>
   );
 };
 

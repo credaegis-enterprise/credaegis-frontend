@@ -196,11 +196,13 @@ const MyFileList: React.FC<MyFileListProps> = ({
             </div>
           )}
         </div>
-      <div className=" mt-2  h-full max-h-96 ">
-        <div className="space-y-2 p-2 mt-1 h-full overflow-auto">
+      <div className=" flex flex-col lg:h-full h-[200px] overflow-auto mt-2 ">
+        <div className="space-y-2 p-2 mt-1 h-full ">
           {selectedFiles.length === 0 ? (
-            <div className="flex h-full justify-center items-center text-lg  ">
+            <div className="flex h-full justify-center items-center text-lg   ">
+                <div className="mb-20">
               No files uploaded.
+              </div>
             </div>
           ) : (
             selectedFiles &&

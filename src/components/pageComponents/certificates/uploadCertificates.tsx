@@ -88,7 +88,7 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({
             uploadCertificatesForApproval={uploadCertificatesForApproval}
           />
         </div>
-        <div className="col-span-2 border dark:border-stone-800 rounded-lg ">
+        <div className="col-span-2 border dark:border-stone-800 rounded-lg overflow-auto ">
           <MyFileMeta
             fileUrl={fileUrl}
             fileCount={fileCount}
