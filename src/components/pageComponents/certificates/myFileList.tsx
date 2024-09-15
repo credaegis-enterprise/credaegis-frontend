@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { HiDocumentText } from "react-icons/hi";
-import { Select, SelectItem } from "@nextui-org/react";
+import { Autocomplete,AutocompleteItem } from "@nextui-org/react";
 import { motion } from "framer-motion";
 import { MyButton } from "@/components/buttons/mybutton";
 import { MdClose } from "react-icons/md";
@@ -38,7 +38,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
   uploadCertificatesForApproval,
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<MyFileType[]>([]);
-  const [event, setEvent] = useState("");
+  const [event, setEvent] = useState<string | null>(null);
   console.log(eventInfo);
   const inputFile = useRef<HTMLInputElement>(null);
   const handleUploadClick = () => {
@@ -54,7 +54,6 @@ const MyFileList: React.FC<MyFileListProps> = ({
         return newFile;
       });
 
-      console.log(filesArray);
 
       if (selectedFiles && selectedFiles.length === 0) {
         setFileUrl({
@@ -72,15 +71,14 @@ const MyFileList: React.FC<MyFileListProps> = ({
         const newFiles = filesArray.slice(0, 10 - selectedFiles.length);
         console.log(newFiles);
         const tempFiles = [...selectedFiles, ...newFiles];
-        const fileSet = new Set;
+        const fileSet = new Set();
         for (const file of tempFiles) {
-            if (!fileSet.has(file.name)) {
-                fileSet.add(file.name);
-            }
-            else {
-                toast.warning("Duplicate file names are not allowed")
-                return;
-            }
+          if (!fileSet.has(file.name)) {
+            fileSet.add(file.name);
+          } else {
+            toast.warning("Duplicate file names are not allowed");
+            return;
+          }
         }
 
         setSelectedFiles((prev) => [...prev, ...newFiles]);
@@ -98,11 +96,10 @@ const MyFileList: React.FC<MyFileListProps> = ({
       setFileUrl(null);
     }
     const newFiles = [...selectedFiles];
-    const updatedFilesMetaInfo =filesMetaInfo?.filter(
+    const updatedFilesMetaInfo = filesMetaInfo?.filter(
       (meta) => meta.id !== selectedFiles[index].id
     );
 
-    console.log("upjsjted",updatedFilesMetaInfo);
 
     setFilesMetaInfo(updatedFilesMetaInfo || []);
     newFiles.splice(index, 1);
@@ -143,26 +140,24 @@ const MyFileList: React.FC<MyFileListProps> = ({
         </MyButton>
       </div>
       <div className="flex  p-2">
-        <Select
+        <Autocomplete
           isRequired
           label=" Event"
-          placeholder="Select an Event in your cluster to upload"
+          placeholder="Select an Event"
           size="sm"
           className=""
-            selectedKeys={[event]}
-            onChange={(e) => {
-              setEvent(e.target.value);
-            }}
+          selectedKey={event}
+          onSelectionChange={(key) => setEvent(key as string | null)}
+          
         >
-          {eventInfo &&
-            eventInfo.map((event, index) => (
-              <SelectItem key={event.event_ulid} value={event.event_name}>
+            {eventInfo.map((event) => (
+                <AutocompleteItem key={event.event_ulid} value={event.event_name}>
                 {event.event_name}
-              </SelectItem>
+                </AutocompleteItem>
             ))}
-        </Select>
+      </Autocomplete>
       </div>
-      <div className=" mt-2  h-full max-h-[50vh] lg:max-h-[55vh] ">
+      <div className=" mt-2  h-full max-h-96 lg:h-[55vh]">
         <div className="space-y-2 p-2 mt-1 h-full overflow-auto">
           {selectedFiles.length === 0 ? (
             <div className="flex h-full justify-center items-center text-lg  ">
@@ -231,10 +226,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
                 className="bg-black dark:bg-white"
                 size="md"
                 onClick={() => {
-                  uploadCertificatesForApproval(
-                    selectedFiles,
-                     event
-                    );
+                  uploadCertificatesForApproval(selectedFiles, event || "");
                 }}
               >
                 <span className="dark:text-black text-white text-md font-medium">

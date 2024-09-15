@@ -27,6 +27,9 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({ eventInfo }) =>
 
     const uploadCertificatesForApproval = async (selectedFiles:MyFileType[],event_ulid:string) => {
 
+
+        console.log(event_ulid)
+
         const formData = new FormData();
         selectedFiles.forEach((file) => {
             formData.append("approvals", file);

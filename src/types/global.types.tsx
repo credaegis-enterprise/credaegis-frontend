@@ -15,8 +15,13 @@ export interface FileInfo {
 
 export interface filesMetaType {
   id: string;
+  filename: string;
   name: string;
   email: string;
   expiryDate: string;
   Comment: string;
+}
+
+export interface MyFileType extends File {
+    id: string;
 }
