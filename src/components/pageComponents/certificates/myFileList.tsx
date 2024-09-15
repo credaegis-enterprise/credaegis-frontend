@@ -43,7 +43,6 @@ const MyFileList: React.FC<MyFileListProps> = ({
   const [event, setEvent] = useState<string | null>(null);
   const inputFile = useRef<HTMLInputElement>(null);
   const handleUploadClick = () => {
-    console.log("clicked");
     inputFile.current?.click();
   };
 
