@@ -24,8 +24,8 @@ const ManageAll: React.FC<ManageAllProps> = ({ eventInfo }) => {
           className="mt-2 lg:mt-0 lg:w-auto w-full"
         >
           <Tab key="upload certificates" title="Upload Certificates" />
-          <Tab key="statistics" title="Statistics" />
-          <Tab key="info" title="Info" />
+          <Tab key="approvals" title="approvals" />
+
         </Tabs>
       </div>
 

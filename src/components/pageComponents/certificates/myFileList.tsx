@@ -26,6 +26,8 @@ interface MyFileListProps {
     selectedFiles: MyFileType[],
     event_ulid: string
   ) => void;
+
+    
 }
 
 const MyFileList: React.FC<MyFileListProps> = ({
@@ -36,10 +38,10 @@ const MyFileList: React.FC<MyFileListProps> = ({
   filesMetaInfo,
   setFilesMetaInfo,
   uploadCertificatesForApproval,
+ 
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<MyFileType[]>([]);
   const [event, setEvent] = useState<string | null>(null);
-  console.log(eventInfo);
   const inputFile = useRef<HTMLInputElement>(null);
   const handleUploadClick = () => {
     console.log("clicked");

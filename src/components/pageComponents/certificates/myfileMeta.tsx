@@ -6,6 +6,8 @@ import { FileInfo } from "@/types/global.types";
 import { MyButton } from "@/components/buttons/mybutton";
 import { filesMetaType } from "@/types/global.types";
 import { useState, useEffect } from "react";
+import emailValidator from "@/utils/Validators/emailValidator";
+import { toast } from "sonner";
 
 interface MyFileMetaProps {
   fileUrl: FileInfo | null;
@@ -19,19 +21,24 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
   fileCount,
   setFilesMetaInfo,
   filesMetaInfo,
+  
 }) => {
-  const [filename, setFilename] = useState("");
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [comments, setComments] = useState<string | null>(null);
   const [expiryDate, setExpiryDate] = useState<string | null>(null);
+  const [isNameEmpty, setIsNameEmpty] = useState(false);
+    const [isEmailValid, setIsEmailValid] = useState(false);
 
   useEffect(() => {
-    console.log("Files Meta Info Length:", filesMetaInfo?.length);
-    console.log("File URL:", fileUrl);
 
-    if (fileUrl && Array.isArray(filesMetaInfo) && filesMetaInfo.length > 0) {
-        console.log("Processing file meta info");
+    setIsEmailValid(false);
+    setIsNameEmpty(false); 
+  
+    if (fileUrl && Array.isArray(filesMetaInfo) && filesMetaInfo.length > 0) { 
+        
+      
         
         const index = filesMetaInfo.findIndex((meta) => meta.id === fileUrl.fileindex);
         
@@ -58,6 +65,28 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
 }, [fileUrl, filesMetaInfo, fileCount]);
 
   const handleSave = () => {
+
+
+    if (!name) {
+      setIsNameEmpty(true);
+      toast.error("Name is required");
+    }
+    else
+        setIsNameEmpty(false);
+
+    if (!emailValidator(email)) {
+      setIsEmailValid(true);
+        toast.error("Please enter a valid email address");
+
+    }
+    else
+        setIsEmailValid(false);
+
+    if (!name || !emailValidator(email)) {
+      return;
+    }
+
+   
     if (fileUrl) {
       const updatedFileMeta: filesMetaType = {
         id: fileUrl.fileindex,
@@ -102,6 +131,8 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
       {fileUrl ? (
         <div className="p-2 flex flex-col gap-3">
           <Input
+            isInvalid={isNameEmpty}
+            errorMessage="Name is required"
             label="Issued to"
             placeholder="Enter Name"
             className="w-full"
@@ -112,6 +143,8 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
           />
 
           <Input
+            isInvalid={isEmailValid}
+            errorMessage={"Enter a valid email address"}
             label="Email"
             placeholder="Enter Email"
             className="w-full"
