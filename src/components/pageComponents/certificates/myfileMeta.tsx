@@ -182,8 +182,8 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
         </div>
       ) : (
         <div className="flex items-center justify-center h-full">
-          <div className="text-2xl font-semibold text-gray-800 dark:text-gray-200 mt-10">
-            No file selected
+          <div className="text-lg  text-gray-800 dark:text-gray-200 mb-1 ">
+            No file selected.
           </div>
         </div>
       )}

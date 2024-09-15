@@ -43,8 +43,8 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({
         filename: file.filename,
         name: file.name,
         email: file.email,
-        expiryDate: file.expiryDate || null,
-        comment: file.Comment || null,
+        expiry_date: file.expiryDate || null,
+        comments: file.Comment || null,
       };
     });
 
@@ -99,9 +99,9 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({
               className="w-full h-full"
             ></iframe>
           ) : (
-            <div className="flex items-center justify-center h-full">
-              <h1 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
-                No file selected
+            <div className="flex items-center justify-center h-full mt-6">
+              <h1 className="text-lg  text-gray-800 dark:text-gray-200">
+                No file selected to display.
               </h1>
             </div>
           )}

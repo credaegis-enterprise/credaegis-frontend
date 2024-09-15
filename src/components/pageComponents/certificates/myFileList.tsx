@@ -2,10 +2,10 @@
 
 import { useState, useRef } from "react";
 import { HiDocumentText } from "react-icons/hi";
-import { Autocomplete,AutocompleteItem } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { motion } from "framer-motion";
 import { MyButton } from "@/components/buttons/mybutton";
-import { MdClose } from "react-icons/md";
+import { MdCheck, MdClose } from "react-icons/md";
 import { toast } from "sonner";
 import {
   Event,
@@ -26,8 +26,6 @@ interface MyFileListProps {
     selectedFiles: MyFileType[],
     event_ulid: string
   ) => void;
-
-    
 }
 
 const MyFileList: React.FC<MyFileListProps> = ({
@@ -38,7 +36,6 @@ const MyFileList: React.FC<MyFileListProps> = ({
   filesMetaInfo,
   setFilesMetaInfo,
   uploadCertificatesForApproval,
- 
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<MyFileType[]>([]);
   const [event, setEvent] = useState<string | null>(null);
@@ -55,7 +52,6 @@ const MyFileList: React.FC<MyFileListProps> = ({
         newFile.id = ulid();
         return newFile;
       });
-
 
       if (selectedFiles && selectedFiles.length === 0) {
         setFileUrl({
@@ -101,7 +97,6 @@ const MyFileList: React.FC<MyFileListProps> = ({
     const updatedFilesMetaInfo = filesMetaInfo?.filter(
       (meta) => meta.id !== selectedFiles[index].id
     );
-
 
     setFilesMetaInfo(updatedFilesMetaInfo || []);
     newFiles.splice(index, 1);
@@ -150,14 +145,13 @@ const MyFileList: React.FC<MyFileListProps> = ({
           className=""
           selectedKey={event}
           onSelectionChange={(key) => setEvent(key as string | null)}
-          
         >
-            {eventInfo.map((event) => (
-                <AutocompleteItem key={event.event_ulid} value={event.event_name}>
-                {event.event_name}
-                </AutocompleteItem>
-            ))}
-      </Autocomplete>
+          {eventInfo.map((event) => (
+            <AutocompleteItem key={event.event_ulid} value={event.event_name}>
+              {event.event_name}
+            </AutocompleteItem>
+          ))}
+        </Autocomplete>
       </div>
       <div className=" mt-2  h-full max-h-96 lg:h-[55vh]">
         <div className="space-y-2 p-2 mt-1 h-full overflow-auto">
@@ -178,7 +172,12 @@ const MyFileList: React.FC<MyFileListProps> = ({
                   boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
+                className={` rounded-lg  p-4  duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer
+                    ${
+                      fileUrl?.filename === file.name
+                        ? "bg-gray-300 dark:bg-stone-700"
+                        : "bg-white dark:bg-stone-900"
+                    }`}
                 onClick={(e) => {
                   setFileUrl({
                     filename: file.name,
@@ -191,17 +190,23 @@ const MyFileList: React.FC<MyFileListProps> = ({
                   <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                     {file.name}
                   </div>
+                  
+                  <div className="flex items-center gap-4">
+                    {filesMetaInfo?.find((meta) => meta.id === file.id) && (
+                    <MdCheck size={20} className="text-green-500" />
+                    )}
                   <div className="group">
-                    <div className="flex items-center justify-center h-8 w-8 rounded-full transition-colors duration-300 group-hover:bg-gray-200 dark:group-hover:bg-red-700">
+                    <div className="flex items-center justify-center h-8 w-8 rounded-full transition-colors duration-300 group-hover:bg-red-500 dark:group-hover:bg-red-700 ">
                       <MdClose
                         size={20}
-                        className="text-white group-hover:text-black dark:group-hover:text-white"
+                        className="dark:text-white text-black group-hover:text-black dark:group-hover:text-white"
                         onClick={(event) => {
                           event.stopPropagation();
                           handleFileRemove(index);
                         }}
                       />
                     </div>
+                  </div>
                   </div>
                 </div>
               </motion.div>
@@ -218,6 +223,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
                   setSelectedFiles([]);
                   setFileUrl(null);
                   setFileCount(0);
+                    setFilesMetaInfo([]);
                 }}
               >
                 <span className="dark:text-black text-white text-md font-medium">
