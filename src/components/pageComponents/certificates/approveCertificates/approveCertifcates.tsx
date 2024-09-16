@@ -1,5 +1,7 @@
 import { MyButton } from "@/components/buttons/mybutton";
 import { Checkbox } from "@nextui-org/react";
+import ApprovalControl from "./approvalControl";
+
 
 const ApproveCertificates = () => {
   const certificates = [
@@ -31,14 +33,85 @@ const ApproveCertificates = () => {
         expiry: "2025-01-01",
         comments: "Pending review",
       },
+      {
+        eventName: "Tech Conference 2024 ",
+        issuedTo: "John Does",
+        uploadedBy: "Admin",
+        expiry: "2025-01-01",
+        comments: "My certificate",
+      },
+      {
+        eventName: "Tech Conference 2024",
+        issuedTo: "John Doe",
+        uploadedBy: "Admin",
+        expiry: "2025-01-01",
+        comments: "Pending review",
+      },
+      {
+        eventName: "Tech Conference 2024 ",
+        issuedTo: "John Does",
+        uploadedBy: "Admin",
+        expiry: "2025-01-01",
+        comments: "My certificate",
+      },
+      {
+        eventName: "Tech Conference 2024",
+        issuedTo: "John Doe",
+        uploadedBy: "Admin",
+        expiry: "2025-01-01",
+        comments: "Pending review",
+      },
+      {
+        eventName: "Tech Conference 2024 ",
+        issuedTo: "John Does",
+        uploadedBy: "Admin",
+        expiry: "2025-01-01",
+        comments: "My certificate",
+      },
+      {
+        eventName: "Tech Conference 2024",
+        issuedTo: "John Doe",
+        uploadedBy: "Admin",
+        expiry: "2025-01-01",
+        comments: "Pending review",
+      },
+      {
+        eventName: "Tech Conference 2024 ",
+        issuedTo: "John Does",
+        uploadedBy: "Admin",
+        expiry: "2025-01-01",
+        comments: "My certificate",
+      },
+      {
+        eventName: "Tech Conference 2024",
+        issuedTo: "John Doe",
+        uploadedBy: "Admin",
+        expiry: "2025-01-01",
+        comments: "Pending review",
+      },
+      {
+        eventName: "Tech Conference 2024 ",
+        issuedTo: "John Does",
+        uploadedBy: "Admin",
+        expiry: "2025-01-01",
+        comments: "My certificate",
+      },
+      {
+        eventName: "Tech Conference 2024",
+        issuedTo: "John Doe",
+        uploadedBy: "Admin",
+        expiry: "2025-01-01",
+        comments: "Pending review",
+      },
       
   ];
 
   return (
     <div className="h-full flex flex-col">
+     <ApprovalControl />
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg border dark:border-neutral-800">
       <table className="w-full text-sm text-left">
-        <thead className="text-md bg-neutral-100 dark:bg-neutral-800 rounded-t-lg">
+        <thead className="text-md bg-neutral-100 dark:bg-neutral-800 rounded-t-lg sticky z-30 top-0">
           <tr>
             <th
               scope="col"
@@ -73,7 +146,7 @@ const ApproveCertificates = () => {
             <th scope="col" className="px-6 py-3 text-center w-12"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="">
           {certificates.map((certificate, index) => (
             <tr key={index} className="">
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">

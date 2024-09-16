@@ -34,7 +34,10 @@ const ManageAll: React.FC<ManageAllProps> = ({ eventInfo }) => {
    
       <div className="flex flex-col h-full overflow-hidden mt-4 ">
           {selected === "upload certificates" && <UploadCertificates eventInfo={eventInfo} />}
-          {selected === "approvals" && <ApproveCertificates />}
+          {selected === "approvals" && 
+          
+          <ApproveCertificates/>
+          }
       </div>
     </div>
   </div>
