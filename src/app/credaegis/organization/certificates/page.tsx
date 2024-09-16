@@ -32,15 +32,35 @@ const fetchEvents = async () => {
 }
 
 
+const fetchClusters = async () => {
+    const cookies = getCookies()
+    try{
+    const response = await myInstanceNEXT.get("/cluster/getall",{
+      headers: {
+          cookie:`test=${cookies}`
+      }
+      
+    });
+    return response.data.clusters;
+    }
+    catch(error: any){
+      console.log(error);
+    }
+}
+
+
 
 const Page = async () => {
 
 
-    const events = await fetchEvents()
+    const clustersPromise = fetchClusters();
+    const eventsPromise = fetchEvents();
+    const [clusters, events] = await Promise.all([clustersPromise, eventsPromise]);
+    console.log(clusters)
     console.log(events)
     return (
         <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 ">
-          <ManageAll eventInfo={events}/>
+          <ManageAll eventInfo={events} clusterInfo={clusters}/>
         </div>
     )
 }

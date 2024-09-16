@@ -3,14 +3,16 @@ import { Tab, Tabs } from "@nextui-org/react";
 import { useState } from "react";
 import UploadCertificates from "./uploadCertificates/uploadCertificates";
 import ApproveCertificates from "./approveCertificates/approveCertifcates";
-import { Event } from "@/types/global.types";
+import { EventType,ClusterType } from "@/types/global.types";
+
 
 interface ManageAllProps {
-  eventInfo: Event[];
+  eventInfo: EventType[];
+  clusterInfo: ClusterType[];
 }
 
 
-const ManageAll: React.FC<ManageAllProps> = ({ eventInfo }) => {
+const ManageAll: React.FC<ManageAllProps> = ({ eventInfo,clusterInfo }) => {
   const [selected, setSelected] = useState<string>("upload certificate");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
@@ -36,7 +38,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ eventInfo }) => {
           {selected === "upload certificates" && <UploadCertificates eventInfo={eventInfo} />}
           {selected === "approvals" && 
           
-          <ApproveCertificates/>
+          <ApproveCertificates clusterInfo={clusterInfo} eventInfo={eventInfo}/>
           }
       </div>
     </div>

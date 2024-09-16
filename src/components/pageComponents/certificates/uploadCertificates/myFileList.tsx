@@ -8,7 +8,7 @@ import { MyButton } from "@/components/buttons/mybutton";
 import { MdCheck, MdClose } from "react-icons/md";
 import { toast } from "sonner";
 import {
-  Event,
+  EventType,
   FileInfo,
   filesMetaType,
   MyFileType,
@@ -16,7 +16,7 @@ import {
 import { ulid } from "ulid";
 
 interface MyFileListProps {
-  eventInfo: Event[];
+  eventInfo: EventType[];
   setFileUrl: (file: FileInfo | null) => void;
   fileUrl: FileInfo | null;
   filesMetaInfo: filesMetaType[] | null;

@@ -1,9 +1,18 @@
 import { MyButton } from "@/components/buttons/mybutton";
 import { Checkbox } from "@nextui-org/react";
 import ApprovalControl from "./approvalControl";
+import { EventType,ClusterType } from "@/types/global.types";
+import { useState } from "react";
 
 
-const ApproveCertificates = () => {
+interface ApproveCertificatesProps {
+    eventInfo: EventType[];
+    clusterInfo: ClusterType[];
+    }
+
+const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({ eventInfo,clusterInfo }) => {
+
+  const [approvalsList, setApprovalsList] = useState("");
   const certificates = [
     {
       eventName: "Tech Conference 2024 ",
@@ -108,7 +117,7 @@ const ApproveCertificates = () => {
 
   return (
     <div className="h-full flex flex-col">
-     <ApprovalControl />
+     <ApprovalControl eventInfo={eventInfo} clusterInfo={clusterInfo} />
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg border dark:border-neutral-800">
       <table className="w-full text-sm text-left">
         <thead className="text-md bg-neutral-100 dark:bg-neutral-800 rounded-t-lg sticky z-30 top-0">

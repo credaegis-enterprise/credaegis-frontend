@@ -7,6 +7,20 @@ export interface Event {
   cluster_ulid: string;
 }
 
+export interface ClusterType  {
+    cluster_ulid: string;
+    cluster_name: string;
+    organization_ulid: string;
+    created_at: string;
+    deactivated: number;
+    updated_at: string;
+    member_ulid: string;
+    deleted: number;
+    member_email: string;
+    member_password: string;
+    member_name: string;
+  };
+
 export interface FileInfo {
   fileurl: string | null;
   filename: string;
@@ -25,3 +39,6 @@ export interface filesMetaType {
 export interface MyFileType extends File {
     id: string;
 }
+
+
+

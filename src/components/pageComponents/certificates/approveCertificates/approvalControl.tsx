@@ -1,8 +1,32 @@
 import { Autocomplete,AutocompleteItem } from "@nextui-org/react";
 import { MyButton } from "@/components/buttons/mybutton";
 import { MdSearch } from "react-icons/md";
+import { EventType,ClusterType } from "@/types/global.types";
+import { useState } from "react";
 
-const ApprovalControl = () => {
+
+interface ApproveCertificatesProps {
+    eventInfo: EventType[];
+    clusterInfo: ClusterType[];
+    }
+
+interface clusterType {
+    cluster_name: string;
+    cluster_ulid: string;
+}
+
+interface eventType {
+    event_name: string;
+    event_ulid: string;
+}
+
+
+
+const ApprovalControl: React.FC<ApproveCertificatesProps> = ({ eventInfo,clusterInfo }) => {
+
+    const [clusterList, setClusterList] = useState<clusterType>();
+    const [eventList, setEventList] = useState("");
+
   return (
     <div className="flex flex-col border dark:border-stone-800 border-gray-200 mb-2 rounded-lg p-2 ">
         <div className="flex text-lg font-medium ml-2">
@@ -20,9 +44,11 @@ const ApprovalControl = () => {
             size="sm"
             className=""
         >
-            <AutocompleteItem key="event1" value="Event 1">Event 1</AutocompleteItem>
-            <AutocompleteItem key="event2" value="Event 2">Event 2</AutocompleteItem>
-            <AutocompleteItem key="event3" value="Event 3">Event 3</AutocompleteItem>
+           {clusterInfo.map((cluster) => (
+            <AutocompleteItem key={cluster.cluster_ulid} value={cluster.cluster_name}>
+                {cluster.cluster_name}
+            </AutocompleteItem>
+              ))}
         </Autocomplete>
         <Autocomplete
             label=" Event"
@@ -30,9 +56,11 @@ const ApprovalControl = () => {
             size="sm"
             className=""
         >
-            <AutocompleteItem key="event1" value="Event 1">Event 1</AutocompleteItem>
-            <AutocompleteItem key="event2" value="Event 2">Event 2</AutocompleteItem>
-            <AutocompleteItem key="event3" value="Event 3">Event 3</AutocompleteItem>
+              {eventInfo.map((event) => (
+                <AutocompleteItem key={event.event_ulid} value={event.event_name}>
+                 {event.event_name}
+                </AutocompleteItem>
+                  ))}
         </Autocomplete>
         <div className="flex items-center gap-2">
         <MyButton 

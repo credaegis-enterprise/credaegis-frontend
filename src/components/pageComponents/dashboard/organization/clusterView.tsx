@@ -7,23 +7,10 @@ import { useTabContext } from "@/context/tabContext";
 import { useState } from "react";
 import MyModal from "@/components/modals/mymodal";
 import CreateCluster from "./actions/createCluster";
-
-type Cluster = {
-  cluster_ulid: string;
-  cluster_name: string;
-  organization_ulid: string;
-  created_at: string;
-  deactivated: number;
-  updated_at: string;
-  member_ulid: string;
-  deleted: number;
-  member_email: string;
-  member_password: string;
-  member_name: string;
-};
+import { ClusterType } from "@/types/global.types";
 
 interface ClusterListProps {
-  clusters: Cluster[];
+  clusters: ClusterType[];
 }
 
 const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
