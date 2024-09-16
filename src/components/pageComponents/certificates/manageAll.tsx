@@ -1,7 +1,8 @@
 "use client";
 import { Tab, Tabs } from "@nextui-org/react";
 import { useState } from "react";
-import UploadCertificates from "./uploadCertificates";
+import UploadCertificates from "./uploadCertificates/uploadCertificates";
+import ApproveCertificates from "./approveCertificates/approveCertifcates";
 import { Event } from "@/types/global.types";
 
 interface ManageAllProps {
@@ -33,6 +34,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ eventInfo }) => {
    
       <div className="flex flex-col h-full overflow-hidden mt-4 ">
           {selected === "upload certificates" && <UploadCertificates eventInfo={eventInfo} />}
+          {selected === "approvals" && <ApproveCertificates />}
       </div>
     </div>
   </div>
