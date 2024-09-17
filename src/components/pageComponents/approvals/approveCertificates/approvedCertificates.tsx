@@ -5,53 +5,29 @@ import { EventType,ClusterType } from "@/types/global.types";
 import { use, useState } from "react";
 import { ApprovalsType } from "@/types/global.types";
 import { useEffect } from "react";
-import ApprovalViewer from "./approvalViewer";
+
 
 
 interface ApproveCertificatesProps {
-    approvalsInfo: ApprovalsType[];
+
     }
 
-const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}) => {
-
-  const [approvalsList, setApprovalsList] = useState<ApprovalsType[]>([]);
-  const [selectedApproval, setSelectedApproval] = useState<ApprovalsType>();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+const ApprovedCertificates: React.FC<ApproveCertificatesProps> = () => {
 
 
-  useEffect(() => { 
-    console.log(approvalsInfo);
-    setApprovalsList(approvalsInfo);
-  }, [approvalsInfo]);
+    const approvalsList: ApprovalsType[] = [
+  
+       
+    ]
 
 
-  const handleSelectAll = () => {
-    const newApprovalsList = [...approvalsList];
-    newApprovalsList.forEach(approval => {
-      approval.selected = true;
-    });
-    setApprovalsList(newApprovalsList);
-  }
+  
 
-  const handleSelectOne = (index:number) => {
-    const newApprovalsList = [...approvalsList];
-    newApprovalsList[index].selected = !newApprovalsList[index].selected;
-    setApprovalsList(newApprovalsList);
-  }
 
-  const handleDeselectAll = () => {
-    const newApprovalsList = [...approvalsList];
-    newApprovalsList.forEach(approval => {
-      approval.selected = false;
-    });
-    setApprovalsList(newApprovalsList);
-  }
-
-  console.log(approvalsList);
   
   return (
     <div className="h-full flex flex-col">
-     <ApprovalControl  setApprovalsList={setApprovalsList} approvalsList={approvalsList} />
+   
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg border dark:border-neutral-800">
       <table className="w-full text-sm text-left">
         <thead className="text-md bg-neutral-100 dark:bg-neutral-800 rounded-t-lg sticky z-30 top-0">
@@ -89,14 +65,14 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
             <th scope="col" className="px-6 py-3 text-center">
                 <div className="flex justify-center gap-3">
                     <MyButton size="sm" className="bg-black dark:bg-white" onClick={()=>{
-                        handleSelectAll();
+                       
                     }}>
                         <span className="dark:text-black text-white text-md font-medium">
                             Select All
                         </span>
                     </MyButton>
                     <MyButton size="sm" className="bg-black dark:bg-white" onClick={()=>{
-                        handleDeselectAll();
+                       
                     }}>
                         <span className="dark:text-black text-white text-md font-medium">
                           deselect All
@@ -131,22 +107,12 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
               </td>
               <td className="px-6 py-4 text-center">
                 <div className="flex justify-center gap-4">
-                <MyButton size="sm" className="bg-black dark:bg-white" onClick={()=>{
-                    setSelectedApproval(approval);
-                    setIsOpen(true);
-                }
-                  
-                }>
+                <MyButton size="sm" className="bg-black dark:bg-white">
                     <span className="dark:text-black text-white text-md font-medium">
                         View
                     </span>
                 </MyButton>
-                <MyButton size="sm" className="bg-black dark:bg-white">
-                    <span className="dark:text-black text-white text-md font-medium">
-                        Modify
-                    </span>
-                </MyButton>
-                <Checkbox  isSelected={approval.selected} onValueChange={() => handleSelectOne(index)} className="form-checkbox text-neutral-600 dark:text-neutral-300" color="success" />
+                <Checkbox  isSelected={approval.selected} onValueChange={() => {}} className="form-checkbox text-neutral-600 dark:text-neutral-300" color="success" />
                 </div>
               </td>
             </tr>
@@ -163,10 +129,8 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
         )}
       </table>
     </div>
-    {isOpen && selectedApproval && <ApprovalViewer cluster_ulid={selectedApproval.cluster_ulid} event_ulid={selectedApproval.event_ulid}
-    approval_file_name={selectedApproval.approval_file_name} approval_file_ulid={selectedApproval.approval_file_ulid} setIsOpen={setIsOpen} isOpen={isOpen} />}
     </div>
   );
 };
 
-export default ApproveCertificates;
+export default ApprovedCertificates;

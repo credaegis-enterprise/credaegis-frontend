@@ -51,6 +51,9 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           `/approvals/cluster/get/${selectedCluster}`
         );
       }
+      else{
+        router.refresh();
+      }
       if (result?.data.data.length === 0 && approvalsList.length === 0) {
         toast.info("No approvals found for selected filters ");
       }
@@ -59,12 +62,15 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           (approval: any) => {
             return {
               approval_ulid: approval.approval_ulid,
+              approval_file_ulid: approval.approval_file_ulid,
               approval_file_name: approval.approval_file_name,
               comments: approval.comments,
               expiry_date: approval.expiry_date,
               event_name: approval.event_name,
               issued_to_email: approval.issued_to_email,
               issued_to_name: approval.issued_to_name,
+              event_ulid: approval.event_ulid,
+              cluster_ulid: approval.cluster_ulid,
               selected: false,
             };
           }
@@ -214,7 +220,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
         <div className="flex items-center gap-2">
           <MyButton
             className="bg-black dark:bg-white"
-            size="md"
+            size="sm"
             onClick={() => {
               getApprovals();
             }}
@@ -225,7 +231,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           </MyButton>
           <MyButton
             className="bg-black dark:bg-white"
-            size="md"
+            size="sm"
             onClick={() => {
 
               setApprovalsList([]);
@@ -239,17 +245,17 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
             </span>
           </MyButton>
           <MyButton
-            className="bg-green-400"
-            size="md"
+                  className="bg-black dark:bg-white"
+            size="sm"
             onClick={() => {
               handleApprove();
             }}
           >
-            <span className="text-black text-md font-medium">
+            <span className="dark:text-black text-white text-md font-medium">
               Approve certificates
             </span>
           </MyButton>
-          <MyButton className="bg-red-400" size="md">
+          <MyButton           className="bg-black dark:bg-white" size="sm">
             <span className="dark:text-black text-white text-md font-medium">
               reject certificates
             </span>

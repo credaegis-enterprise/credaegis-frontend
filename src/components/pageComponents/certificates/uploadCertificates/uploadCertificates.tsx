@@ -54,7 +54,7 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({
 
     try {
       const response = await myInstance.post(
-        `/certificates/upload/${event_ulid}`,
+        `/files/upload/${event_ulid}`,
         formData,
         {
           headers: {

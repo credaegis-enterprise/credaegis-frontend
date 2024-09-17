@@ -11,12 +11,15 @@ export interface EventType {
 export interface ApprovalsType {
 
     approval_ulid: string;
+    approval_file_ulid: string;
     approval_file_name: string;
     comments: string;
     expiry_date: string;
     issued_to_name: string;
     issued_to_email: string;
     event_name: string;
+    event_ulid: string;
+    cluster_ulid: string;
     selected: boolean;
 }
 
