@@ -1,7 +1,7 @@
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { MyButton } from "@/components/buttons/mybutton";
 import { MdSearch } from "react-icons/md";
-import { debounce } from "lodash";
+import { debounce, set } from "lodash";
 
 import { useState } from "react";
 import { myInstance } from "@/utils/Axios/axios";
@@ -17,11 +17,14 @@ interface eventType {
   event_name: string;
   event_ulid: string;
   cluster_ulid: string;
+  cluster_name: string;
 }
 
 const ApprovalControl: React.FC<ApproveCertificatesProps> = ({}) => {
   const [clusterList, setClusterList] = useState<clusterType[]>([]);
   const [eventList, setEventList] = useState<eventType[]>([]);
+  const [selectedCluster, setSelectedCluster] = useState<string|null>();
+  const [selectedEvent, setSelectedEvent] = useState<string|null>("");
 
   const debouncedSearchClusters = debounce(async (value: string) => {
     try {
@@ -35,10 +38,10 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({}) => {
     }
   }, 300);
 
-  const debouncedSearchEvents = debounce(async (value: string) => {
+  const debouncedSearchEvents = debounce(async (value: string,id:string) => {
     try {
       const response = await myInstance.get(
-        `/search/event?event_name=${value}`
+        `/search/event?event_name=${value}&cluster_ulid=${id}`
       );
 
       setEventList(response.data.data);
@@ -52,8 +55,30 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({}) => {
   };
 
   const searchEvents = async (value: string) => {
-    debouncedSearchEvents(value);
+    let id = selectedCluster;
+    if(id == null){
+      id = ""
+    }
+    debouncedSearchEvents(value,id);
   };
+
+
+  const handleEventSelection = (key: string) => {
+
+    if(selectedCluster == null){
+    const updatedClusterList = [...clusterList];
+    const event = eventList.find((event) => event.event_ulid === key);
+    if(event){
+        updatedClusterList.push({cluster_name: event.cluster_name, cluster_ulid: event.cluster_ulid});
+        setClusterList(updatedClusterList);
+        setSelectedCluster(event.cluster_ulid);
+    } 
+    setClusterList(updatedClusterList);
+}
+    setSelectedEvent(key);
+
+    
+  }
 
   return (
     <div className="flex flex-col border dark:border-stone-800 border-gray-200 mb-2 rounded-lg p-2 ">
@@ -68,7 +93,10 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({}) => {
           size="sm"
           className=""
           onInputChange={searchClusters}
-        >
+          selectedKey={selectedCluster}
+          onSelectionChange={(key) =>  setSelectedCluster(key as string)}
+
+>
           {clusterList.map((cluster) => (
             <AutocompleteItem
               value={cluster.cluster_name}
@@ -84,6 +112,8 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({}) => {
           size="sm"
           className=""
           onInputChange={searchEvents}
+            selectedKey={selectedEvent}
+            onSelectionChange={(key) =>  handleEventSelection(key as string)}
         >
           {eventList.map((event) => (
             <AutocompleteItem value={event.event_name} key={event.event_ulid}>
