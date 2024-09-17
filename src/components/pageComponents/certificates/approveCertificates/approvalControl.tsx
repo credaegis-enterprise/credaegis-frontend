@@ -11,6 +11,7 @@ import { toast } from "sonner";
 
 interface ApproveCertificatesProps {
   setApprovalsList: (approvalsList: ApprovalsType[]) => void;
+  approvalsList: ApprovalsType[];
 }
 
 interface clusterType {
@@ -27,6 +28,7 @@ interface eventType {
 
 const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   setApprovalsList,
+  approvalsList,
 }) => {
   const [clusterList, setClusterList] = useState<clusterType[]>([]);
   const [eventList, setEventList] = useState<eventType[]>([]);
@@ -43,27 +45,28 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
         result = await myInstance.get(
           `/approvals/cluster/get/${selectedCluster}`
         );
-        
       }
-      if(result?.data.data.length === 0){
+      if (result?.data.data.length === 0 && approvalsList.length === 0) {
         toast.info("No approvals found for selected filters ");
       }
-      if(result){
-      const updatedResult:ApprovalsType[] = result.data.data.map((approval: any) => {
-        return {
-          approval_ulid: approval.approval_ulid,
-          approval_file_name: approval.approval_file_name,
-          comments: approval.comments,
-          expiry_date: approval.expiry_date,
-          event_name: approval.event_name,
-          issued_to_email: approval.issued_to_email,
-          issued_to_name: approval.issued_to_name,
-            selected: false,
-        };
-      });
+      if (result) {
+        const updatedResult: ApprovalsType[] = result.data.data.map(
+          (approval: any) => {
+            return {
+              approval_ulid: approval.approval_ulid,
+              approval_file_name: approval.approval_file_name,
+              comments: approval.comments,
+              expiry_date: approval.expiry_date,
+              event_name: approval.event_name,
+              issued_to_email: approval.issued_to_email,
+              issued_to_name: approval.issued_to_name,
+              selected: false,
+            };
+          }
+        );
 
         setApprovalsList(updatedResult);
-    }
+      }
     } catch (err) {
       console.log(err);
     }
@@ -120,6 +123,40 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
       setClusterList(updatedClusterList);
     }
     setSelectedEvent(key);
+  };
+
+  const handleApprove = async () => {
+    console.log(approvalsList);
+
+
+    const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
+        if (approval.selected) {
+          acc.push(approval.approval_ulid);
+        }
+        return acc;
+      }, []);
+
+    console.log(approvalUlids);
+
+    if (approvalUlids.length === 0) {
+      toast.info("Please select atleast one approval to approve");
+      return;
+    }
+
+    try {
+      const response = await myInstance.post("/approvals/approve", {
+        approval_ulids: approvalUlids,
+      });
+      if (response.data.success) {
+        toast.success(response.data.message);
+        getApprovals();
+        
+      }
+
+
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -189,12 +226,18 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
               setSelectedEvent(null);
               setApprovalsList([]);
             }}
-            >
+          >
             <span className="dark:text-black text-white text-md font-medium">
               Reset
             </span>
-            </MyButton>
-          <MyButton className="bg-green-400" size="md">
+          </MyButton>
+          <MyButton
+            className="bg-green-400"
+            size="md"
+            onClick={() => {
+              handleApprove();
+            }}
+          >
             <span className="text-black text-md font-medium">
               Approve certificates
             </span>

@@ -43,7 +43,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({ eventInfo}) =
   
   return (
     <div className="h-full flex flex-col">
-     <ApprovalControl  setApprovalsList={setApprovalsList} />
+     <ApprovalControl  setApprovalsList={setApprovalsList} approvalsList={approvalsList} />
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg border dark:border-neutral-800">
       <table className="w-full text-sm text-left">
         <thead className="text-md bg-neutral-100 dark:bg-neutral-800 rounded-t-lg sticky z-30 top-0">
@@ -106,7 +106,11 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({ eventInfo}) =
                 {approval.event_name}
               </td>
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                {approval.issued_to_email}
+                <div className="flex flex-col gap-2">
+                    <span>{approval.issued_to_name}</span>
+                    <span>{approval.issued_to_email}</span>
+                </div>
+
               </td>
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
                {approval.issued_to_email}
