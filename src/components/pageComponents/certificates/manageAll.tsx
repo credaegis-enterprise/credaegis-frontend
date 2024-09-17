@@ -8,11 +8,11 @@ import { EventType,ClusterType } from "@/types/global.types";
 
 interface ManageAllProps {
   eventInfo: EventType[];
-  clusterInfo: ClusterType[];
+ 
 }
 
 
-const ManageAll: React.FC<ManageAllProps> = ({ eventInfo,clusterInfo }) => {
+const ManageAll: React.FC<ManageAllProps> = ({ eventInfo}) => {
   const [selected, setSelected] = useState<string>("upload certificate");
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
@@ -38,7 +38,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ eventInfo,clusterInfo }) => {
           {selected === "upload certificates" && <UploadCertificates eventInfo={eventInfo} />}
           {selected === "approvals" && 
           
-          <ApproveCertificates clusterInfo={clusterInfo} eventInfo={eventInfo}/>
+          <ApproveCertificates eventInfo={eventInfo}/>
           }
       </div>
     </div>

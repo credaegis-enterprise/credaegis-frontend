@@ -60,7 +60,7 @@ const Page = async () => {
     console.log(events)
     return (
         <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 ">
-          <ManageAll eventInfo={events} clusterInfo={clusters}/>
+          <ManageAll eventInfo={events} />
         </div>
     )
 }

@@ -7,10 +7,10 @@ import { useState } from "react";
 
 interface ApproveCertificatesProps {
     eventInfo: EventType[];
-    clusterInfo: ClusterType[];
+
     }
 
-const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({ eventInfo,clusterInfo }) => {
+const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({ eventInfo}) => {
 
   const [approvalsList, setApprovalsList] = useState("");
   const certificates = [
@@ -117,7 +117,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({ eventInfo,clu
 
   return (
     <div className="h-full flex flex-col">
-     <ApprovalControl eventInfo={eventInfo} clusterInfo={clusterInfo} />
+     <ApprovalControl eventInfo={eventInfo}  />
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg border dark:border-neutral-800">
       <table className="w-full text-sm text-left">
         <thead className="text-md bg-neutral-100 dark:bg-neutral-800 rounded-t-lg sticky z-30 top-0">
