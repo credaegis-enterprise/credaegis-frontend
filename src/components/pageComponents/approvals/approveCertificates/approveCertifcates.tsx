@@ -2,19 +2,25 @@ import { MyButton } from "@/components/buttons/mybutton";
 import { Checkbox } from "@nextui-org/react";
 import ApprovalControl from "./approvalControl";
 import { EventType,ClusterType } from "@/types/global.types";
-import { useState } from "react";
+import { use, useState } from "react";
 import { ApprovalsType } from "@/types/global.types";
-import { set } from "lodash";
+import { useEffect } from "react";
+
 
 
 interface ApproveCertificatesProps {
-    
-
+    approvalsInfo: ApprovalsType[];
     }
 
-const ApproveCertificates: React.FC<ApproveCertificatesProps> = () => {
+const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}) => {
 
   const [approvalsList, setApprovalsList] = useState<ApprovalsType[]>([]);
+
+
+  useEffect(() => { 
+    console.log(approvalsInfo);
+    setApprovalsList(approvalsInfo);
+  }, [approvalsInfo]);
 
 
   const handleSelectAll = () => {

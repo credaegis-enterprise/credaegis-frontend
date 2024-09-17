@@ -3,6 +3,7 @@ import { MyButton } from "@/components/buttons/mybutton";
 import { MdSearch } from "react-icons/md";
 import { debounce, get, set } from "lodash";
 import { ApprovalsType } from "@/types/global.types";
+import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 import { myInstance } from "@/utils/Axios/axios";
@@ -30,10 +31,14 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   setApprovalsList,
   approvalsList,
 }) => {
+
+  const router = useRouter();
   const [clusterList, setClusterList] = useState<clusterType[]>([]);
   const [eventList, setEventList] = useState<eventType[]>([]);
   const [selectedCluster, setSelectedCluster] = useState<string | null>();
   const [selectedEvent, setSelectedEvent] = useState<string | null>("");
+
+  
 
   const getApprovals = async () => {
     let result;
@@ -222,9 +227,11 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
             className="bg-black dark:bg-white"
             size="md"
             onClick={() => {
-              setSelectedCluster(null);
-              setSelectedEvent(null);
+
               setApprovalsList([]);
+              setSelectedCluster(null);
+              setSelectedEvent("");
+              router.refresh();
             }}
           >
             <span className="dark:text-black text-white text-md font-medium">
