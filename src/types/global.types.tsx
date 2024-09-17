@@ -1,4 +1,4 @@
-export interface Event {
+export interface EventType {
   event_ulid: string;
   event_name: string;
   created_at: string;
@@ -6,6 +6,20 @@ export interface Event {
   deleted: boolean;
   cluster_ulid: string;
 }
+
+
+export interface ApprovalsType {
+
+    approval_ulid: string;
+    approval_file_name: string;
+    comments: string;
+    expiry_date: string;
+    issued_to_name: string;
+    issued_to_email: string;
+    event_name: string;
+    selected: boolean;
+}
+
 
 export interface ClusterType  {
     cluster_ulid: string;

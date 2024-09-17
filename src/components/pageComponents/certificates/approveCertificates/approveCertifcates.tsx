@@ -3,6 +3,8 @@ import { Checkbox } from "@nextui-org/react";
 import ApprovalControl from "./approvalControl";
 import { EventType,ClusterType } from "@/types/global.types";
 import { useState } from "react";
+import { ApprovalsType } from "@/types/global.types";
+import { set } from "lodash";
 
 
 interface ApproveCertificatesProps {
@@ -12,112 +14,36 @@ interface ApproveCertificatesProps {
 
 const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({ eventInfo}) => {
 
-  const [approvalsList, setApprovalsList] = useState("");
-  const certificates = [
-    {
-      eventName: "Tech Conference 2024 ",
-      issuedTo: "John Does",
-      uploadedBy: "Admin",
-      expiry: "2025-01-01",
-      comments: "My certificate",
-    },
-    {
-      eventName: "Tech Conference 2024",
-      issuedTo: "John Doe",
-      uploadedBy: "Admin",
-      expiry: "2025-01-01",
-      comments: "Pending review",
-    },
-    {
-        eventName: "Tech Conference 2024 ",
-        issuedTo: "John Does",
-        uploadedBy: "Admin",
-        expiry: "2025-01-01",
-        comments: "My certificate",
-      },
-      {
-        eventName: "Tech Conference 2024",
-        issuedTo: "John Doe",
-        uploadedBy: "Admin",
-        expiry: "2025-01-01",
-        comments: "Pending review",
-      },
-      {
-        eventName: "Tech Conference 2024 ",
-        issuedTo: "John Does",
-        uploadedBy: "Admin",
-        expiry: "2025-01-01",
-        comments: "My certificate",
-      },
-      {
-        eventName: "Tech Conference 2024",
-        issuedTo: "John Doe",
-        uploadedBy: "Admin",
-        expiry: "2025-01-01",
-        comments: "Pending review",
-      },
-      {
-        eventName: "Tech Conference 2024 ",
-        issuedTo: "John Does",
-        uploadedBy: "Admin",
-        expiry: "2025-01-01",
-        comments: "My certificate",
-      },
-      {
-        eventName: "Tech Conference 2024",
-        issuedTo: "John Doe",
-        uploadedBy: "Admin",
-        expiry: "2025-01-01",
-        comments: "Pending review",
-      },
-      {
-        eventName: "Tech Conference 2024 ",
-        issuedTo: "John Does",
-        uploadedBy: "Admin",
-        expiry: "2025-01-01",
-        comments: "My certificate",
-      },
-      {
-        eventName: "Tech Conference 2024",
-        issuedTo: "John Doe",
-        uploadedBy: "Admin",
-        expiry: "2025-01-01",
-        comments: "Pending review",
-      },
-      {
-        eventName: "Tech Conference 2024 ",
-        issuedTo: "John Does",
-        uploadedBy: "Admin",
-        expiry: "2025-01-01",
-        comments: "My certificate",
-      },
-      {
-        eventName: "Tech Conference 2024",
-        issuedTo: "John Doe",
-        uploadedBy: "Admin",
-        expiry: "2025-01-01",
-        comments: "Pending review",
-      },
-      {
-        eventName: "Tech Conference 2024 ",
-        issuedTo: "John Does",
-        uploadedBy: "Admin",
-        expiry: "2025-01-01",
-        comments: "My certificate",
-      },
-      {
-        eventName: "Tech Conference 2024",
-        issuedTo: "John Doe",
-        uploadedBy: "Admin",
-        expiry: "2025-01-01",
-        comments: "Pending review",
-      },
-      
-  ];
+  const [approvalsList, setApprovalsList] = useState<ApprovalsType[]>([]);
 
+
+  const handleSelectAll = () => {
+    const newApprovalsList = [...approvalsList];
+    newApprovalsList.forEach(approval => {
+      approval.selected = true;
+    });
+    setApprovalsList(newApprovalsList);
+  }
+
+  const handleSelectOne = (index:number) => {
+    const newApprovalsList = [...approvalsList];
+    newApprovalsList[index].selected = !newApprovalsList[index].selected;
+    setApprovalsList(newApprovalsList);
+  }
+
+  const handleDeselectAll = () => {
+    const newApprovalsList = [...approvalsList];
+    newApprovalsList.forEach(approval => {
+      approval.selected = false;
+    });
+    setApprovalsList(newApprovalsList);
+  }
+
+  console.log(approvalsList);
+  
   return (
     <div className="h-full flex flex-col">
-     <ApprovalControl eventInfo={eventInfo}  />
+     <ApprovalControl  setApprovalsList={setApprovalsList} />
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg border dark:border-neutral-800">
       <table className="w-full text-sm text-left">
         <thead className="text-md bg-neutral-100 dark:bg-neutral-800 rounded-t-lg sticky z-30 top-0">
@@ -152,26 +78,44 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({ eventInfo}) =
             >
               Comments
             </th>
-            <th scope="col" className="px-6 py-3 text-center w-12"></th>
+            <th scope="col" className="px-6 py-3 text-center">
+                <div className="flex justify-center gap-3">
+                    <MyButton size="sm" className="bg-black dark:bg-white" onClick={()=>{
+                        handleSelectAll();
+                    }}>
+                        <span className="dark:text-black text-white text-md font-medium">
+                            Select All
+                        </span>
+                    </MyButton>
+                    <MyButton size="sm" className="bg-black dark:bg-white" onClick={()=>{
+                        handleDeselectAll();
+                    }}>
+                        <span className="dark:text-black text-white text-md font-medium">
+                          deselect All
+                        </span>
+                    </MyButton>
+                    </div>
+            </th>
           </tr>
         </thead>
+        {approvalsList && approvalsList.length > 0 ? (
         <tbody className="">
-          {certificates.map((certificate, index) => (
+            {approvalsList.map((approval, index) => (
             <tr key={index} className="">
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                {certificate.eventName}
+                {approval.event_name}
               </td>
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                {certificate.issuedTo}
+                {approval.issued_to_email}
               </td>
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                {certificate.uploadedBy}
+               {approval.issued_to_email}
               </td>
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                {certificate.expiry}
+             {approval.expiry_date? approval.expiry_date : "N/A"}
               </td>
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                {certificate.comments}
+             {approval.comments? approval.comments : "N/A"}
               </td>
               <td className="px-6 py-4 text-center">
                 <div className="flex justify-center gap-4">
@@ -180,12 +124,21 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({ eventInfo}) =
                         View
                     </span>
                 </MyButton>
-                <Checkbox className="form-checkbox text-neutral-600 dark:text-neutral-300" color="success" />
+                <Checkbox  isSelected={approval.selected} onValueChange={() => handleSelectOne(index)} className="form-checkbox text-neutral-600 dark:text-neutral-300" color="success" />
                 </div>
               </td>
             </tr>
           ))}
         </tbody>
+        ):(
+            <tbody>
+                <tr>
+                <td colSpan={6}  className="text-center text-md py-4 text-neutral-900 dark:text-neutral-100">
+                    No certificates to approve
+                </td>
+                </tr>
+            </tbody>
+        )}
       </table>
     </div>
     </div>
