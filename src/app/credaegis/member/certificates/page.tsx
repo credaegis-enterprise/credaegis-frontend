@@ -1,6 +1,7 @@
 import { myInstanceNEXT } from "@/utils/Axios/axios"
 import getCookies from "@/utils/cookies/getCookies"
-import ManageAll from "@/components/pageComponents/certificates/manageAll"
+import UploadCertificates from "@/components/pageComponents/certificates/uploadCertificates/uploadCertificates"
+
 
 const fetchEvents = async () => {
 
@@ -28,7 +29,13 @@ const Page = async () => {
     console.log(events)
     return (
         <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 ">
-          <ManageAll eventInfo={events}/>
+         <div className="h-full flex p-2 ">
+      <div className="flex flex-col w-full">
+      <div className="flex flex-col h-full overflow-hidden  ">
+         <UploadCertificates eventInfo={events} />
+      </div>
+    </div>
+  </div>
         </div>
     )
 }

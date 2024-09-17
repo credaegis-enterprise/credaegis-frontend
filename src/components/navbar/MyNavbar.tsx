@@ -57,7 +57,13 @@ export default function MyNavbar() {
           <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
         </NavbarItem>
         )}
-        <NavbarItem>
+        
+          {role!== "member" && ( 
+            <NavbarItem>
+              <Link href={`/credaegis/${accountType}/approvals`}>approvals</Link>
+            </NavbarItem>
+          ) }
+          <NavbarItem>
           <Link href={`/credaegis/${accountType}/settings`}>settings</Link>
         </NavbarItem>
         <NavbarItem>

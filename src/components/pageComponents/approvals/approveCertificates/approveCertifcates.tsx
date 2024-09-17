@@ -8,11 +8,11 @@ import { set } from "lodash";
 
 
 interface ApproveCertificatesProps {
-    eventInfo: EventType[];
+    
 
     }
 
-const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({ eventInfo}) => {
+const ApproveCertificates: React.FC<ApproveCertificatesProps> = () => {
 
   const [approvalsList, setApprovalsList] = useState<ApprovalsType[]>([]);
 
