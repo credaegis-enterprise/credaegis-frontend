@@ -20,11 +20,14 @@ interface eventType {
   cluster_name: string;
 }
 
+
+
 const ApprovalControl: React.FC<ApproveCertificatesProps> = ({}) => {
   const [clusterList, setClusterList] = useState<clusterType[]>([]);
   const [eventList, setEventList] = useState<eventType[]>([]);
   const [selectedCluster, setSelectedCluster] = useState<string|null>();
   const [selectedEvent, setSelectedEvent] = useState<string|null>("");
+  const [selectedClusterName, setSelectedClusterName] = useState<string|null>();
 
   const debouncedSearchClusters = debounce(async (value: string) => {
     try {
@@ -63,6 +66,9 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({}) => {
   };
 
 
+
+
+
   const handleEventSelection = (key: string) => {
 
     if(selectedCluster == null){
@@ -89,12 +95,15 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({}) => {
       <div className="flex flex-col lg:flex-row  gap-4 p-2">
         <Autocomplete
           label=" Cluster"
-          placeholder="Select an Event"
+          placeholder="Select a Cluster"
           size="sm"
           className=""
           onInputChange={searchClusters}
           selectedKey={selectedCluster}
-          onSelectionChange={(key) =>  setSelectedCluster(key as string)}
+          onSelectionChange={(key) => {
+            setSelectedCluster(key as string);
+            setSelectedEvent("");
+          }}
 
 >
           {clusterList.map((cluster) => (
@@ -108,7 +117,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({}) => {
         </Autocomplete>
         <Autocomplete
           label=" Event"
-          placeholder="Select an Event"
+          placeholder={`${!selectedCluster? "Select an Event" : `Select a Event under selected cluster `}`}
           size="sm"
           className=""
           onInputChange={searchEvents}
