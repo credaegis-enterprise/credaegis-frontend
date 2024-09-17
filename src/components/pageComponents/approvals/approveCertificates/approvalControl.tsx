@@ -4,15 +4,20 @@ import { MdSearch } from "react-icons/md";
 import { debounce, get, set } from "lodash";
 import { ApprovalsType } from "@/types/global.types";
 import { useRouter } from "next/navigation";
-
 import { useState } from "react";
 import { myInstance } from "@/utils/Axios/axios";
-import exp from "constants";
 import { toast } from "sonner";
 
 interface ApproveCertificatesProps {
   setApprovalsList: (approvalsList: ApprovalsType[]) => void;
   approvalsList: ApprovalsType[];
+  selectedCluster: string | null;
+  setSelectedCluster: (cluster: string | null) => void;
+  selectedEvent: string | null;
+  setSelectedEvent: (event: string | null) => void;
+  getApprovals: () => void;
+
+
 }
 
 interface clusterType {
@@ -30,58 +35,23 @@ interface eventType {
 const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   setApprovalsList,
   approvalsList,
+  selectedCluster,
+  setSelectedCluster,
+  selectedEvent,
+  setSelectedEvent,
+  getApprovals
 }) => {
 
+  console.log("hey nigaaaaaaaa");
   const router = useRouter();
   const [clusterList, setClusterList] = useState<clusterType[]>([]);
   const [eventList, setEventList] = useState<eventType[]>([]);
-  const [selectedCluster, setSelectedCluster] = useState<string | null>();
-  const [selectedEvent, setSelectedEvent] = useState<string | null>("");
+  // const [selectedCluster, setSelectedCluster] = useState<string | null>();
+  // const [selectedEvent, setSelectedEvent] = useState<string | null>("");
 
   
 
-  const getApprovals = async () => {
-    let result;
-    try {
-      if (selectedEvent) {
-        result = await myInstance.get(`/approvals/event/get/${selectedEvent}`);
-        console.log(result);
-      } else if (selectedCluster) {
-        result = await myInstance.get(
-          `/approvals/cluster/get/${selectedCluster}`
-        );
-      }
-      else{
-        router.refresh();
-      }
-      if (result?.data.data.length === 0 && approvalsList.length === 0) {
-        toast.info("No approvals found for selected filters ");
-      }
-      if (result) {
-        const updatedResult: ApprovalsType[] = result.data.data.map(
-          (approval: any) => {
-            return {
-              approval_ulid: approval.approval_ulid,
-              approval_file_ulid: approval.approval_file_ulid,
-              approval_file_name: approval.approval_file_name,
-              comments: approval.comments,
-              expiry_date: approval.expiry_date,
-              event_name: approval.event_name,
-              issued_to_email: approval.issued_to_email,
-              issued_to_name: approval.issued_to_name,
-              event_ulid: approval.event_ulid,
-              cluster_ulid: approval.cluster_ulid,
-              selected: false,
-            };
-          }
-        );
 
-        setApprovalsList(updatedResult);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const debouncedSearchClusters = debounce(async (value: string) => {
     try {
