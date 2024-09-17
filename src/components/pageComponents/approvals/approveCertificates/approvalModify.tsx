@@ -5,7 +5,7 @@ import { useState,useEffect } from "react";
 import { MyButton } from "@/components/buttons/mybutton";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
-import { set } from "lodash";
+import emailValidator from "@/utils/Validators/emailValidator";
 
 
 interface ApprovalModifyProps {
@@ -21,6 +21,8 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
     const [trigger, setTrigger] = useState(false);
     const [comments, setComments] = useState<string | null>(null);
     const [expiryDate, setExpiryDate] = useState<string | null>(null);
+    const [isNameEmpty, setIsNameEmpty] = useState(false);
+    const [isEmailValid, setIsEmailValid] = useState(false);
 
     useEffect(() => {
         if(approval){
@@ -33,6 +35,27 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
 
 
     const handleUpdate = async () => {
+
+        if (!name) {
+            setIsNameEmpty(true);
+            toast.error("Name is required");
+          }
+          else
+              setIsNameEmpty(false);
+      
+          if (!emailValidator(email)) {
+            setIsEmailValid(true);
+              toast.error("Please enter a valid email address");
+      
+          }
+          else
+              setIsEmailValid(false);
+      
+          if (!name || !emailValidator(email)) {
+            return;
+          }
+
+
         try{ 
 
             const response = await myInstance.patch("/approvals/modify",{
@@ -62,7 +85,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
     <div className="h-full w-full">
       <div className="flex flex-col"></div>
       <Input
-         
+            isInvalid={isNameEmpty}
             value={name}
             onChange={(e) => setName(e.target.value)}
             errorMessage="Name is required"
@@ -76,6 +99,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
           />
 
           <Input
+            isInvalid={isEmailValid}
             value={email}
             errorMessage={"Enter a valid email address"}
             onChange={(e) => setEmail(e.target.value)}
@@ -124,6 +148,8 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
               className="bg-black dark:bg-white"
               size="sm"
               onClick={() => {
+                setIsEmailValid(false);
+                setIsNameEmpty(false);
                 setTrigger((prev) => !prev);
               }}
               >
