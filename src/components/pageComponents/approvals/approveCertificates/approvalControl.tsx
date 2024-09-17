@@ -42,7 +42,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   getApprovals
 }) => {
 
-  console.log("hey nigaaaaaaaa");
+
   const router = useRouter();
   const [clusterList, setClusterList] = useState<clusterType[]>([]);
   const [eventList, setEventList] = useState<eventType[]>([]);

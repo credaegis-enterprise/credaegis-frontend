@@ -9,7 +9,13 @@ import ApprovalModify from "./approvalModify";
 import MyModal from "@/components/modals/mymodal";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { MdEvent } from "react-icons/md";
+import { MdComment } from "react-icons/md";
 import { myInstance } from "@/utils/Axios/axios";
+import { IoCloudUpload } from "react-icons/io5";
+import { MdEventAvailable } from "react-icons/md";
+import { MdAccountCircle } from "react-icons/md";
+import { GrBookmark } from "react-icons/gr";
 
 
 interface ApproveCertificatesProps {
@@ -118,31 +124,47 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
               scope="col"
               className="px-6 py-3 text-neutral-700 dark:text-neutral-200 font-semibold"
             >
-              Event Name
+              <div className="flex items-center gap-1">
+                <GrBookmark size={20} />
+                <span>Event Name</span>
+              </div>
+         
             </th>
             <th
               scope="col"
               className="px-6 py-3 text-neutral-700 dark:text-neutral-200 font-semibold"
             >
-              Issued To
+              <div className="flex items-center gap-1">
+                <MdAccountCircle size={20} /> 
+                <span>Issued To</span>
+              </div>
             </th>
             <th
               scope="col"
               className="px-6 py-3 text-neutral-700 dark:text-neutral-200 font-semibold"
             >
-              Uploaded By
+              <div className="flex items-center gap-1">   
+                <IoCloudUpload size={20} />
+                <span>Uploaded By</span>  
+              </div>
             </th>
             <th
               scope="col"
               className="px-6 py-3 text-neutral-700 dark:text-neutral-200 font-semibold"
             >
-              Expiry
+              <div className="flex items-center gap-1">
+                <MdEvent size={20} />
+                <span>Expiry Date</span>
+              </div>
             </th>
             <th
               scope="col"
               className="px-6 py-3 text-neutral-700 dark:text-neutral-200 font-semibold"
             >
-              Comments
+              <div className="flex items-center gap-1">
+                <MdComment size={20} />
+                <span>Comments</span>
+              </div>
             </th>
             <th scope="col" className="px-6 py-3 text-center">
                 <div className="flex justify-center gap-3">
