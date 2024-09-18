@@ -12,8 +12,6 @@ import { useRouter } from "next/navigation";
 import { MdEvent } from "react-icons/md";
 import { MdComment } from "react-icons/md";
 import { myInstance } from "@/utils/Axios/axios";
-import { IoCloudUpload } from "react-icons/io5";
-import { MdEventAvailable } from "react-icons/md";
 import { MdAccountCircle } from "react-icons/md";
 import { GrBookmark } from "react-icons/gr";
 
@@ -139,7 +137,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
                 <span>Issued To</span>
               </div>
             </th>
-            <th
+            {/* <th
               scope="col"
               className="px-6 py-3 text-neutral-700 dark:text-neutral-200 font-semibold"
             >
@@ -147,7 +145,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
                 <IoCloudUpload size={20} />
                 <span>Uploaded By</span>  
               </div>
-            </th>
+            </th> */}
             <th
               scope="col"
               className="px-6 py-3 text-neutral-700 dark:text-neutral-200 font-semibold"
@@ -196,13 +194,13 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
                 <div className="flex flex-col gap-2">
                     <span>{approval.issued_to_name}</span>
-                    <span>{approval.issued_to_email}</span>
+                    <span className="text-xs text-gray-700 dark:text-gray-300">{approval.issued_to_email}</span>
                 </div>
 
               </td>
-              <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
+              {/* <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
                {approval.issued_to_email}
-              </td>
+              </td> */}
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
              {approval.expiry_date? approval.expiry_date : "N/A"}
               </td>

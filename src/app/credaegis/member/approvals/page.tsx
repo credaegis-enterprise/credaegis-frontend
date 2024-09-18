@@ -16,6 +16,7 @@ const fetchApprovals = async () => {
         if(response.data.data?.length === 0){
             return []
         }
+        console.log(response.data.data)
         const updatedResult: ApprovalsType[] = response.data.data.map(
             (approval: any) => {
               return {

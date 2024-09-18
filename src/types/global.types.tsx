@@ -21,6 +21,7 @@ export interface ApprovalsType {
     event_ulid: string;
     cluster_ulid: string;
     selected: boolean;
+    
 }
 
 
