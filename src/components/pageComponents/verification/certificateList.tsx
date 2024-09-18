@@ -34,6 +34,9 @@ const CertificateList: React.FC<MyFileListProps> = ({
   setVerificationStatus,
   verificationStatus,
 }) => {
+
+
+    const inputFile = useRef<HTMLInputElement>(null);
   const handleVerifyCertificates = async () => {
     if (selectedFiles.length === 0) {
       toast.warning("Please upload files to verify");
@@ -66,16 +69,20 @@ const CertificateList: React.FC<MyFileListProps> = ({
       toast.error(error.response?.data.message || "An error occurred");
     }
   };
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    
-    if (e.target.files) {
+    try {
+     
+      if (!e.target.files || e.target.files.length === 0) {
+        throw new Error("No file selected or file input is empty.");
+      }
+  
       const filesArray = Array.from(e.target.files).map((file) => {
         const newFile = file as MyFileType;
-        newFile.id = ulid();
+        newFile.id = ulid(); // Ensure unique ID
         return newFile;
       });
-
+  
+    
       if (selectedFiles && selectedFiles.length === 0) {
         setFileUrl({
           filename: filesArray[0]?.name,
@@ -83,32 +90,40 @@ const CertificateList: React.FC<MyFileListProps> = ({
           fileindex: filesArray[0]?.id,
         });
       }
-
+  
+  
       if (selectedFiles.length < 10) {
         if (filesArray.length + selectedFiles.length > 10) {
           toast.warning("You can only upload a maximum of 10 files at a time");
+          return;
         }
-
+  
         const newFiles = filesArray.slice(0, 10 - selectedFiles.length);
-        console.log(newFiles);
         const tempFiles = [...selectedFiles, ...newFiles];
         const fileSet = new Set();
+  
         for (const file of tempFiles) {
-          if (!fileSet.has(file.name)) {
-            fileSet.add(file.name);
-          } else {
+      
+          if (fileSet.has(file.name)) {
             toast.warning("Duplicate file names are not allowed");
             return;
           }
+          fileSet.add(file.name);
         }
-
-        setSelectedFiles([...selectedFiles, ...newFiles]);
-        setFileCount(newFiles.length + selectedFiles.length);
+  
+        // Update state with the selected files
+        setSelectedFiles(tempFiles);
+        setFileCount(tempFiles.length);
       } else {
         toast.warning("You can only upload a maximum of 10 files at a time");
       }
+    } catch (error) {
+      // Handle and display any unexpected errors
+      console.error("File upload error:", error);
+      toast.error("There was an error uploading the file. Please try again.");
     }
   };
+  
 
   const handleFileRemove = (index: number) => {
     setFileCount(selectedFiles.length - 1);
@@ -120,7 +135,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
     setSelectedFiles(newFiles);
   };
 
-  const inputFile = useRef<HTMLInputElement>(null);
+  
   return (
     <div className="h-full w-full flex flex-col gap-2 ">
       <div className="flex justify-between p-2">
