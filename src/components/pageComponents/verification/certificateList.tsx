@@ -35,106 +35,108 @@ const CertificateList: React.FC<MyFileListProps> = ({
   verificationStatus,
 }) => {
 
-
-    const inputFile = useRef<HTMLInputElement>(null);
-  const handleVerifyCertificates = async () => {
-    if (selectedFiles.length === 0) {
-      toast.warning("Please upload files to verify");
-      return;
-    }
-    const formData = new FormData();
-    selectedFiles.forEach((file) => {
-      formData.append("toVerify", file);
-    });
-
-    try {
-      const response = await myInstance.post(
-        "/verification/checkAuthenticity",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (response.data.success) {
-        setVerificationStatus(response.data.verificationStatus);
-        toast.success(
-          "Successfully checked the authenticity of the certificates"
-        );
-      }
-    } catch (error: any) {
-      console.log(error);
-      toast.error(error.response?.data.message || "An error occurred");
-    }
-  };
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    try {
-     
-      if (!e.target.files || e.target.files.length === 0) {
-        throw new Error("No file selected or file input is empty.");
-      }
-  
-      const filesArray = Array.from(e.target.files).map((file) => {
-        const newFile = file as MyFileType;
-        newFile.id = ulid(); // Ensure unique ID
-        return newFile;
-      });
-  
     
-      if (selectedFiles && selectedFiles.length === 0) {
-        setFileUrl({
-          filename: filesArray[0]?.name,
-          fileurl: filesArray ? URL.createObjectURL(filesArray[0]) : "",
-          fileindex: filesArray[0]?.id,
-        });
-      }
-  
-  
-      if (selectedFiles.length < 10) {
-        if (filesArray.length + selectedFiles.length > 10) {
-          toast.warning("You can only upload a maximum of 10 files at a time");
-          return;
-        }
-  
-        const newFiles = filesArray.slice(0, 10 - selectedFiles.length);
-        const tempFiles = [...selectedFiles, ...newFiles];
-        const fileSet = new Set();
-  
-        for (const file of tempFiles) {
+        const inputFile = useRef<HTMLInputElement>(null);
       
-          if (fileSet.has(file.name)) {
-            toast.warning("Duplicate file names are not allowed");
+        const handleVerifyCertificates = async () => {
+          if (selectedFiles.length === 0) {
+            toast.warning("Please upload files to verify");
             return;
           }
-          fileSet.add(file.name);
-        }
-  
-        // Update state with the selected files
-        setSelectedFiles(tempFiles);
-        setFileCount(tempFiles.length);
-      } else {
-        toast.warning("You can only upload a maximum of 10 files at a time");
-      }
-    } catch (error) {
-      // Handle and display any unexpected errors
-      console.error("File upload error:", error);
-      toast.error("There was an error uploading the file. Please try again.");
-    }
-  };
-  
+          const formData = new FormData();
+          selectedFiles.forEach((file) => formData.append("toVerify", file));
+      
+          try {
+            const response = await myInstance.post(
+              "/verification/checkAuthenticity",
+              formData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            );
+      
+            if (response.data.success) {
+              setVerificationStatus(response.data.verificationStatus);
+              toast.success("Successfully checked the authenticity of the certificates");
+            }
+          } catch (error: any) {
+            console.error("Verification error:", error);
+            toast.error(error.response?.data.message || "An error occurred");
+          }
+        };
+      
+        const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          try {
+            const { files } = e.target;
 
-  const handleFileRemove = (index: number) => {
-    setFileCount(selectedFiles.length - 1);
-    if (fileUrl?.filename === selectedFiles[index].name) {
-      setFileUrl(null);
-    }
-    const newFiles = [...selectedFiles];
-    newFiles.splice(index, 1);
-    setSelectedFiles(newFiles);
-  };
-
+            if (!files || files.length === 0) {
+              toast.info("No file selected. Please choose a file.");
+              return;
+            }
+      
+            const filesArray = Array.from(e.target.files || []).map((file) => {
+              const newFile = file as MyFileType;
+              newFile.id = ulid(); 
+              return newFile;
+            });
+      
+           
+            if (selectedFiles.length === 0) {
+              setFileUrl({
+                filename: filesArray[0].name,
+                fileurl: URL.createObjectURL(filesArray[0]),
+                fileindex: filesArray[0].id,
+              });
+            }
+      
+            if (selectedFiles.length < 10) {
+              if (filesArray.length + selectedFiles.length > 10) {
+                toast.warning("You can only upload a maximum of 10 files at a time.");
+                return;
+              }
+      
+              const newFiles = filesArray.slice(0, 10 - selectedFiles.length);
+              const tempFiles = [...selectedFiles, ...newFiles];
+              const fileSet = new Set(selectedFiles.map((file) => file.name)); 
+      
+            
+              for (const file of newFiles) {
+                if (fileSet.has(file.name)) {
+                  toast.warning("Duplicate file names are not allowed.");
+                  return;
+                }
+                fileSet.add(file.name);
+              }
+      
+            
+              setSelectedFiles(tempFiles);
+              setFileCount(tempFiles.length);
+            } else {
+              toast.warning("You can only upload a maximum of 10 files at a time.");
+            }
+          } catch (error) {
+            console.error("File upload error:", error);
+            toast.error("There was an error uploading the file. Please try again.");
+          }
+        };
+      
+        const handleFileRemove = (index: number) => {
+          const newFiles = [...selectedFiles];
+          newFiles.splice(index, 1);
+      
+          setSelectedFiles(newFiles);
+          setFileCount(newFiles.length);
+      
+   
+          if (fileUrl?.filename === selectedFiles[index]?.name) {
+            setFileUrl(null);
+          }
+        };
+      
+        
+      
   
   return (
     <div className="h-full w-full flex flex-col gap-2 ">
