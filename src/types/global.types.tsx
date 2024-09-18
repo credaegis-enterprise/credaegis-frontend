@@ -59,4 +59,29 @@ export interface MyFileType extends File {
 }
 
 
+export interface verifyStatusType {
+  filename: string;
+  isIssued: boolean;
+  info?: verifyInfoType;
+}
+
+export interface verifyInfoType {
+ 
+    certificate_ulid: string;
+    event_ulid: string;
+    issued_date: string; 
+    issued_to_name: string;
+    issued_to_email: string;
+    expiry_date: string; 
+    comments?: string;
+    certificate_name: string;
+    certificate_hash: string;
+    revoked: number; 
+    revoked_date: string | null; 
+    approved_by_organization: string | null; 
+    approved_by_member: string;
+    updated_at: string; 
+  };
+
+
 

@@ -65,7 +65,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
         return newFile;
       });
 
-      if (selectedFiles && selectedFiles.length === 0) {
+      if (selectedFiles && selectedFiles.length === 1) {
         setFileUrl({
           filename: filesArray[0].name,
           fileurl: URL.createObjectURL(filesArray[0]),
