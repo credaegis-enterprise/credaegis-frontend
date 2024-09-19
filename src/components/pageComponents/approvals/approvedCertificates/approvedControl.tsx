@@ -2,22 +2,21 @@ import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { MyButton } from "@/components/buttons/mybutton";
 import { MdSearch } from "react-icons/md";
 import { debounce, get, set } from "lodash";
-import { ApprovalsType } from "@/types/global.types";
+import {issuedCertificatesType } from "@/types/global.types";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
 
-interface ApproveCertificatesProps {
-  setApprovalsList: (approvalsList: ApprovalsType[]) => void;
-  approvalsList: ApprovalsType[];
+interface ApprovedCertificatesProps {
+ setIssuedList: (issuedList: issuedCertificatesType[]) => void;
+  issuedList: issuedCertificatesType[];
   selectedCluster: string | null;
   setSelectedCluster: (cluster: string | null) => void;
   selectedEvent: string | null;
   setSelectedEvent: (event: string | null) => void;
-  getApprovals: () => void;
-
-
+  getIssuedCertificates: () => void;
+  
 }
 
 interface clusterType {
@@ -32,26 +31,22 @@ interface eventType {
   cluster_name: string;
 }
 
-const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
-  setApprovalsList,
-  approvalsList,
-  selectedCluster,
-  setSelectedCluster,
-  selectedEvent,
-  setSelectedEvent,
-  getApprovals
+const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({   
+    issuedList,
+    setIssuedList,
+    selectedCluster,
+    setSelectedCluster,
+    selectedEvent,
+    setSelectedEvent,
+    getIssuedCertificates,
+
+ 
 }) => {
-
-
   const router = useRouter();
   const [clusterList, setClusterList] = useState<clusterType[]>([]);
   const [eventList, setEventList] = useState<eventType[]>([]);
   // const [selectedCluster, setSelectedCluster] = useState<string | null>();
   // const [selectedEvent, setSelectedEvent] = useState<string | null>("");
-
-  
-
-
 
   const debouncedSearchClusters = debounce(async (value: string) => {
     try {
@@ -106,73 +101,43 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     setSelectedEvent(key);
   };
 
-  const handleApprove = async () => {
-    console.log(approvalsList);
+  const handleRevoke = async () => {
 
-
-    const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
-        if (approval.selected) {
-          acc.push(approval.approval_ulid);
-        }
-        return acc;
-      }, []);
-
-    console.log(approvalUlids);
-
-    if (approvalUlids.length === 0) {
-      toast.info("Please select atleast one approval to approve");
-      return;
-    }
-
-    try {
-      const response = await myInstance.post("/approvals/approve", {
-        approval_ulids: approvalUlids,
-      });
-      if (response.data.success) {
-        toast.success(response.data.message);
-        getApprovals();
-        
-      }
-
-
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleReject = async () => {
-
-
-    const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
-      if (approval.selected) {
-        acc.push(approval.approval_ulid);
+    console.log("sknlksnlnslnlsn")
+    const issuedCertificatesUlids = issuedList.reduce<string[]>((acc, issued) => {
+        console.log(issued.revoked)
+      if (issued.selected && !issued.revoked) {
+        console.log(issued.revoked)
+        acc.push(issued.certificate_ulid);
       }
       return acc;
     }, []);
 
-  console.log(approvalUlids);
-
-  if (approvalUlids.length === 0) {
-    toast.info("Please select atleast one approval to reject");
-    return;
-  }
-
-  try{
-    const response = await myInstance.patch("/approvals/reject",{
-      approval_ulids: approvalUlids
-    });
-
-    if(response.data.success){
-      toast.success(response.data.message);
-      getApprovals();
+    if (issuedCertificatesUlids.length === 0) {
+      toast.info("Please select atleast one certificate to revoke");
+      return;
     }
-  }
-  catch(err){
-    console.log(err);
-  }
+
+    try {
+      const response = await myInstance.patch("/certificate/revoke", {
+        certificate_ulids: issuedCertificatesUlids,
+      });
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        getIssuedCertificates();
+      }
+    } catch (err) {
+      console.log(err);
+    }
 
 
-  }
+
+
+   
+  };
+
+
 
   return (
     <div className="flex flex-col border dark:border-stone-800 border-gray-200 mb-2 rounded-lg p-2 ">
@@ -226,7 +191,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
             className="bg-black dark:bg-white"
             size="sm"
             onClick={() => {
-              getApprovals();
+                getIssuedCertificates();
             }}
           >
             <span className="dark:text-black text-white text-md font-medium">
@@ -237,8 +202,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
             className="bg-black dark:bg-white"
             size="sm"
             onClick={() => {
-
-              setApprovalsList([]);
+              setIssuedList([])
               setSelectedCluster(null);
               setSelectedEvent("");
               router.refresh();
@@ -249,27 +213,21 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
             </span>
           </MyButton>
           <MyButton
-                  className="bg-black dark:bg-white"
+            className="bg-black dark:bg-white"
             size="sm"
             onClick={() => {
-              handleApprove();
+              handleRevoke();
             }}
           >
             <span className="dark:text-black text-white text-md font-medium">
-              Approve certificates
+              Revoke Certificates
             </span>
           </MyButton>
-          <MyButton  className="bg-black dark:bg-white" size="sm" onClick={()=>{
-            handleReject();
-          }}>
-            <span className="dark:text-black text-white text-md font-medium">
-              reject certificates
-            </span>
-          </MyButton>
+         
         </div>
       </div>
     </div>
   );
 };
 
-export default ApprovalControl;
+export default ApprovedControl;

@@ -2,19 +2,21 @@
 import { Tab, Tabs } from "@nextui-org/react";
 import { useState } from "react";
 import ApproveCertificates from "./approveCertificates/approveCertifcates";
-import { ApprovalsType } from "@/types/global.types";
-import ApprovedCertificates from "./approveCertificates/approvedCertificates";
+import { ApprovalsType,issuedCertificatesType } from "@/types/global.types";
+import ApprovedCertificates from "./approvedCertificates/approvedCertificates";
 
 
 interface ManageAllProps {
     approvalsInfo: ApprovalsType[];
+    issuedInfo: issuedCertificatesType[];
 }
 
 
-const ManageAll: React.FC<ManageAllProps> = ({approvalsInfo}) => {
+const ManageAll: React.FC<ManageAllProps> = ({approvalsInfo,issuedInfo}) => {
   const [selected, setSelected] = useState<string>("Approval requests");
 
     console.log(approvalsInfo);
+    console.log(issuedInfo);
   return (
     <div className="h-full flex p-2 ">
       <div className="flex flex-col w-full">
@@ -34,7 +36,7 @@ const ManageAll: React.FC<ManageAllProps> = ({approvalsInfo}) => {
    
       <div className="flex flex-col h-full overflow-hidden mt-4 ">
           {selected === "Approval requests" && <ApproveCertificates approvalsInfo={approvalsInfo} />}
-            {selected === "Approval history" && <ApprovedCertificates />}
+            {selected === "Approval history" && <ApprovedCertificates issuedInfo={issuedInfo}  />}
 
       </div>
     </div>

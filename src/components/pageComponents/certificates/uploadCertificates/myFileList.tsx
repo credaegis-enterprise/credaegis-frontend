@@ -58,6 +58,14 @@ const MyFileList: React.FC<MyFileListProps> = ({
   }, [uploadSuccess]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+
+    const { files } = e.target;
+
+    if (!files || files.length === 0) {
+      toast.info("No file selected. Please choose a file.");
+      return;
+    }
     if (e.target.files) {
       const filesArray = Array.from(e.target.files).map((file) => {
         const newFile = file as MyFileType;
@@ -96,6 +104,15 @@ const MyFileList: React.FC<MyFileListProps> = ({
       } else {
         toast.warning("You can only upload a maximum of 10 files at a time");
       }
+    }
+  }
+  catch (error) {
+    console.error("File upload error:", error);
+    toast.error("There was an error uploading the file. Please try again.");
+  }
+
+    if (inputFile.current) {
+      inputFile.current.value = "";
     }
   };
 

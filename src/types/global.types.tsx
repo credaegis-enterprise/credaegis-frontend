@@ -85,4 +85,24 @@ export interface verificationInfoType {
   };
 
 
+  export interface issuedCertificatesType{
+
+    certificate_ulid: string;
+    approved_by_member_email: string;
+    approved_by_organization_email: string;
+    issued_date: string;
+    issued_to_name: string;
+    issued_to_email: string;
+    expiry_date: string | null;
+    comments: string;
+    certificate_name: string;
+    revoked: boolean;
+    revoked_date: string | null;
+    event_name: string;
+    cluster_name: string;
+    approved_by_organization: string | null;
+    approved_by_member: string | null;
+  }
+
+
 
