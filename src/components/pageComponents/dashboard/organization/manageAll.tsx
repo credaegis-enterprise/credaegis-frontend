@@ -9,7 +9,7 @@ const ManageAll = () => {
 
   
   const { selectedTab } = useTabContext();
-  const [selected, setSelected] = useState<string>("certificates");
+  const [selected, setSelected] = useState<string>("info");
 
 
   useEffect(() => {
@@ -33,16 +33,22 @@ const ManageAll = () => {
           aria-label="options"
           className="mt-2 lg:mt-0 lg:w-auto w-full"
         >
-          <Tab key="certificates" title="Certificates" />
-          <Tab key="statistics" title="Statistics" />
+          {/* <Tab key="certificates" title="Certificates" />
+          <Tab key="statistics" title="Statistics" /> */}
           <Tab key="info" title="Info" />
         </Tabs>
       </div>
   
       <div className="flex flex-col h-full overflow-hidden mt-4">
-        {selected === "info" && selectedTab.id && (
+        {/* {selected === "info" && selectedTab.id && ( */}
+        {selected === "info" && selectedTab.id ? (
           <Info cluster_ulid={selectedTab.id} />
+        ) : (
+          <div className="flex h-full justify-center items-center text-lg   ">
+            <div className="mb-20">Select a cluster to display information</div>
+          </div>
         )}
+        
       </div>
     </div>
   </div>
