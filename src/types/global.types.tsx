@@ -102,6 +102,7 @@ export interface verificationInfoType {
     cluster_name: string;
     approved_by_organization: string | null;
     approved_by_member: string | null;
+    selected: boolean;
   }
 
 

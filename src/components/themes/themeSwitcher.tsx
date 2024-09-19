@@ -15,25 +15,33 @@ export function ThemeSwitcher() {
 
   if (!mounted) return null;
 
+  const handleClick = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
+
   return (
     <div className="flex items-center">
-      {theme === 'light' ? (
-        <button
-          onClick={() => setTheme('dark')}
-          className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 text-gray-800 hover:bg-gray-300 transition-colors duration-300 ease-in-out shadow-md ring-2 ring-gray-400 ring-opacity-50"
-          aria-label="Switch to dark mode"
-        >
-          <MdWbSunny className="text-2xl" />
-        </button>
-      ) : (
-        <button
-          onClick={() => setTheme('light')}
-          className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-800 text-gray-200 hover:bg-gray-700 transition-colors duration-300 ease-in-out shadow-md ring-2 ring-gray-600 ring-opacity-50"
-          aria-label="Switch to light mode"
-        >
-          <FaMoon className="text-2xl" />
-        </button>
-      )}
+      <button
+        onClick={handleClick}
+        className={`flex items-center justify-center p-2 rounded-full transition-colors duration-300 ease-in-out ${
+          theme === 'light'
+            ? 'text-gray-800 hover:text-gray-600'
+            : 'text-gray-200 hover:text-gray-400'
+        }`}
+        aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+      >
+        {theme === 'light' ? (
+          <MdWbSunny 
+            size={24} 
+            className="transition-transform duration-300 ease-in-out transform hover:scale-110"
+          />
+        ) : (
+          <FaMoon 
+            size={24} 
+            className="transition-transform duration-300 ease-in-out transform hover:scale-110"
+          />
+        )}
+      </button>
     </div>
   );
 }
