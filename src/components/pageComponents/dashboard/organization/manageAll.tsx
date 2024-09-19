@@ -33,8 +33,8 @@ const ManageAll = () => {
           aria-label="options"
           className="mt-2 lg:mt-0 lg:w-auto w-full"
         >
-          {/* <Tab key="certificates" title="Certificates" />
-          <Tab key="statistics" title="Statistics" /> */}
+          {/* <Tab key="certificates" title="Certificates" /> */}
+          <Tab key="statistics" title="Statistics" />
           <Tab key="info" title="Info" />
         </Tabs>
       </div>
