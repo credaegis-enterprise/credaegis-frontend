@@ -6,6 +6,7 @@ import { MdInfo } from "react-icons/md";
 import { DatePicker } from "@nextui-org/react";
 import { parseDate } from "@internationalized/date";
 import { BsExclamationTriangleFill } from "react-icons/bs";
+import { Textarea } from "@nextui-org/react";
 
 interface CertificateInfoProps {
   verificationStatus: verificationStatusType[];
@@ -17,31 +18,55 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
   fileUrl,
 }) => {
   const [info, setInfo] = useState<verificationStatusType | null>(null);
+  const [verificationStatusPresent, setVerificationStatusPresent] = useState<boolean>(false);
   const [isIssued, setIsIssued] = useState<boolean>(false);
   const [expired, setExpired] = useState<boolean>(false);
   const [revoked, setRevoked] = useState<boolean>(false);
+  const [isAuthentic, setIsAuthentic] = useState<boolean>(false);
+  const [authenticityStatus, setAuthenticityStatus] = useState<string>("");
 
   useEffect(() => {
     if (fileUrl && verificationStatus) {
       const fileInfo = verificationStatus.find(
         (status) => status.filename === fileUrl.filename
       );
+      if(fileInfo===undefined){
+        setVerificationStatusPresent(false);
+      }
       if (fileInfo) {
+        setVerificationStatusPresent(true);
         if (fileInfo.isIssued) setIsIssued(true);
         else setIsIssued(false);
 
-        if (
+        
+        console.log(fileInfo.info?.expiry_date);
+
+        if (fileInfo.info?.revoked === 1) {
+            setAuthenticityStatus("This certificate has been revoked.");
+            setRevoked(true);
+          }
+       else if (
           fileInfo.info?.expiry_date &&
           new Date(fileInfo.info?.expiry_date) < new Date()
         )
+        {
+            
+          setAuthenticityStatus("Your certificate has expired.");
           setExpired(true);
-
-        if (fileInfo.info?.revoked === 1) {
-          setRevoked(true);
         }
+        else {
+            setAuthenticityStatus("Your certificate is verified and original.");
+            setIsAuthentic(true);
+            setRevoked(false);
+            setExpired(false);
+            }
+
+          
+
 
         setInfo(fileInfo);
       }
+
     }
   }, [fileUrl, verificationStatus]);
 
@@ -67,33 +92,53 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
           <Input
             label="File Name"
             value={fileUrl.filename}
-            disabled
+            isReadOnly
             size="sm"
           />
 
-          {info && verificationStatus.length !== 0 ? (
+          {verificationStatusPresent ? (
             <>
-              {isIssued ? (
+              {info && isIssued ? (
                 <div className="flex flex-col gap-3">
-                  <Input label="Authenticity" disabled size="sm" />
-                  <Input label="Issued By" disabled size="sm" />
-                  <Input label="Issued On" disabled size="sm" />
-                  {info.info?.expiry_date !== null && (
+                   
+                  <Input label="Authenticity Status" disabled size="sm" color={isAuthentic?"success":'default'} value={authenticityStatus} isReadOnly isInvalid={revoked || expired} errorMessage={
+                    revoked ? "This certificate has been revoked." : expired ? "This certificate has expired." : ""
+                  } />
+                    {revoked && (
                     <>
                       <DatePicker
+                        isReadOnly
+                        label="Revoked Date"
+                        value={parseDate(info.info?.revoked_date ?? '')}
+                        size="sm"
+                      />
+                    </>
+                    )}
+                     {info.info?.expiry_date !== null && (
+                    <>
+                      <DatePicker
+                      isInvalid={expired}
+                        isReadOnly
                         label="Expiry Date"
-                        value={
-                          info.info?.expiry_date
-                            ? parseDate(info.info?.expiry_date)
-                            : null
-                        }
+                        value={parseDate(info.info?.expiry_date ?? '')}
+                        errorMessage={"This certifcate has expired."}
                         size="sm"
                       />
                     </>
                   )}
+
+<DatePicker label="Issued Date" value={parseDate(info.info?.issued_date ?? '')} isReadOnly size="sm" />
+<Input label="Event under which this certifcate is issued" readOnly value={info?.info?.event_name} size="sm" />
+<Input label="Name of the certificate holder" readOnly value={info?.info?.issued_to_name} size="sm" />
+<Input label="email" readOnly value={info?.info?.issued_to_email} size="sm" />
+                  <Input label="Issuing Organization name" readOnly value={info?.info?.organization_name} size="sm" />
+                  <Textarea label="Comments" readOnly value={info?.info?.comments} size="sm" />
+                  
+                 
+                 
                 </div>
               ) : (
-                <div className="flex flex-col items-center p-4 mt-20 gap-4 border border-blue-500 dark:border-stone-800 rounded-lg shadow-md max-w-md mx-auto">
+                <div className="flex flex-col items-center p-4 mt-20 gap-4 border  border-gray-300  dark:border-stone-800 rounded-lg shadow-md max-w-md mx-auto">
                 <div className="flex items-center gap-3">
                 <BsExclamationTriangleFill size={25} className="text-yellow-400" />
                   <div className="text-xl font-semibold ">
@@ -109,7 +154,7 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
               )}
             </>
           ) : (
-            <div className="flex p-2 justify-center mt-20 gap-2 bg-stone-900 border dark:border-stone-800 rounded-lg break-words">
+            <div className="flex p-2 justify-center mt-20 gap-2 bg-gray-200 dark:bg-stone-800 border dark:border-stone-800 rounded-lg break-words">
               <MdInfo size={30} className="text-blue-500 p-1" />
               <div className="text-md font-normal ">
                 Please upload the file to view its authenticity.

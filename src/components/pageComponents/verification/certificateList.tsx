@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { ulid } from "ulid";
 import { myInstance } from "@/utils/Axios/axios";
 import { set } from "lodash";
+import { input } from "@nextui-org/react";
 
 interface MyFileListProps {
   setFileUrl: (file: FileInfo | null) => void;
@@ -68,6 +69,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
         };
       
         const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        
           try {
             const { files } = e.target;
 
@@ -120,11 +122,22 @@ const CertificateList: React.FC<MyFileListProps> = ({
             console.error("File upload error:", error);
             toast.error("There was an error uploading the file. Please try again.");
           }
+
+          if (inputFile.current) {
+            inputFile.current.value = "";
+          }
         };
       
         const handleFileRemove = (index: number) => {
+
+            
           const newFiles = [...selectedFiles];
           newFiles.splice(index, 1);
+          const updatedVerificationStatus = verificationStatus.filter(
+            (status) => status.filename !== selectedFiles[index].name
+          );
+
+            setVerificationStatus(updatedVerificationStatus);
       
           setSelectedFiles(newFiles);
           setFileCount(newFiles.length);
@@ -140,6 +153,14 @@ const CertificateList: React.FC<MyFileListProps> = ({
   
   return (
     <div className="h-full w-full flex flex-col gap-2 ">
+          <input
+          type="file"
+          id="file"
+          ref={inputFile}
+          style={{ display: "none" }}
+          onInput={handleFileChange}
+          multiple
+        />
       <div className="flex justify-between p-2">
         <div className="flex gap-2 mt-1 ">
           <HiDocumentText size={26} />
@@ -150,14 +171,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
             {selectedFiles.length}/10
           </div>
         </div>
-        <input
-          type="file"
-          id="file"
-          ref={inputFile}
-          style={{ display: "none" }}
-          onChange={handleFileChange}
-          multiple
-        />
+      
         <MyButton
           className="bg-black dark:bg-white"
           size="sm"
@@ -218,6 +232,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
                           size={20}
                           className="dark:text-white text-black group-hover:text-black dark:group-hover:text-white"
                           onClick={(event) => {
+
                             event.stopPropagation();
                             handleFileRemove(index);
                           }}
@@ -238,6 +253,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
               className="bg-black dark:bg-white"
               size="md"
               onClick={() => {
+                setVerificationStatus([]);
                 setSelectedFiles([]);
                 setFileUrl(null);
                 setFileCount(0);

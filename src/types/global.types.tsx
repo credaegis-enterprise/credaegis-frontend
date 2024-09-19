@@ -59,16 +59,15 @@ export interface MyFileType extends File {
 }
 
 
-export interface verifyStatusType {
+export interface verificationStatusType {
   filename: string;
   isIssued: boolean;
-  info?: verifyInfoType;
+  info?: verificationInfoType;
 }
 
-export interface verifyInfoType {
+export interface verificationInfoType {
  
     certificate_ulid: string;
-    event_ulid: string;
     issued_date: string; 
     issued_to_name: string;
     issued_to_email: string;
@@ -78,9 +77,11 @@ export interface verifyInfoType {
     certificate_hash: string;
     revoked: number; 
     revoked_date: string | null; 
-    approved_by_organization: string | null; 
-    approved_by_member: string;
-    updated_at: string; 
+    event_name: string;
+    cluster_name: string;
+    organization_name: string;
+    
+
   };
 
 

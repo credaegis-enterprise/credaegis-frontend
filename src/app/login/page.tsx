@@ -1,7 +1,12 @@
+'use client';
+
 import LoginForm from "@/components/pageComponents/loginform/loginpage/loginForm";
 import { ThemeSwitcher } from "@/components/themes/themeSwitcher";
+import { useRouter } from "next/navigation";
 
-const Page = async () => {
+const Page =  () => {
+
+  const router = useRouter();
   return (
     <div className="p-2 m-0 h-screen overflow-hidden ">
       <div className="bg-white dark:bg-gray-800 rounded-lg h-full overflow-hidden border border-gray-300 dark:border-gray-700">
@@ -15,7 +20,15 @@ const Page = async () => {
           
           <div className="md:order-2 order-1 bg-white dark:bg-zinc-950">
             <div className="flex justify-end items-center p-4">
+              <div className="flex items-center gap-2">
+                <div className="text-sm font-medium text-gray-900 dark:text-gray-100"
+                onClick={()=>{
+                  localStorage.setItem("path", window.location.pathname);
+                  router.push("/verification");
+                }}
+                >verification</div>
               <ThemeSwitcher />
+              </div>
             </div>
             <div className="flex items-center justify-center p-6 w-full h-full">
               <div className="w-full max-w-md">

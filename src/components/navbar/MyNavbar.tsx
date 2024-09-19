@@ -69,6 +69,13 @@ export default function MyNavbar() {
         <NavbarItem>
           <Link href={`/credaegis/${accountType}/certificates`}>certificates</Link>
         </NavbarItem>
+
+        <NavbarItem onClick={()=>{
+          console.log(window.location.pathname);
+          localStorage.setItem("path",window.location.pathname);
+        }}>
+          <Link href={`/verification`}>verification</Link>
+        </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end" className="gap-4">
         <NavbarItem>
