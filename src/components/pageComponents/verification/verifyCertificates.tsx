@@ -10,14 +10,16 @@ import { verificationStatusType } from "@/types/global.types";
 import { useRouter } from "next/navigation";
 import { ThemeSwitcher } from "@/components/themes/themeSwitcher";
 
+
 const VerifyCertificates = () => {
     const router = useRouter();
+
   const [fileUrl, setFileUrl] = useState<FileInfo | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<MyFileType[]>([]);
   const [fileCount, setFileCount] = useState<number>(0);
   const [verificationStatus, setVerificationStatus] = useState<verificationStatusType[]>([]);
 
-  
+
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <div className="flex flex-col ">
@@ -25,6 +27,7 @@ const VerifyCertificates = () => {
         <div className="flex items-center justify-start p-2 gap-7">
           <MyButton size="sm" className="bg-black dark:bg-white  " onClick={
                 () => {
+
                   const path = localStorage.getItem("path") || "/login";
                   router.push(path)
                 }
