@@ -61,8 +61,8 @@ const Page = async () => {
         </div>
 
         {/* Right Section */}
-        <div className="lg:col-span-5 border border-gray-200 dark:border-stone-800 rounded-lg">
-          ssdcs
+        <div className="lg:col-span-5 border border-gray-200 dark:border-stone-800 rounded-lg p-2">
+          To be implemented
         </div>
       </div>
     </div>

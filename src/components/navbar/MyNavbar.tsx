@@ -1,10 +1,13 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarMenuToggle,
 } from "@nextui-org/react";
 import { MyButton } from "../buttons/mybutton";
 import { Spinner } from "@nextui-org/react";
@@ -13,14 +16,12 @@ import Link from "next/link";
 import { myInstance } from "@/utils/Axios/axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useEffect,useState } from "react";
-
 
 export default function MyNavbar() {
-
   const router = useRouter();
   const [accountType, setAccountType] = useState<string>("");
   const [role, setRole] = useState<string>("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to manage menu toggle
 
   useEffect(() => {
     const getUserRoles = async () => {
@@ -32,38 +33,92 @@ export default function MyNavbar() {
       } catch (error: any) {
         console.log(error);
       }
-    }
+    };
     getUserRoles();
   }, [router]);
-
 
   const handleLogout = async () => {
     try {
       const response = await myInstance.post("/auth/logout");
       router.push("/login");
       toast.success(response.data.message);
-
     } catch (error: any) {
       console.log(error);
       toast.error(error.response?.data.message || "An error occurred");
     }
   };
+
   return (
-    <Navbar className="justify-center" maxWidth="full">
-      <NavbarBrand></NavbarBrand>
+    <Navbar className="justify-end" maxWidth="full" onMenuOpenChange={setIsMenuOpen}>
+      <NavbarBrand>
+      <NavbarContent justify="start">
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          className="sm:hidden"
+        />
+      </NavbarContent>
+      </NavbarBrand>
+
+ 
       <NavbarContent className="hidden sm:flex gap-12" justify="end">
         {role !== "member" && (
-        <NavbarItem>
-          <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
-        </NavbarItem>
+          <NavbarItem>
+            <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
+          </NavbarItem>
         )}
-        <NavbarItem>
-          <Link href={`/credaegis/${accountType}/settings`}>settings</Link>
-        </NavbarItem>
+
+        {role !== "member" && (
+          <NavbarItem>
+            <Link href={`/credaegis/${accountType}/approvals`}>approvals</Link>
+          </NavbarItem>
+        )}
+
         <NavbarItem>
           <Link href={`/credaegis/${accountType}/certificates`}>certificates</Link>
         </NavbarItem>
+
+        <NavbarItem>
+          <Link href={`/credaegis/${accountType}/settings`}>settings</Link>
+        </NavbarItem>
+
+        <NavbarItem
+          onClick={() => {
+            localStorage.setItem("path", window.location.pathname);
+          }}
+        >
+          <Link href={`/verification`}>verification</Link>
+        </NavbarItem>
       </NavbarContent>
+
+    
+
+    
+      <NavbarMenu>
+        {role !== "member" && (
+          <NavbarMenuItem>
+            <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
+          </NavbarMenuItem>
+        )}
+
+        {role !== "member" && (
+          <NavbarMenuItem>
+            <Link href={`/credaegis/${accountType}/approvals`}>approvals</Link>
+          </NavbarMenuItem>
+        )}
+
+        <NavbarMenuItem>
+          <Link href={`/credaegis/${accountType}/certificates`}>certificates</Link>
+        </NavbarMenuItem>
+
+        <NavbarMenuItem>
+          <Link href={`/credaegis/${accountType}/settings`}>settings</Link>
+        </NavbarMenuItem>
+
+        <NavbarMenuItem>
+          <Link href={`/verification`}>verification</Link>
+        </NavbarMenuItem>
+      </NavbarMenu>
+
       <NavbarContent justify="end" className="gap-4">
         <NavbarItem>
           <ThemeSwitcher />
@@ -74,9 +129,7 @@ export default function MyNavbar() {
             size="sm"
             spinner={<Spinner size="sm" color="default" />}
             color="default"
-            onClick={() => {
-              handleLogout();
-            }}
+            onClick={handleLogout}
           >
             <span className="dark:text-black text-white text-md font-medium">
               Logout

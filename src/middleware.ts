@@ -6,7 +6,6 @@ import authenticator from './utils/Auth/authenticator'
 
 export async function middleware (request: NextRequest) {
      
-    console.log("middleware Invoked");
     const isAuthenticated = await authenticator();
     console.log(isAuthenticated);
     if(!isAuthenticated)
@@ -14,13 +13,11 @@ export async function middleware (request: NextRequest) {
     else
         return NextResponse.next();
 
-    // return NextResponse.next();
-
         
 }
 
 export const config = {
 
-    matcher: ["/credaegis/organization/:path*"],
+    matcher: ["/credaegis/organization/:path*", "/credaegis/member/:path*"],
 
 }

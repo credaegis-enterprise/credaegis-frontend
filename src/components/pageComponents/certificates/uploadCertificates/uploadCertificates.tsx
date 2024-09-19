@@ -1,14 +1,14 @@
 "use client";
 import MyFileList from "./myFileList";
 import { useState } from "react";
-import { Event, FileInfo, MyFileType } from "@/types/global.types";
+import { EventType, FileInfo, MyFileType } from "@/types/global.types";
 import MyFileMeta from "./myfileMeta";
 import { filesMetaType } from "@/types/global.types";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
 
 interface UploadCertificatesProps {
-  eventInfo: Event[];
+  eventInfo: EventType[];
 }
 
 const UploadCertificates: React.FC<UploadCertificatesProps> = ({
@@ -54,7 +54,7 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({
 
     try {
       const response = await myInstance.post(
-        `/certificates/upload/${event_ulid}`,
+        `/files/upload/${event_ulid}`,
         formData,
         {
           headers: {

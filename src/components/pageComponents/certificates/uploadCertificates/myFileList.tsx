@@ -8,7 +8,7 @@ import { MyButton } from "@/components/buttons/mybutton";
 import { MdCheck, MdClose } from "react-icons/md";
 import { toast } from "sonner";
 import {
-  Event,
+  EventType,
   FileInfo,
   filesMetaType,
   MyFileType,
@@ -16,7 +16,7 @@ import {
 import { ulid } from "ulid";
 
 interface MyFileListProps {
-  eventInfo: Event[];
+  eventInfo: EventType[];
   setFileUrl: (file: FileInfo | null) => void;
   fileUrl: FileInfo | null;
   filesMetaInfo: filesMetaType[] | null;
@@ -58,6 +58,14 @@ const MyFileList: React.FC<MyFileListProps> = ({
   }, [uploadSuccess]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+
+    const { files } = e.target;
+
+    if (!files || files.length === 0) {
+      toast.info("No file selected. Please choose a file.");
+      return;
+    }
     if (e.target.files) {
       const filesArray = Array.from(e.target.files).map((file) => {
         const newFile = file as MyFileType;
@@ -65,7 +73,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
         return newFile;
       });
 
-      if (selectedFiles && selectedFiles.length === 0) {
+      if (selectedFiles && selectedFiles.length === 1) {
         setFileUrl({
           filename: filesArray[0].name,
           fileurl: URL.createObjectURL(filesArray[0]),
@@ -96,6 +104,15 @@ const MyFileList: React.FC<MyFileListProps> = ({
       } else {
         toast.warning("You can only upload a maximum of 10 files at a time");
       }
+    }
+  }
+  catch (error) {
+    console.error("File upload error:", error);
+    toast.error("There was an error uploading the file. Please try again.");
+  }
+
+    if (inputFile.current) {
+      inputFile.current.value = "";
     }
   };
 

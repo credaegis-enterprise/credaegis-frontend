@@ -3,7 +3,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from
 import { Input } from "@nextui-org/react";
 
 interface MyModalProps {
-  size: 'xs' | 'sm' | 'md' | 'lg' | 'xl'; 
+  size: 'xs' | 'sm' | 'md' | 'lg' | 'xl'| '5xl'|'full'; 
   isOpen: boolean;
   title: string;
   backdrop: "static" | "blur" | "opaque" | "transparent" | undefined;
