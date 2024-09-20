@@ -4,7 +4,7 @@ import { Input } from "@nextui-org/input";
 import { MyButton } from "@/components/buttons/mybutton";
 import { Spinner } from "@nextui-org/react";
 import { useState } from "react";
-import {myInstance} from "@/utils/Axios/axios";
+import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -15,13 +15,12 @@ import { IoMdEyeOff } from "react-icons/io";
 import emailValidator from "@/utils/Validators/emailValidator";
 import { set } from "lodash";
 
-
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState<string>("user");
-  const [otp,setOtp] = useState("");
+  const [otp, setOtp] = useState("");
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isEmailInvalid, setIsEmailInvalid] = useState(false);
@@ -29,30 +28,25 @@ const LoginForm = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-
-
   //login functions for both admin and user
   const handleLogin = async () => {
     setIsLoading(true);
     setIsEmailInvalid(false);
-    
+
     let response;
-    if(!emailValidator(email))
-    {
+    if (!emailValidator(email)) {
       setIsEmailInvalid(true);
       toast.error("please enter a valid email");
       setIsLoading(false);
       return;
     }
- 
+
     try {
       if (selected === "organization") {
         response = await myInstance.post("/auth/organization/login", {
           organization_email: email,
           organization_password: password,
         });
-
-    
       } else {
         response = await myInstance.post("/auth/login", {
           member_email: email,
@@ -60,51 +54,42 @@ const LoginForm = () => {
         });
       }
 
-      if (response.data.twoFa)
-         setIsOpen(true);
+      if (response.data.twoFa) setIsOpen(true);
       else {
-        toast.success(response.data.message)
-        if(response.data.role==="organization")
-          router.push("/credaegis/organization/dashboard")
-        else
-          router.push("/credaegis/member/dashboard")
-        
-      };
+        toast.success(response.data.message);
+        if (response.data.role === "organization")
+          router.push("/credaegis/organization/dashboard");
+        else router.push("/credaegis/member/dashboard");
+      }
 
       setIsLoading(false);
     } catch (error: any) {
       console.log(error);
-   
+
       setIsLoading(false);
     }
   };
 
-
   const handleTwoFa = async () => {
-      setIsLoading(true);
-      let response;
-      try
-      {
-        response = await myInstance.post("/auth/login/twofa",{
-          user_email:email,
-          otp:otp,
-          role:selected
-        });
+    setIsLoading(true);
+    let response;
+    try {
+      response = await myInstance.post("/auth/login/twofa", {
+        user_email: email,
+        otp: otp,
+        role: selected,
+      });
 
-        toast.success(response.data.message);
-        setIsLoading(false);
-        setIsOpen(false);
-        router.push("/credaegis/organization/dashboard");
-      }
-      catch(error:any)
-      {
-
-        console.log(error);
-        if(error.response?.status===429) setIsOpen(false);
-        setIsLoading(false);
-
-      }
-  }
+      toast.success(response.data.message);
+      setIsLoading(false);
+      setIsOpen(false);
+      router.push("/credaegis/organization/dashboard");
+    } catch (error: any) {
+      console.log(error);
+      if (error.response?.status === 429) setIsOpen(false);
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -114,31 +99,45 @@ const LoginForm = () => {
         backdrop="blur"
         onClose={() => {
           setIsOpen(false);
-        } }
+        }}
         onOpen={() => {
           setIsOpen(true);
-        } }
+        }}
         title="Two-Factor Authentication"
-        content={<Input type="text" label="Enter OTP" size="sm" value={otp} onChange={(e) => { setOtp(e.target.value); } } />}
-        button1={<MyButton
-          className="bg-black dark:bg-white"
-          size="sm"
-          spinner={<Spinner size="sm" color="default" />}
-          isLoading={isLoading}
-          onClick={() => {
-            handleTwoFa();
-          } }
-        >
-          <span className="dark:text-black text-white text-md font-medium">
-            Submit
-          </span>
-        </MyButton>} button2={undefined}      />
+        content={
+          <Input
+            type="text"
+            label="Enter OTP"
+            size="sm"
+            value={otp}
+            onChange={(e) => {
+              setOtp(e.target.value);
+            }}
+          />
+        }
+        button1={
+          <MyButton
+            className="bg-black dark:bg-white"
+            size="sm"
+            spinner={<Spinner size="sm" color="default" />}
+            isLoading={isLoading}
+            onClick={() => {
+              handleTwoFa();
+            }}
+          >
+            <span className="dark:text-black text-white text-md font-medium">
+              Submit
+            </span>
+          </MyButton>
+        }
+        button2={undefined}
+      />
       <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
         <div className="flex justify-end">
           <Tabs
             aria-label="options"
             selectedKey={selected}
-            onSelectionChange={(key) => setSelected(key as string)} 
+            onSelectionChange={(key) => setSelected(key as string)}
           >
             <Tab key="member" title="member" />
             <Tab key="organization" title="organization" />
@@ -157,7 +156,12 @@ const LoginForm = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           endContent={
-            <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
+            <button
+              className="focus:outline-none"
+              type="button"
+              onClick={toggleVisibility}
+              aria-label="toggle password visibility"
+            >
               {isVisible ? (
                 <IoMdEye className="text-2xl text-default-400 pointer-events-none " />
               ) : (
@@ -177,10 +181,17 @@ const LoginForm = () => {
             handleLogin();
           }}
         >
+
           <span className="dark:text-black text-white text-md font-medium">
             login to your account
           </span>
+          
         </MyButton>
+        <div className="flex justify-end">
+          <div className="flex text-sm items-center dark:hover:text-green-400 hover:text-blue-600    transition-colors duration-300">
+            Forgot password?
+          </div>
+        </div>
       </div>
     </div>
   );
