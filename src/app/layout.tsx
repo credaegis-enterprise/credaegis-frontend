@@ -25,6 +25,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <style>{`
+          input::-ms-reveal,
+          input::-ms-clear {
+            display: none;
+          }
+        `}</style>
+      </head>
       <body className={`h-screen  ${GeistSans.className} `}>
        
         <Providers>

@@ -10,6 +10,10 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import MyModal from "@/components/modals/mymodal";
 import { Tab, Tabs } from "@nextui-org/react";
+import { IoMdEye } from "react-icons/io";
+import { IoMdEyeOff } from "react-icons/io";
+import emailValidator from "@/utils/Validators/emailValidator";
+import { set } from "lodash";
 
 
 const LoginForm = () => {
@@ -20,13 +24,27 @@ const LoginForm = () => {
   const [otp,setOtp] = useState("");
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [isEmailInvalid, setIsEmailInvalid] = useState(false);
+
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
 
 
 
   //login functions for both admin and user
   const handleLogin = async () => {
     setIsLoading(true);
+    setIsEmailInvalid(false);
+    
     let response;
+    if(!emailValidator(email))
+    {
+      setIsEmailInvalid(true);
+      toast.error("please enter a valid email");
+      setIsLoading(false);
+      return;
+    }
+ 
     try {
       if (selected === "organization") {
         response = await myInstance.post("/auth/organization/login", {
@@ -45,9 +63,7 @@ const LoginForm = () => {
       if (response.data.twoFa)
          setIsOpen(true);
       else {
-        console.log(response.data);
         toast.success(response.data.message)
-        console.log(response.data.role);
         if(response.data.role==="organization")
           router.push("/credaegis/organization/dashboard")
         else
@@ -131,14 +147,26 @@ const LoginForm = () => {
         <Input
           type="email"
           label="Email"
+          isInvalid={isEmailInvalid}
+          errorMessage="Please enter a valid email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <Input
-          type="password"
           label="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          endContent={
+            <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
+              {isVisible ? (
+                <IoMdEye className="text-2xl text-default-400 pointer-events-none " />
+              ) : (
+                <IoMdEyeOff className="text-2xl text-default-400 pointer-events-none" />
+              )}
+            </button>
+          }
+          type={isVisible ? "text" : "password"}
+          description="This information won't be shared with anyone else"
         />
         <MyButton
           className="bg-black dark:bg-white"
