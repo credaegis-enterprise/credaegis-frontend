@@ -28,14 +28,13 @@ export default function RootLayout({
       <body className={`h-screen  ${GeistSans.className} `}>
        
         <Providers>
-          <ThemeProvider attribute="class" defaultTheme="white">
+          <ThemeProvider attribute="class" defaultTheme="dark">
           
             <Toaster position="top-right" richColors={true} toastOptions={{
               className:"font-sans text-md",
               duration:1000,
             }} />
              <ResponseInterceptor />
-            {/* <MyNavbar /> */}
             {children}
           </ThemeProvider>
         </Providers>
