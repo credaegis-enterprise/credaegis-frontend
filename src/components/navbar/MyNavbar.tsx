@@ -28,7 +28,7 @@ export default function MyNavbar() {
       try {
         const response = await myInstance.get("/auth/checker");
         console.log(response.data);
-        setAccountType(response.data.type);
+        setAccountType(response.data.accountType);
         setRole(response.data.role);
       } catch (error: any) {
         console.log(error);
