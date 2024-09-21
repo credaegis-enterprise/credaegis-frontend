@@ -4,72 +4,31 @@
 
 
 
-import ClusterInfo from "./clusterInfo";
+import ClusterInfo from "./infoCards/clusterInfo";
 import { myInstance } from "@/utils/Axios/axios";
 import { useState, useEffect } from "react";
-import { toast } from "sonner";
-import EventView from "./eventView";
+import EventInfo from "./infoCards/eventInfo";
 import { useCallback } from "react";
-import MemberView from "./memberView";
-import { myInstanceNEXT } from "@/utils/Axios/axios";
+import MemberInfo from "./infoCards/memberInfo";
+import { ClusterInfoType } from "@/types/global.types";
+
 
 interface InfoProps {
-  cluster_ulid: string;
-}
-
-interface MemberInfo {
-    created_at: string;
-    updated_at: string;
-    deactivated: number;
-    member_name: string;
-    member_ulid: string;
-    member_email: string;
-}
-
-interface EventInfo {
-    deleted: number;
-    created_at: string;
-    event_name: string;
-    event_ulid: string;
-    updated_at: string;
-    cluster_ulid: string;
-}
-
-interface AdminInfo {
-    admin_name: string;
-    admin_ulid: string;
-    admin_email: string;
-}
-
-interface clusterDetails {
-    cluster_ulid: string;
-    cluster_name: string;
-    organization_ulid: string;
-    created_at: string;
-    updated_at: string;
-    deactivated: number;
-    membersInfo: MemberInfo[];
-    eventsInfo: EventInfo[];
-    adminInfo: AdminInfo[];
-}
-
-interface ResponseData {
-    clusterInfo: clusterDetails;
-    success: boolean;
-    message: string;
+  clusterUlid: string;
 }
 
 
-const Info = ({ cluster_ulid }: InfoProps) => {
+
+const Info = ({ clusterUlid }: InfoProps) => {
   const [eventsInfo, setEventsInfo] = useState([]);
   const [members, setMembers] = useState([]);
-  const [clusterDetails, setClusterDetails] = useState<clusterDetails>();
+  const [clusterDetails, setClusterDetails] = useState<ClusterInfoType>();
 
   const fetchClusterInfo = useCallback(async () => {
     try {
 
 
-      const response = await myInstance.get(`/cluster/getinfo/${cluster_ulid}`);
+      const response = await myInstance.get(`/cluster/getinfo/${clusterUlid}`);
       const { clusterInfo } = response.data;
 
       setClusterDetails(clusterInfo);
@@ -78,7 +37,7 @@ const Info = ({ cluster_ulid }: InfoProps) => {
     } catch (error: any) {
       console.error("Error fetching cluster info:", error);
     }
-  }, [cluster_ulid]);
+  }, [clusterUlid]);
 
   useEffect(() => {
     fetchClusterInfo();
@@ -94,10 +53,10 @@ const Info = ({ cluster_ulid }: InfoProps) => {
              </div>
              <div className="row-span-6 grid grid-cols-2 gap-4 pb-2">
                 <div className="lg:col-span-1 col-span-full h-full rounded-lg overflow-auto border border-gray-200 dark:border-stone-800 p-4">
-                    <EventView events={eventsInfo} fetchClusterInfo={fetchClusterInfo} cluster_ulid={cluster_ulid} />
+                    <EventInfo events={eventsInfo} fetchClusterInfo={fetchClusterInfo} clusterUlid={clusterUlid} />
                 </div>
                 <div className="lg:col-span-1 col-span-full h-full rounded-lg overflow-auto border border-gray-200 dark:border-stone-800 p-4">
-                   <MemberView members={members} fetchClusterInfo={fetchClusterInfo} cluster_ulid={cluster_ulid} />
+                   <MemberInfo members={members} fetchClusterInfo={fetchClusterInfo} clusterUlid={clusterUlid} />
                 </div>
                 </div>
         </div>

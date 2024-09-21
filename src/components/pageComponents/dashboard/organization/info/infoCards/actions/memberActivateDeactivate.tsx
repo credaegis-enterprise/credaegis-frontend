@@ -1,24 +1,22 @@
-import { Member } from "./memberView";
+import { MemberType } from "@/types/global.types";
 import React, { useState } from "react";
 import { MyButton } from "@/components/buttons/mybutton";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
 
 interface MemberInfoProps {
-  member: Member;
+  member: MemberType;
   setIsOpen: (value: boolean) => void;
   fetchClusterInfo: () => void;
 }
 
 
 
-const MemberInfoCard: React.FC<MemberInfoProps> = ({ member,setIsOpen,fetchClusterInfo }) => {
+const MemberActivateDeactivate: React.FC<MemberInfoProps> = ({ member,setIsOpen,fetchClusterInfo }) => {
 
   const handleDeactivateMember = async () => {
     try {
-      const response = await myInstance.patch("/member/deactivate", {
-        member_ulid: member.member_ulid,
-      });
+      const response = await myInstance.patch(`/member/deactivate/${member.member_ulid}`);
       toast.success(response.data.message);
       setIsOpen(false);
       fetchClusterInfo()
@@ -29,9 +27,7 @@ const MemberInfoCard: React.FC<MemberInfoProps> = ({ member,setIsOpen,fetchClust
 
   const handleActivateMember = async () => {
     try {
-      const response = await myInstance.patch("/member/activate", {
-        member_ulid: member.member_ulid,
-      });
+      const response = await myInstance.patch(`/member/activate/${member.member_ulid}`);
       toast.success(response.data.message);
       setIsOpen(false);
       fetchClusterInfo()
@@ -73,4 +69,4 @@ const MemberInfoCard: React.FC<MemberInfoProps> = ({ member,setIsOpen,fetchClust
   );
 };
 
-export default MemberInfoCard;
+export default MemberActivateDeactivate;

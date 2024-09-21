@@ -8,35 +8,12 @@ import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
 import ChangeAdmin from "./actions/changeAdmin";
 import { useRouter } from "next/navigation";
+import { ClusterInfoType } from "@/types/global.types";
 
-interface AdminInfo {
-  admin_email: string;
-  admin_name: string;
-  admin_ulid: string;
-}
 
-export interface MemberInfo {
-  created_at: string;
-  deactivated: number;
-  member_email: string;
-  member_name: string;
-  member_ulid: string;
-  updated_at: string;
-}
-
-interface ClusterInfo {
-  cluster_ulid: string;
-  cluster_name: string;
-  organization_ulid: string;
-  created_at: string;
-  updated_at: string;
-  deactivated: number;
-  adminInfo: AdminInfo[];
-  membersInfo: MemberInfo[];
-}
 
 interface ClusterInfoProps {
-  cluster: ClusterInfo | undefined;
+  cluster: ClusterInfoType | undefined;
   fetchClusterInfo: () => void;
 }
 
@@ -64,8 +41,8 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
       case "deactivate":
         return (
           <DeactivateCluster
-            cluster_name={cluster.cluster_name}
-            cluster_ulid={cluster.cluster_ulid}
+            clusterName={cluster.cluster_name}
+            clusterUlid={cluster.cluster_ulid}
             setIsOpen={setIsOpen}
             fetchClusterInfo={fetchClusterInfo}
           />
@@ -73,9 +50,9 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
       case "changeAdmin":
         return (
           <ChangeAdmin
-            admin_ulid={admin.admin_ulid}
+            newAdminUlid={admin.admin_ulid}
             setIsOpen={setIsOpen}
-            cluster_ulid={cluster.cluster_ulid}
+            clusterUlid={cluster.cluster_ulid}
             fetchClusterInfo={fetchClusterInfo}
             members={cluster.membersInfo}
           />
@@ -88,9 +65,8 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
 
   const handleActivateCluster = async () => {
     try {
-      const response = await myInstance.patch("/cluster/activate", {
-        cluster_ulid: cluster.cluster_ulid,
-      });
+      const response = await myInstance.patch(`/cluster/activate/${cluster.cluster_ulid}`);
+     
       toast.success(response.data.message);
       fetchClusterInfo();
     } catch (error: any) {

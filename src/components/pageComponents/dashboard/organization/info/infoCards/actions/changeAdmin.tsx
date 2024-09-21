@@ -1,4 +1,4 @@
-import { MemberInfo } from "../clusterInfo";
+import { MemberType } from "@/types/global.types";
 import { Select, SelectItem } from "@nextui-org/react";
 import { MdWarning } from "react-icons/md";
 import { MyButton } from "@/components/buttons/mybutton";
@@ -7,19 +7,19 @@ import { toast } from "sonner";
 import { myInstance } from "@/utils/Axios/axios";
 
 interface ChangeAdminProps {
-  cluster_ulid: string;
+  clusterUlid: string;
   fetchClusterInfo: () => void;
-  members: MemberInfo[];
+  members: MemberType[];
   setIsOpen: (value: boolean) => void;
-  admin_ulid: string;
+  adminUlid: string;
 }
 
 const ChangeAdmin: React.FC<ChangeAdminProps> = ({
-  cluster_ulid,
+  clusterUlid,
   fetchClusterInfo,
   members,
   setIsOpen,
-  admin_ulid,
+adminUlid,
 }) => {
 
 
@@ -37,8 +37,8 @@ const [invalid, setInvalid] = useState(false);
 
     try {
       const response = await myInstance.patch("/cluster/changeadmin", {
-        cluster_ulid: cluster_ulid,
-        new_admin_ulid: selectedAdmin,
+        clusterUlid : clusterUlid,
+        newAdminUlid: selectedAdmin
       });
       console.log(response.data.message);
       toast.success(response.data.message);
@@ -63,7 +63,7 @@ const [invalid, setInvalid] = useState(false);
         className="w-full"
       >
      {members
-    .filter((member) => member.member_ulid !== admin_ulid) 
+    .filter((member) => member.member_ulid !== adminUlid) 
     .map((member) => (
       <SelectItem key={member.member_ulid} value={member.member_ulid}>
         {member.member_name}

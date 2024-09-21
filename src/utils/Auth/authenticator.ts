@@ -8,6 +8,7 @@ const authenticator = async()=>{
 
     console.log("Authenticator Invoked");
     const cookie = getCookies();
+    console.log(cookie);
     try
     {
         const response = await myInstanceNEXT.get("/auth/checker",{
@@ -15,10 +16,12 @@ const authenticator = async()=>{
                 cookie:`test=${cookie}`
             }
         });
+        console.log(response.data);
         return true
     }
     catch(e)
     {
+        console.log(e);
         return false
     }
 }

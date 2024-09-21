@@ -7,6 +7,39 @@ export interface EventType {
   cluster_ulid: string;
 }
 
+export interface ClusterInfoType {
+  cluster_ulid: string;
+  cluster_name: string;
+  organization_ulid: string;
+  created_at: Date;
+  updated_at: Date;
+  deactivated: boolean;
+  deleted: boolean;
+  membersInfo: MemberType[];
+  eventsInfo: EventType[];
+  adminInfo: AdminType[];
+}
+
+export interface MemberType {
+  member_ulid: string;
+  member_email: string;
+  member_name: string;
+  deactivated: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
+
+
+
+interface AdminType {
+  admin_ulid: string;
+  admin_email: string;
+  admin_name: string;
+}
+
+
+
+
 
 export interface ApprovalsType {
 

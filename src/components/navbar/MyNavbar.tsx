@@ -37,6 +37,8 @@ export default function MyNavbar() {
     getUserRoles();
   }, [router]);
 
+  console.log(accountType, role);
+
   const handleLogout = async () => {
     try {
       const response = await myInstance.post("/auth/logout");

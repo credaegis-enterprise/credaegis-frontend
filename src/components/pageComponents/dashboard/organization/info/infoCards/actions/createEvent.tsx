@@ -6,52 +6,41 @@ import { MyButton } from "@/components/buttons/mybutton";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
 import { Spinner } from "@nextui-org/react";
-import emailValidator from "@/utils/Validators/emailValidator";
 
-
-interface CreateMemberProps {
-  cluster_ulid: string;
+interface CreateEventProps {
+  clusterUlid: string;
   fetchClusterInfo: () => void;
-    setIsOpen: (value: boolean) => void;
+  setIsOpen : (value:boolean) => void;
 }
 
-const CreateMember: React.FC<CreateMemberProps> = ({
-  cluster_ulid,
+const CreateEvent: React.FC<CreateEventProps> = ({
+  clusterUlid,
   fetchClusterInfo,
-  setIsOpen,
+  setIsOpen
 }) => {
-  const [memberName, setMemberName] = useState("");
-  const [memberEmail, setMemberEmail] = useState("");
-
+  const [eventName, setEventName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [invalid, setInvalid] = useState(false);
 
-  const handleMemberCreate = async () => {
 
+  const handleEventCreate = async () => {
+    setInvalid(false);
     setIsLoading(true);
 
-
-    if (memberName === "" || memberEmail === "") {
+    if (eventName === "") {
+      setInvalid(true);
       setIsLoading(false);
       toast.error("Please fill all the fields");
       return;
     }
 
-    if (!emailValidator(memberEmail)) {
-      setIsLoading(false);
-      toast.error("Please enter a valid email");
-      return;
-    }
-
     try {
-      const response = await myInstance.post("/member/create", {
-        member_name: memberName,
-        member_email: memberEmail,
-        cluster_ulid: cluster_ulid,
+      const response = await myInstance.post("/event/create", {
+        event_name: eventName,
+        cluster_ulid: clusterUlid,
       });
 
       toast.success(response.data.message);
-      setMemberName("");
-      setMemberEmail("");
       fetchClusterInfo();
       setIsOpen(false);
     } catch (error: any) {
@@ -59,36 +48,28 @@ const CreateMember: React.FC<CreateMemberProps> = ({
     }
 
     setIsLoading(false);
-
   };
+
   return (
     <div className="w-full">
       <div className="flex flex-col gap-4">
         <Input
           isRequired={true}
           type="text"
-          label="Member Name"
+          label="Event Name"
           size="md"
-          value={memberName}
-          onChange={(e) => setMemberName(e.target.value)}
-        />
-        <Input
-          isRequired={true}
-          type="email"
-          label="Member Email"
-          size="md"
-          value={memberEmail}
-          onChange={(e) => setMemberEmail(e.target.value)}
+          value={eventName}
+          onChange={(e) => setEventName(e.target.value)}
         />
         <MyButton
           className="bg-black dark:bg-white"
           size="md"
           spinner={<Spinner size="sm" color="default" />}
           isLoading={isLoading}
-          onClick={handleMemberCreate}
+          onClick={handleEventCreate}
         >
           <span className="dark:text-black text-white text-md font-medium">
-           Create Member
+            Create Event
           </span>
         </MyButton>
       </div>
@@ -96,4 +77,4 @@ const CreateMember: React.FC<CreateMemberProps> = ({
   );
 };
 
-export default CreateMember;
+export default CreateEvent;

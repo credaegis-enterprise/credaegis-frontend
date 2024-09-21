@@ -3,21 +3,18 @@ import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
 import { MdWarning } from "react-icons/md";
 
-interface Cluster {
-    cluster_ulid: string;
-    cluster_name: string;
+interface DeactivateClusterProps {
+    clusterUlid: string;
+    clusterName: string;
     setIsOpen: (value: boolean) => void;
     fetchClusterInfo: () => void;
 }
 
-const DeactivateCluster: React.FC<Cluster> = ({ cluster_name, cluster_ulid,setIsOpen,fetchClusterInfo}) => {
+const DeactivateCluster: React.FC<DeactivateClusterProps> = ({ clusterName,clusterUlid,setIsOpen,fetchClusterInfo}) => {
 
     const handleDeactivateCluster = async () => {
         try {
-            const response = await myInstance.patch("/cluster/deactivate", {
-                cluster_ulid: cluster_ulid,
-            });
-            console.log(response.data.message);
+            const response = await myInstance.patch(`/cluster/deactivate/${clusterUlid}`);
             toast.success(response.data.message);
             fetchClusterInfo();
             setIsOpen(false);
@@ -29,7 +26,7 @@ const DeactivateCluster: React.FC<Cluster> = ({ cluster_name, cluster_ulid,setIs
     return (
         <div className="p-4 b rounded-lg shadow-md">
             <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">
-                Are you sure you want to deactivate the cluster &quot;{cluster_name}&quot;?
+                Are you sure you want to deactivate the cluster &quot;{clusterName}&quot;?
             </h2>
             <div className="flex gap-2 ">
                 <MdWarning className="text-yellow-500"  size={26}/>

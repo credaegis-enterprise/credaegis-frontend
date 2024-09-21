@@ -2,7 +2,7 @@
 
 import { Input } from "@nextui-org/input";
 import { MyButton } from "@/components/buttons/mybutton";
-import { Spinner } from "@nextui-org/react";
+import { Spinner, user } from "@nextui-org/react";
 import { useState } from "react";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
@@ -77,6 +77,7 @@ const LoginForm = () => {
     try {
       response = await myInstance.post("/auth/login/twofa", {
         userEmail: email,
+        userPassword: password,
         otp: otp,
         accountType: selected,
       });

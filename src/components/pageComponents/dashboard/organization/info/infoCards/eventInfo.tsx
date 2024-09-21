@@ -4,29 +4,19 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import MyModal from "@/components/modals/mymodal";
 import CreateEvent from "./actions/createEvent";
+import { EventType } from "@/types/global.types";
 
-type Event = {
-  event_ulid: string;
-  event_name: string;
-  created_at: string;
-  updated_at: string;
-  deleted: boolean;
-  cluster_ulid: string;
-};
-
-interface EventsViewProps {
-  events: Event[];
+interface EventInfoProps {
+  events: EventType[];
   fetchClusterInfo: () => void;
-    cluster_ulid: string;
+    clusterUlid: string;
 }
 
-const EventView: React.FC<EventsViewProps> = ({ events,fetchClusterInfo,cluster_ulid }) => {
+const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUlid }) => {
 
  const [isOpen, setIsOpen] = useState(false);
 
-//  if (!events) {
-//     return <div className="flex h-full justify-center items-center text-lg">No events available.</div>;
-//   }
+
   return (
     <div className="h-full w-full flex flex-col">
       <div className="flex justify-between p-2">
@@ -86,7 +76,7 @@ const EventView: React.FC<EventsViewProps> = ({ events,fetchClusterInfo,cluster_
             backdrop="blur"
             onClose={() => setIsOpen(false)}
             title="Create an Event"
-            content={<CreateEvent fetchClusterInfo={fetchClusterInfo} cluster_ulid={cluster_ulid} setIsOpen={setIsOpen}/>}
+            content={<CreateEvent fetchClusterInfo={fetchClusterInfo} clusterUlid={clusterUlid} setIsOpen={setIsOpen}/>}
             button1={<button onClick={() => setIsOpen(false)}>Close</button>}
             button2={undefined}
             onOpen={() => {setIsOpen(true);}}
@@ -96,4 +86,4 @@ const EventView: React.FC<EventsViewProps> = ({ events,fetchClusterInfo,cluster_
   );
 };
 
-export default EventView;
+export default EventInfo;

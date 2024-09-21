@@ -5,35 +5,25 @@ import { MyButton } from "@/components/buttons/mybutton";
 import { MdPerson } from "react-icons/md";
 import MyModal from "@/components/modals/mymodal";
 import { useState } from "react";
-import MemberInfoCard from "./memberInfoCard";
+import MemberActivateDeactivate from "./actions/memberActivateDeactivate";
 import CreateMember from "./actions/createMember";
+import { MemberType } from "@/types/global.types";
 
-export type Member = {
-  member_ulid: string;
-  member_name: string;
-  member_email: string;
-  member_password: string;
-  created_at: string;
-  updated_at: string;
-  deactivated: number;
-  deleted: number;
-  cluster_ulid: string;
-};
 
-interface MemberViewProps {
-  members: Member[];
+interface MemberInfoProps {
+  members: MemberType[];
   fetchClusterInfo: () => void;
-  cluster_ulid: string;
+  clusterUlid: string;
 }
 
-const MemberView: React.FC<MemberViewProps> = ({
+const MemberInfo: React.FC<MemberInfoProps> = ({
   members,
   fetchClusterInfo,
-  cluster_ulid,
+  clusterUlid,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const [selectedMember, setSelectedMember] = useState<Member>({} as Member);
+  const [selectedMember, setSelectedMember] = useState<MemberType>({} as MemberType);
   return (
     <div className="h-full w-full flex flex-col ">
       <div className="flex justify-between p-2">
@@ -102,7 +92,7 @@ const MemberView: React.FC<MemberViewProps> = ({
           content={
             <CreateMember
               fetchClusterInfo={fetchClusterInfo}
-              cluster_ulid={cluster_ulid}
+              clusterUlid={clusterUlid}
               setIsOpen={setIsOpen}
             />
           }
@@ -120,7 +110,7 @@ const MemberView: React.FC<MemberViewProps> = ({
           backdrop="blur"
           onClose={() => setIsInfoOpen(false)}
           title="Member Info"
-          content={<MemberInfoCard member={selectedMember || undefined} setIsOpen={setIsInfoOpen} fetchClusterInfo={fetchClusterInfo}/>}
+          content={<MemberActivateDeactivate member={selectedMember || undefined} setIsOpen={setIsInfoOpen} fetchClusterInfo={fetchClusterInfo}/>}
           button1={undefined}
           button2={undefined}
           onOpen={() => {
@@ -132,4 +122,4 @@ const MemberView: React.FC<MemberViewProps> = ({
   );
 };
 
-export default MemberView;
+export default MemberInfo;
