@@ -50,7 +50,7 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
       case "changeAdmin":
         return (
           <ChangeAdmin
-            newAdminUlid={admin.admin_ulid}
+            adminUlid={cluster.adminInfo[0].admin_ulid}
             setIsOpen={setIsOpen}
             clusterUlid={cluster.cluster_ulid}
             fetchClusterInfo={fetchClusterInfo}

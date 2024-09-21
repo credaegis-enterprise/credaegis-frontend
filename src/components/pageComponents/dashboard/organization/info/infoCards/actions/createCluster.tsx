@@ -40,8 +40,8 @@ const CreateCluster: React.FC<CreateClusterProps> = ({setIsOpen}) => {
     try {
       const response = await myInstance.post("/cluster/create", {
         clusterName: clusterName,
-        memberName: adminName,
-        memberEmail: adminEmail,
+        clusterAdminName: adminName,
+        clusterAdminEmail: adminEmail,
       });
 
  

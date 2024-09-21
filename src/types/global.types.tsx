@@ -3,7 +3,7 @@ export interface EventType {
   event_name: string;
   created_at: string;
   updated_at: string;
-  deleted: boolean;
+  deleted: number;
   cluster_ulid: string;
 }
 
@@ -13,7 +13,7 @@ export interface ClusterInfoType {
   organization_ulid: string;
   created_at: Date;
   updated_at: Date;
-  deactivated: boolean;
+  deactivated: number;
   deleted: boolean;
   membersInfo: MemberType[];
   eventsInfo: EventType[];
@@ -66,10 +66,10 @@ export interface ClusterType  {
     deactivated: number;
     updated_at: string;
     member_ulid: string;
+    cluster_admin_ulid: string;
     deleted: number;
-    member_email: string;
-    member_password: string;
-    member_name: string;
+    cluster_admin_email: string;
+    cluster_admin_name: string;
   };
 
 export interface FileInfo {
