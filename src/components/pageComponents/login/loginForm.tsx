@@ -13,7 +13,7 @@ import { Tab, Tabs } from "@nextui-org/react";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import emailValidator from "@/utils/Validators/emailValidator";
-import { set } from "lodash";
+
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -44,27 +44,28 @@ const LoginForm = () => {
     try {
       if (selected === "organization") {
         response = await myInstance.post("/auth/organization/login", {
-          organization_email: email,
-          organization_password: password,
+          organizationEmail: email,
+          organizationPassword: password,
         });
       } else {
         response = await myInstance.post("/auth/login", {
-          member_email: email,
-          member_password: password,
+          memberEmail: email,
+          memberPassword: password,
         });
       }
 
       if (response.data.twoFa) setIsOpen(true);
       else {
         toast.success(response.data.message);
-        if (response.data.role === "organization")
-          router.push("/credaegis/organization/dashboard");
-        else router.push("/credaegis/member/dashboard");
+        const role = response.data.loginInfo.role;
+        if(role === "admin"|| role ==="clusterAdmin")
+        router.push(`/credaegis/${response.data.loginInfo.accountType}/dashboard`);
+        else
+        router.push(`/credaegis/${response.data.loginInfo.accountType}/certificates`);
       }
 
       setIsLoading(false);
     } catch (error: any) {
-      console.log(error);
 
       setIsLoading(false);
     }
@@ -75,17 +76,22 @@ const LoginForm = () => {
     let response;
     try {
       response = await myInstance.post("/auth/login/twofa", {
-        user_email: email,
+        userEmail: email,
         otp: otp,
-        role: selected,
+        accountType: selected,
       });
 
       toast.success(response.data.message);
       setIsLoading(false);
       setIsOpen(false);
-      router.push("/credaegis/organization/dashboard");
+
+      const role = response.data.loginInfo.role;
+      if(role === "admin"|| role ==="clusterAdmin")
+      router.push(`/credaegis/${response.data.loginInfo.accountType}/dashboard`);
+      else
+      router.push(`/credaegis/${response.data.loginInfo.accountType}/certificates`);
+      
     } catch (error: any) {
-      console.log(error);
       if (error.response?.status === 429) setIsOpen(false);
       setIsLoading(false);
     }
@@ -125,6 +131,7 @@ const LoginForm = () => {
               handleTwoFa();
             }}
           >
+    
             <span className="dark:text-black text-white text-md font-medium">
               Submit
             </span>
@@ -188,7 +195,7 @@ const LoginForm = () => {
           
         </MyButton>
         <div className="flex justify-end">
-          <div className="flex text-sm items-center dark:hover:text-green-400 hover:text-blue-600    transition-colors duration-300">
+          <div className="flex text-sm items-center dark:hover:text-green-400 hover:text-blue-600  transition-colors duration-300 cursor-pointer">
             Forgot password?
           </div>
         </div>
