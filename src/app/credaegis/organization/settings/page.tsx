@@ -11,7 +11,7 @@ const fetchSettings = async () => {
 
     const cookies = getCookies();
     try {
-        const response = await myInstanceNEXT.get("/settings/getSettings",{
+        const response = await myInstanceNEXT.get("/settings/organization",{
             headers: {
                 cookie:`test=${cookies}`
             }
@@ -39,7 +39,7 @@ const Page = async () => {
                     <SideBar />
                 </div>
                 <div className="lg:col-span-6 col-span-full overflow-auto p-4 h-full  rounded-lg border border-gray-200 dark:border-stone-800 ">
-                <ManageAll settings={result.info[0]}  accountType={result.accountType}/>
+                <ManageAll settings={result.settings}/>
                 </div>
             </div>
         </div>

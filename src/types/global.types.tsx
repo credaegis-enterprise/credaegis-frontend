@@ -127,6 +127,14 @@ export interface issuedCertificatesType {
 
 //settings
 
+export interface OrganizationSettingType {
+  organization_name: string;
+  organization_ulid: string;
+  organization_email: string;
+  two_fa_enabled: boolean;
+  brand_logo_enabled: boolean;
+}
+
 export interface SettingsType {
     memberAccountInfo: memberAccountInfoType | null;
     organizationAccountInfo: organizationAccountInfoType | null;

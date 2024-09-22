@@ -16,6 +16,7 @@ import { set } from "lodash";
 
 interface InfoProps {
   clusterUlid: string;
+
 }
 
 

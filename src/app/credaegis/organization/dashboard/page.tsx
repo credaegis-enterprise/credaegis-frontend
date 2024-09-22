@@ -24,25 +24,8 @@ const fetchClusters = async () => {
   
 }
 
-const fetchEvents = async () => {
-  const cookies = getCookies();
-  try{
-    const response = await myInstanceNEXT.get("/event/getall",{
-      headers: {
-          cookie:`test=${cookies}`
-      }
-      
-    });
-    return response.data.events;
-    }
-    catch(error: any){
-      console.log(error);
-    }
-}
 
 const  Page =async () => {
-
-
 
 
   const clustersPromise = fetchClusters();

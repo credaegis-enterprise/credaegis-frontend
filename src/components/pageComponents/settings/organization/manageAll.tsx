@@ -1,19 +1,18 @@
 'use client';
-import Security from "../info/security";
+import Security from "./info/security";
 import {useEffect } from "react";
 import { useTabContext } from "@/context/tabContext";
-import AccountInfo from "../info/accountInfo";
-import { SettingsType } from "@/types/global.types";
+import AccountInfo from "./info/accountInfo";
+import { OrganizationSettingType } from "@/types/global.types";
 
 
 
 interface manageAllProps {
-    settings: SettingsType;
-     accountType: string;
+   settings: OrganizationSettingType;
 }
 
 
-const ManageAll: React.FC<manageAllProps> = ({settings,accountType}) => {
+const ManageAll: React.FC<manageAllProps> = ({settings}) => {
    const {settingsTab,setSettingsTab} = useTabContext();
    console.log(settings)
 
@@ -26,8 +25,8 @@ const ManageAll: React.FC<manageAllProps> = ({settings,accountType}) => {
 
     return(
         <div className="h-full">
-                        {settingsTab.id === 'Account' && <AccountInfo settings={settings} accountType={accountType} />}
-                        {settingsTab.id === 'Security' && <Security two_fa_enabled={settings.settingsInfo.two_fa_enabled}/>}
+                        {settingsTab.id === 'Account' && <AccountInfo settings={settings}  />}
+                        {settingsTab.id === 'Security' && <Security two_fa_enabled={settings.two_fa_enabled}/>}
                         {settingsTab.id === 'Preferences' && <p>Preferences settings content goes here.</p>}
       </div>
     )
