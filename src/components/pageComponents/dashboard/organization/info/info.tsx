@@ -43,25 +43,22 @@ const Info = ({ clusterUlid }: InfoProps) => {
     fetchClusterInfo();
   }, [fetchClusterInfo]);
   return (
-    <div className="h-full  mt-2">
-        <div className="grid grid-rows-8 h-full gap-3">
-
-            <div className="row-span-2  ">
-                <div className="h-full border border-gray-200 dark:border-stone-800 box-border p-6  rounded-lg">
-                    <ClusterInfo cluster={clusterDetails} fetchClusterInfo={fetchClusterInfo} />
-                </div>
-             </div>
-             <div className="row-span-6 grid grid-cols-2 gap-4 pb-2">
-                <div className="lg:col-span-1 col-span-full h-full rounded-lg overflow-auto border border-gray-200 dark:border-stone-800 p-4">
-                    <EventInfo events={eventsInfo} fetchClusterInfo={fetchClusterInfo} clusterUlid={clusterUlid} />
-                </div>
-                <div className="lg:col-span-1 col-span-full h-full rounded-lg overflow-auto border border-gray-200 dark:border-stone-800 p-4">
-                   <MemberInfo members={members} fetchClusterInfo={fetchClusterInfo} clusterUlid={clusterUlid} />
-                </div>
-                </div>
+  
+    <div className="flex flex-col gap-4 h-full w-full">
+      <div className="flex flex-col w-full border rounded-lg p-4 dark:border-stone-800 border-gray-200">
+        <ClusterInfo cluster={clusterDetails} fetchClusterInfo={fetchClusterInfo} />
+      </div>
+      <div className="flex flex-col gap-4 w-full h-full">
+        <div className="grid grid-cols-1 md:grid-cols-2  h-full gap-3">
+          <div className="col-span-1 h-full rounded-lg overflow-auto border border-gray-200 dark:border-stone-800 p-4">
+            <EventInfo events={eventsInfo} fetchClusterInfo={fetchClusterInfo} clusterUlid={clusterUlid} />
+          </div>
+          <div className="col-span-1 h-full rounded-lg overflow-auto border border-gray-200 dark:border-stone-800 p-4">
+            <MemberInfo members={members} fetchClusterInfo={fetchClusterInfo} clusterUlid={clusterUlid} />
+          </div>
         </div>
-       
         </div>
+     </div>
 
    
   );
