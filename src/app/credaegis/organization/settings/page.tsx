@@ -1,8 +1,8 @@
 
 
 import { MdSettings } from "react-icons/md";
-import ManageAll from "@/components/pageComponents/settings/manageAll";
-import SideBar from "@/components/pageComponents/settings/sideBar";
+import ManageAll from "@/components/pageComponents/settings/organization/manageAll";
+import SideBar from "@/components/pageComponents/settings/organization/sideBar";
 import { myInstanceNEXT } from "@/utils/Axios/axios";
 import getCookies from "@/utils/cookies/getCookies";
 
@@ -16,14 +16,15 @@ const fetchSettings = async () => {
                 cookie:`test=${cookies}`
             }
         });
-        return response.data.settings;
+        return response.data
     } catch (error: any) {
         console.log(error);
     }
 }
 const Page = async () => {
 
-    const settings = await fetchSettings();             
+    const result = await fetchSettings(); 
+    console.log(result);           
    
     return (
         <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300">
@@ -38,7 +39,7 @@ const Page = async () => {
                     <SideBar />
                 </div>
                 <div className="lg:col-span-6 col-span-full overflow-auto p-4 h-full  rounded-lg border border-gray-200 dark:border-stone-800 ">
-                <ManageAll settings={settings}/>
+                <ManageAll settings={result.info[0]}  accountType={result.accountType}/>
                 </div>
             </div>
         </div>

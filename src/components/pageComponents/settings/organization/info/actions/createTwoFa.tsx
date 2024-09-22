@@ -8,6 +8,7 @@ import { myInstance } from "@/utils/Axios/axios";
 import { MdInfo } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Spinner } from "@nextui-org/react";
 
 
 interface TwoFaCreateProps {
@@ -21,10 +22,13 @@ const CreateTwoFa: React.FC<TwoFaCreateProps> = ({ setIsOpenTwofa }) => {
     const [otp, setOtp] = useState("");
     const [qrCode, setQrCode] = useState("");
     const [invalid, setInvalid] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     useEffect(() => {
+ 
         const fetchQrCode = async () => {
+          setIsLoading(true);
             try {
                 const response = await myInstance.post("/settings/generateTwofa");
                 setQrCode(response.data.qrcode);
@@ -33,12 +37,18 @@ const CreateTwoFa: React.FC<TwoFaCreateProps> = ({ setIsOpenTwofa }) => {
                 console.log(error);
               
             }
+            finally{
+              setIsLoading(false);
+            }
         };
         fetchQrCode();
+   
     }, []);
 
   const handleTwoFa = async () => {
+    setIsLoading(true);
      if (otp === "") {
+      setIsLoading(false);
       setInvalid(true);
       toast.error("Please fill all the fields");
       return;
@@ -52,23 +62,32 @@ const CreateTwoFa: React.FC<TwoFaCreateProps> = ({ setIsOpenTwofa }) => {
 
 
     } catch (error: any) {
+      
       console.log(error);
      
     }
+    finally{
+      setIsLoading(false);
+    }
+
+  
     router.refresh()
    
-
   };
 
   return (
     <div className="w-full">
       <div className="flex flex-col gap-4 w-full ">
+        {!isLoading ? (
         <div className="flex w-full ">
               <Image src={qrCode}  alt="qr code"
               width={500}
               height={500}
               />
        </div>
+        ) : (<div className="flex w-full h-full justify-center items-center ">
+          <Spinner size="lg" color="current" className="dark:text-white text-black" />
+          </div>)}
         <div className="flex gap-3">
           <MdInfo className="text-green-400" size={26}/>
           <div className=" text-green-400 text-sm">
@@ -88,6 +107,8 @@ const CreateTwoFa: React.FC<TwoFaCreateProps> = ({ setIsOpenTwofa }) => {
         <MyButton
           size="md"
           className="bg-black dark:bg-white text-white dark:text-black"
+          spinner={<Spinner size="sm" color="default" />}
+          isLoading={isLoading}
           onClick={() => {
             handleTwoFa();
           }}

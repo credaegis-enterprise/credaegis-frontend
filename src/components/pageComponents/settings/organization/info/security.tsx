@@ -12,7 +12,8 @@ import { myInstance } from "@/utils/Axios/axios";
 import MyModal from "@/components/modals/mymodal";
 import { MdWarning } from "react-icons/md";
 import { useRouter } from "next/navigation";
-import CreateTwoFa from "./createTwoFa";
+import CreateTwoFa from "./actions/createTwoFa";
+import { Spinner } from "@nextui-org/react";
 
 interface SecurityProps {
   two_fa_enabled: boolean;
@@ -26,6 +27,8 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
   const [notMatch, setNotMatch] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [disablePopup, setDisablePopup] = useState(false);
+  const [isLoadingDisable, setIsLoadingDisable] = useState(false);
+  const [isLoadingPassword, setIsLoadingPassword] = useState(false);
 
   const router = useRouter();
 
@@ -43,10 +46,11 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
   };
 
   const handleChangePassword = async () => {
+    setIsLoadingPassword(true);
     try {
       const response = await myInstance.patch("/settings/changepassword", {
-        old_password: oldPassword,
-        new_password: newPassword,
+        oldPassword: oldPassword,
+        newPassword: newPassword,
       });
 
       toast.success("Password changed successfully! Please login again");
@@ -54,21 +58,24 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
     } catch (error: any) {
       console.log(error);
     }
-
+   
+    setIsLoadingPassword(false);
     setIsOpen(false);
     setOldPassword("");
     setNewPassword("");
     setConfirmPassword("");
+    
   };
 
   const disableTwoFa = async () => {
+    setIsLoadingDisable(true);
     try {
       const response = await myInstance.delete("/settings/disableTwofa");
       toast.success(response.data.message);
     } catch (error: any) {
       console.log(error);
     }
-
+    setIsLoadingDisable(false);
     router.refresh();
     setDisablePopup(false);
   };
@@ -124,6 +131,7 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
                   className="bg-black w-full dark:bg-gray-200 text-white dark:text-black"
                   size="md"
                   onClick={handleChecks}
+        
                 >
                   Change Password
                 </MyButton>
@@ -164,6 +172,8 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
                   <MyButton
                     className="bg-black dark:bg-gray-200 text-white dark:text-black"
                     size="md"
+                  
+                 
                     onClick={() => setDisablePopup(true)}
                   >
                     Disable 2FA
@@ -202,6 +212,8 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
               className="bg-black dark:bg-gray-200 text-white dark:text-black"
               size="md"
               onClick={handleChangePassword}
+              isLoading={isLoadingPassword}
+              spinner={<Spinner size="sm" color="default" />}
             >
               Change Password
             </MyButton>
@@ -255,6 +267,8 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
               className="bg-black dark:bg-gray-200 text-white dark:text-black"
               size="md"
               onClick={disableTwoFa}
+              spinner={<Spinner size="sm" color="default" />}
+              isLoading={isLoadingDisable}
             >
               Disable 2FA
             </MyButton>

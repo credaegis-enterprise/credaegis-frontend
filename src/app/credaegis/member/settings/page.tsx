@@ -1,8 +1,8 @@
 
 
 import { MdSettings } from "react-icons/md";
-import ManageAll from "@/components/pageComponents/settings/manageAll";
-import SideBar from "@/components/pageComponents/settings/sideBar";
+import ManageAll from "@/components/pageComponents/settings/organization/manageAll";
+import SideBar from "@/components/pageComponents/settings/organization/sideBar";
 import { myInstanceNEXT } from "@/utils/Axios/axios";
 import getCookies from "@/utils/cookies/getCookies";
 
@@ -38,7 +38,7 @@ const Page = async () => {
                     <SideBar />
                 </div>
                 <div className="lg:col-span-6 col-span-full overflow-auto p-4 h-full  rounded-lg border border-gray-200 dark:border-stone-800 ">
-                <ManageAll settings={settings}/>
+                {/* <ManageAll /> */}
                 </div>
             </div>
         </div>
