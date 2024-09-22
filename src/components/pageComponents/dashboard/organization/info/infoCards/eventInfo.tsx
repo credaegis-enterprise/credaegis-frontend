@@ -4,15 +4,17 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import MyModal from "@/components/modals/mymodal";
 import CreateEvent from "./actions/createEvent";
+import { Spinner, user } from "@nextui-org/react";
 import { EventType } from "@/types/global.types";
 
 interface EventInfoProps {
   events: EventType[];
   fetchClusterInfo: () => void;
     clusterUlid: string;
+    loading: boolean;
 }
 
-const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUlid }) => {
+const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUlid,loading }) => {
 
  const [isOpen, setIsOpen] = useState(false);
 
@@ -26,6 +28,7 @@ const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUl
             Manage Events
           </h2>
         </div>
+        {!loading && (
         <MyButton className="bg-black dark:bg-white" size="sm"
         onClick={()=>{
             setIsOpen(true);
@@ -34,8 +37,10 @@ const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUl
             Add
           </span>
         </MyButton>
+        )}
       </div>
       <div className=" mt-2  h-full  overflow-auto">
+        {!loading ? (
         <div className="space-y-2 p-2 mt-1 h-full">
           {!events? (
             <div className="flex h-full justify-center items-center text-lg">
@@ -46,16 +51,17 @@ const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUl
           
           events && events.map((event, index) => (
             <motion.div
-              key={event.event_ulid}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
+            key={event.event_ulid}
+            initial={{ opacity: 0, y: 3 }} 
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.15, delay: index * 0.05 }}
               whileHover={{
                 scale: 1.01,
                 boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
               }}
               whileTap={{ scale: 0.98 }}
-              className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
+              className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-200 ease-in-out hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
+
             >
               <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
                 {event.event_name}
@@ -66,7 +72,11 @@ const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUl
           )}
         </div>
 
-      
+        ) : (
+          <div className="flex h-full justify-center items-center">
+            <Spinner size="lg" color="current" className="dark:text-white text-black " />
+          </div>
+        )}
     
       </div>
       {isOpen && (

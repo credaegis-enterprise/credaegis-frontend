@@ -7,6 +7,7 @@ import MyModal from "@/components/modals/mymodal";
 import { useState } from "react";
 import MemberActivateDeactivate from "./actions/memberActivateDeactivate";
 import CreateMember from "./actions/createMember";
+import { Spinner, user } from "@nextui-org/react";
 import { MemberType } from "@/types/global.types";
 
 
@@ -14,12 +15,14 @@ interface MemberInfoProps {
   members: MemberType[];
   fetchClusterInfo: () => void;
   clusterUlid: string;
+  loading: boolean;
 }
 
 const MemberInfo: React.FC<MemberInfoProps> = ({
   members,
   fetchClusterInfo,
   clusterUlid,
+  loading,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
@@ -32,7 +35,9 @@ const MemberInfo: React.FC<MemberInfoProps> = ({
           <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
             Manage Members
           </h2>
+
         </div>
+        {!loading && (
         <MyButton
           className="bg-black dark:bg-white"
           size="sm"
@@ -44,16 +49,18 @@ const MemberInfo: React.FC<MemberInfoProps> = ({
             Add
           </span>
         </MyButton>
+        )}
       </div>
       <div className=" mt-2 h-full overflow-auto">
+        {!loading ? (
         <div className="space-y-2 p-2 mt-1 h-full ">
           {members &&
             members.map((member, index) => (
               <motion.div
                 key={member.member_ulid}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 3 }} 
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
+                transition={{ duration: 0.15, delay: index * 0.05 }}
                 whileHover={{
                   scale: 1.01,
                   boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
@@ -63,7 +70,9 @@ const MemberInfo: React.FC<MemberInfoProps> = ({
                   setSelectedMember(member);
                   setIsInfoOpen(true);
                 }}
-                className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
+                className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-200 ease-in-out hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
+
+
               >
                 <div className="flex justify-between">
                   <div className="flex flex-col">
@@ -81,6 +90,11 @@ const MemberInfo: React.FC<MemberInfoProps> = ({
               </motion.div>
             ))}
         </div>
+        ) : (
+          <div className="flex h-full justify-center items-center text-lg">
+        <Spinner size="lg" color="current" className="dark:text-white text-black " />
+          </div>
+        )}
       </div>
       {isOpen && (
         <MyModal
