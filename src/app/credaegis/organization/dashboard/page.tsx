@@ -10,7 +10,7 @@ const fetchClusters = async () => {
 
   const cookies = getCookies();
   try{
-  const response = await myInstanceNEXT.get("/cluster/getall",{
+  const response = await myInstanceNEXT.get("/organization/cluster/getall",{
     headers: {
         cookie:`test=${cookies}`
     }

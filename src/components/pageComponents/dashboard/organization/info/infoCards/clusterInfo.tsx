@@ -67,7 +67,7 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
   const handleActivateCluster = async () => {
     try {
       const response = await myInstance.patch(
-        `/cluster/activate/${cluster.cluster_ulid}`
+        `/organization/cluster/activate/${cluster.cluster_ulid}`
       );
 
       toast.success(response.data.message);

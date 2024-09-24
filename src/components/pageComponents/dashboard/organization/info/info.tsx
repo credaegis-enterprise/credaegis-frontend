@@ -32,7 +32,7 @@ const Info = ({ clusterUlid }: InfoProps) => {
     try {
 
 
-      const response = await myInstance.get(`/cluster/getinfo/${clusterUlid}`);
+      const response = await myInstance.get(`/organization/cluster/getinfo/${clusterUlid}`);
       const { clusterInfo } = response.data;
 
       setClusterDetails(clusterInfo);
