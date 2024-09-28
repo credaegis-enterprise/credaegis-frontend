@@ -48,7 +48,7 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
   const handleChangePassword = async () => {
     setIsLoadingPassword(true);
     try {
-      const response = await myInstance.patch("/settings/changepassword", {
+      const response = await myInstance.patch("/settings/change-password", {
         oldPassword: oldPassword,
         newPassword: newPassword,
       });
@@ -70,7 +70,7 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
   const disableTwoFa = async () => {
     setIsLoadingDisable(true);
     try {
-      const response = await myInstance.delete("/settings/disableTwofa");
+      const response = await myInstance.patch("/settings/disable-twofa");
       toast.success(response.data.message);
     } catch (error: any) {
       console.log(error);

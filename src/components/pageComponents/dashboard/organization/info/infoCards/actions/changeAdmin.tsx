@@ -39,7 +39,7 @@ const ChangeAdmin: React.FC<ChangeAdminProps> = ({
     }
 
     try {
-      const response = await myInstance.patch("/organization/cluster/changeadmin", {
+      const response = await myInstance.patch("/cluster-control/organization/change-admin", {
         clusterUlid: clusterUlid,
         newAdminUlid: selectedAdmin,
       });

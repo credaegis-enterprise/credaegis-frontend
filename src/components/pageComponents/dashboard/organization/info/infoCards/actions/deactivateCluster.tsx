@@ -14,7 +14,7 @@ const DeactivateCluster: React.FC<DeactivateClusterProps> = ({ clusterName,clust
 
     const handleDeactivateCluster = async () => {
         try {
-            const response = await myInstance.patch(`/organization/cluster/deactivate/${clusterUlid}`);
+            const response = await myInstance.patch(`/cluster-control/organization/deactivate/${clusterUlid}`);
             toast.success(response.data.message);
             fetchClusterInfo();
             setIsOpen(false);
