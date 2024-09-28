@@ -35,9 +35,9 @@ const CreateEvent: React.FC<CreateEventProps> = ({
     }
 
     try {
-      const response = await myInstance.post("/event/create", {
-        event_name: eventName,
-        cluster_ulid: clusterUlid,
+      const response = await myInstance.post("/event-control/create", {
+        eventName: eventName,
+        clusterUlid: clusterUlid,
       });
 
       toast.success(response.data.message);

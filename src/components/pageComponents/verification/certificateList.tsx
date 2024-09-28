@@ -49,7 +49,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
       
           try {
             const response = await myInstance.post(
-              "/verification/checkAuthenticity",
+              "/verification/check-authenticity",
               formData,
               {
                 headers: {
@@ -150,7 +150,6 @@ const CertificateList: React.FC<MyFileListProps> = ({
       
         
       
-  
   return (
     <div className="h-full w-full flex flex-col gap-2 ">
           <input

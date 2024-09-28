@@ -16,7 +16,7 @@ const MemberActivateDeactivate: React.FC<MemberInfoProps> = ({ member,setIsOpen,
 
   const handleDeactivateMember = async () => {
     try {
-      const response = await myInstance.patch(`/member/deactivate/${member.member_ulid}`);
+      const response = await myInstance.patch(`/member-control/deactivate/${member.member_ulid}`);
       toast.success(response.data.message);
       setIsOpen(false);
       fetchClusterInfo()
@@ -27,7 +27,7 @@ const MemberActivateDeactivate: React.FC<MemberInfoProps> = ({ member,setIsOpen,
 
   const handleActivateMember = async () => {
     try {
-      const response = await myInstance.patch(`/member/activate/${member.member_ulid}`);
+      const response = await myInstance.patch(`/member-control/activate/${member.member_ulid}`);
       toast.success(response.data.message);
       setIsOpen(false);
       fetchClusterInfo()

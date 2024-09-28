@@ -53,6 +53,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
     }
 
     setIsLoading(false);
+    router.refresh();
     if(inputRef.current){
       inputRef.current.value = "";
     }
@@ -94,6 +95,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
 
       console.log(error);
     }
+    router.refresh();
     setIsLoading(false);
   }
 

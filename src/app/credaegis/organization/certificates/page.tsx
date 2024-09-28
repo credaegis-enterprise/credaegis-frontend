@@ -6,7 +6,7 @@ const fetchEvents = async () => {
 
     const cookie = getCookies()
     try {
-        const response = await myInstanceNEXT.get("/event/getall",{
+        const response = await myInstanceNEXT.get("/event-control/organization/get-all",{
             headers: {
                 cookie: `test=${cookie}`
             }
@@ -35,7 +35,7 @@ const fetchEvents = async () => {
 const fetchClusters = async () => {
     const cookies = getCookies()
     try{
-    const response = await myInstanceNEXT.get("/organization/cluster/getall",{
+    const response = await myInstanceNEXT.get("/cluster-control/organization/get-all",{
       headers: {
           cookie:`test=${cookies}`
       }
