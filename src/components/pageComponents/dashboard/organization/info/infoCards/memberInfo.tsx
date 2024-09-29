@@ -4,12 +4,11 @@ import { motion } from "framer-motion";
 import { MyButton } from "@/components/buttons/mybutton";
 import { MdPerson } from "react-icons/md";
 import MyModal from "@/components/modals/mymodal";
-import { useState } from "react";
-import MemberActivateDeactivate from "./actions/memberActivateDeactivate";
+import MemberControl from "./actions/memberControl";
 import CreateMember from "./actions/createMember";
 import { Spinner, user } from "@nextui-org/react";
 import { MemberType } from "@/types/global.types";
-
+import { useState } from "react";
 
 interface MemberInfoProps {
   members: MemberType[];
@@ -124,7 +123,7 @@ const MemberInfo: React.FC<MemberInfoProps> = ({
           backdrop="blur"
           onClose={() => setIsInfoOpen(false)}
           title="Member Info"
-          content={<MemberActivateDeactivate member={selectedMember || undefined} setIsOpen={setIsInfoOpen} fetchClusterInfo={fetchClusterInfo}/>}
+          content={<MemberControl member={selectedMember || undefined} setIsOpen={setIsInfoOpen} fetchClusterInfo={fetchClusterInfo}/>}
           button1={undefined}
           button2={undefined}
           onOpen={() => {
