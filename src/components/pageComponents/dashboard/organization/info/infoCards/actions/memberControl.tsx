@@ -7,8 +7,6 @@ import { Input } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
 import { MdWarning } from "react-icons/md";
 
-import { set } from "lodash";
-
 interface MemberControlProps {
   member: MemberType;
   setIsOpen: (value: boolean) => void;

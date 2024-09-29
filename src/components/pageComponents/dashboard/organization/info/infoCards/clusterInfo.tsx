@@ -9,7 +9,8 @@ import { toast } from "sonner";
 import ChangeAdmin from "./actions/changeAdmin";
 import { useRouter } from "next/navigation";
 import { ClusterInfoType } from "@/types/global.types";
-import { Spinner } from "@nextui-org/react";
+import RenameCluster from "./actions/renameCluster";
+import { Input, Spinner } from "@nextui-org/react";
 
 interface ClusterInfoProps {
   cluster: ClusterInfoType | undefined;
@@ -25,6 +26,7 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
   const router = useRouter();
   const [selectedAction, setSelectedAction] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [clusterName, setClusterName] = useState("");
 
   if (!cluster) {
     return <div className="text-center">No cluster information available.</div>;
@@ -58,6 +60,16 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
             members={cluster.membersInfo}
           />
         );
+      case "rename":
+        return (
+          <RenameCluster
+            clusterName={cluster.cluster_name}
+            clusterUlid={cluster.cluster_ulid}
+            setIsOpen={setIsOpen}
+            fetchClusterInfo={fetchClusterInfo}
+          />
+        );
+
 
       default:
         return null;
@@ -133,10 +145,10 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
                 <MyButton
                   className="bg-black dark:bg-white "
                   size="sm"
-                  onClick={() => handleOpenModal("delete")}
+                  onClick={() => handleOpenModal("rename")}
                 >
                   <span className="dark:text-black text-white text-md font-medium">
-                    Delete
+                    Rename
                   </span>
                 </MyButton>
               </div>
@@ -187,8 +199,8 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
           title={
             selectedAction === "deactivate"
               ? "Deactivate Cluster"
-              : selectedAction === "delete"
-              ? "Delete Cluster"
+              : selectedAction === "rename"
+              ? "Rename Cluster"
               : "Change Admin"
           }
           content={renderModalContent()}

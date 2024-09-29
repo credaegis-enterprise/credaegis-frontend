@@ -70,8 +70,6 @@ const MemberInfo: React.FC<MemberInfoProps> = ({
                   setIsInfoOpen(true);
                 }}
                 className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-200 ease-in-out hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
-
-
               >
                 <div className="flex justify-between">
                   <div className="flex flex-col">
