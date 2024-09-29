@@ -6,6 +6,8 @@ import MyModal from "@/components/modals/mymodal";
 import CreateEvent from "./actions/createEvent";
 import { Spinner, user } from "@nextui-org/react";
 import { EventType } from "@/types/global.types";
+import EventControl from "./actions/eventControl";
+import { set } from "lodash";
 
 interface EventInfoProps {
   events: EventType[];
@@ -17,6 +19,8 @@ interface EventInfoProps {
 const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUlid,loading }) => {
 
  const [isOpen, setIsOpen] = useState(false);
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] =  useState<EventType>({} as EventType);
 
 
   return (
@@ -60,6 +64,7 @@ const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUl
                 boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
               }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => {setSelectedEvent(event); setIsInfoOpen(true);}}
               className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-200 ease-in-out hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
 
             >
@@ -92,6 +97,21 @@ const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUl
             onOpen={() => {setIsOpen(true);}}
         />
         )}
+        {isInfoOpen && (
+        <MyModal
+          size="sm"
+          isOpen={isInfoOpen}
+          backdrop="blur"
+          onClose={() => setIsInfoOpen(false)}
+          title="Event info"
+          content={<EventControl event={selectedEvent || undefined} setIsOpen={setIsInfoOpen} fetchClusterInfo={fetchClusterInfo}/>}
+          button1={undefined}
+          button2={undefined}
+          onOpen={() => {
+            setIsInfoOpen(true);
+          }}
+        />
+      )}
     </div>
   );
 };

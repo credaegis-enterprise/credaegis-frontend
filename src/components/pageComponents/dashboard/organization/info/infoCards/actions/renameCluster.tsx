@@ -2,8 +2,9 @@
 import {Input,Spinner } from "@nextui-org/react"
 import { MyButton } from "@/components/buttons/mybutton";
 import { myInstance } from "@/utils/Axios/axios"
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 
 
@@ -22,6 +23,7 @@ const RenameCluster: React.FC<RenameClusterProps> = ({
     fetchClusterInfo,
 }) => {
 
+    const router = useRouter();
     const [newClusterName, setClusterName] = useState(clusterName);
     const [loading, setLoading] = useState(false);
     const [invalid, setInvalid] = useState(false);
@@ -51,6 +53,7 @@ const RenameCluster: React.FC<RenameClusterProps> = ({
            console.log(error);
         }
         setLoading(false);
+        router.refresh();
     }
 
     return(

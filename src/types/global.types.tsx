@@ -1,4 +1,4 @@
-import exp from "constants";
+
 
 export interface EventType {
   event_ulid: string;
@@ -6,6 +6,7 @@ export interface EventType {
   created_at: string;
   updated_at: string;
   deleted: number;
+  deactivated: number;
   cluster_ulid: string;
 }
 
