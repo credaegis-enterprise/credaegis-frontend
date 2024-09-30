@@ -7,16 +7,12 @@ import { motion } from "framer-motion";
 import { MyButton } from "@/components/buttons/mybutton";
 import { MdCheck, MdClose } from "react-icons/md";
 import { toast } from "sonner";
-import {
-  EventType,
-  FileInfo,
-  filesMetaType,
-  MyFileType,
-} from "@/types/global.types";
+import { debounce } from "lodash";
+import { myInstance } from "@/utils/Axios/axios";
+import { FileInfo, filesMetaType, MyFileType } from "@/types/global.types";
 import { ulid } from "ulid";
 
 interface MyFileListProps {
-  eventInfo: EventType[];
   setFileUrl: (file: FileInfo | null) => void;
   fileUrl: FileInfo | null;
   filesMetaInfo: filesMetaType[] | null;
@@ -26,11 +22,17 @@ interface MyFileListProps {
     selectedFiles: MyFileType[],
     event_ulid: string
   ) => void;
-    uploadSuccess: boolean;
+  uploadSuccess: boolean;
+}
+
+interface eventInfoType {
+  event_name: string;
+  event_ulid: string;
+  cluster_ulid: string;
+  cluster_name: string;
 }
 
 const MyFileList: React.FC<MyFileListProps> = ({
-  eventInfo,
   setFileUrl,
   fileUrl,
   setFileCount,
@@ -41,75 +43,74 @@ const MyFileList: React.FC<MyFileListProps> = ({
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<MyFileType[]>([]);
   const [event, setEvent] = useState<string | null>(null);
+  const [eventInfo, setEventInfo] = useState<eventInfoType[]>([]);
+  console.log(event);
   const inputFile = useRef<HTMLInputElement>(null);
   const handleUploadClick = () => {
     inputFile.current?.click();
   };
 
-
-  useEffect(() => { 
-    
-      setSelectedFiles([]);
-      setFileUrl(null);
-      setFileCount(0);
-      setFilesMetaInfo([]);
-      setEvent(null);
-
+  useEffect(() => {
+    setSelectedFiles([]);
+    setFileUrl(null);
+    setFileCount(0);
+    setFilesMetaInfo([]);
+    setEvent(null);
   }, [uploadSuccess]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
+      const { files } = e.target;
 
-    const { files } = e.target;
-
-    if (!files || files.length === 0) {
-      toast.info("No file selected. Please choose a file.");
-      return;
-    }
-    if (e.target.files) {
-      const filesArray = Array.from(e.target.files).map((file) => {
-        const newFile = file as MyFileType;
-        newFile.id = ulid();
-        return newFile;
-      });
-
-      if (selectedFiles && selectedFiles.length === 1) {
-        setFileUrl({
-          filename: filesArray[0].name,
-          fileurl: URL.createObjectURL(filesArray[0]),
-          fileindex: filesArray[0].id,
-        });
+      if (!files || files.length === 0) {
+        toast.info("No file selected. Please choose a file.");
+        return;
       }
+      if (e.target.files) {
+        const filesArray = Array.from(e.target.files).map((file) => {
+          const newFile = file as MyFileType;
+          newFile.id = ulid();
+          return newFile;
+        });
 
-      if (selectedFiles.length < 10) {
-        if (filesArray.length + selectedFiles.length > 10) {
+        if (selectedFiles && selectedFiles.length === 1) {
+          setFileUrl({
+            filename: filesArray[0].name,
+            fileurl: URL.createObjectURL(filesArray[0]),
+            fileindex: filesArray[0].id,
+          });
+        }
+
+        if (selectedFiles.length < 10) {
+          if (filesArray.length + selectedFiles.length > 10) {
+            toast.warning(
+              "You can only upload a maximum of 10 files at a time"
+            );
+          }
+
+          const newFiles = filesArray.slice(0, 10 - selectedFiles.length);
+          console.log(newFiles);
+          const tempFiles = [...selectedFiles, ...newFiles];
+          const fileSet = new Set();
+          for (const file of tempFiles) {
+            if (!fileSet.has(file.name)) {
+              fileSet.add(file.name);
+            } else {
+              toast.warning("Duplicate file names are not allowed");
+              return;
+            }
+          }
+
+          setSelectedFiles((prev) => [...prev, ...newFiles]);
+          setFileCount(newFiles.length + selectedFiles.length);
+        } else {
           toast.warning("You can only upload a maximum of 10 files at a time");
         }
-
-        const newFiles = filesArray.slice(0, 10 - selectedFiles.length);
-        console.log(newFiles);
-        const tempFiles = [...selectedFiles, ...newFiles];
-        const fileSet = new Set();
-        for (const file of tempFiles) {
-          if (!fileSet.has(file.name)) {
-            fileSet.add(file.name);
-          } else {
-            toast.warning("Duplicate file names are not allowed");
-            return;
-          }
-        }
-
-        setSelectedFiles((prev) => [...prev, ...newFiles]);
-        setFileCount(newFiles.length + selectedFiles.length);
-      } else {
-        toast.warning("You can only upload a maximum of 10 files at a time");
       }
+    } catch (error) {
+      console.error("File upload error:", error);
+      toast.error("There was an error uploading the file. Please try again.");
     }
-  }
-  catch (error) {
-    console.error("File upload error:", error);
-    toast.error("There was an error uploading the file. Please try again.");
-  }
 
     if (inputFile.current) {
       inputFile.current.value = "";
@@ -130,6 +131,27 @@ const MyFileList: React.FC<MyFileListProps> = ({
     setFilesMetaInfo(updatedFilesMetaInfo || []);
     newFiles.splice(index, 1);
     setSelectedFiles(newFiles);
+  };
+
+  const debouncedSearchEvents = debounce(async (value: string, id: string) => {
+    if (value === "") {
+      setEventInfo([]);
+      return;
+    }
+    try {
+      const response = await myInstance.get(
+        `/organization/event-control/search/${value}`
+      );
+
+      setEventInfo(response.data.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }, 300);
+
+  const searchEvents = async (value: string) => {
+    let id = event || "";
+    debouncedSearchEvents(value, id);
   };
 
   console.log(selectedFiles);
@@ -173,6 +195,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
           size="sm"
           className=""
           selectedKey={event}
+          onInputChange={searchEvents}
           onSelectionChange={(key) => setEvent(key as string | null)}
         >
           {eventInfo.map((event) => (
@@ -182,23 +205,21 @@ const MyFileList: React.FC<MyFileListProps> = ({
           ))}
         </Autocomplete>
       </div>
-     
+
       <div className=" flex flex-col lg:h-full h-[200px] overflow-auto mt-2 ">
         <div className="space-y-2 p-2 mt-1 h-full ">
           {selectedFiles.length === 0 ? (
             <div className="flex h-full justify-center items-center text-lg   ">
-                <div className="mb-20">
-              No files uploaded.
-              </div>
+              <div className="mb-20">No files uploaded.</div>
             </div>
           ) : (
             selectedFiles &&
             selectedFiles.map((file, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 3 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
+                transition={{ duration: 0.15, delay: index * 0.05 }}
                 whileHover={{
                   scale: 1.01,
                   boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
@@ -222,63 +243,61 @@ const MyFileList: React.FC<MyFileListProps> = ({
                   <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                     {file.name}
                   </div>
-                  
+
                   <div className="flex items-center gap-4">
                     {filesMetaInfo?.find((meta) => meta.id === file.id) && (
-                    <MdCheck size={20} className="text-green-500" />
+                      <MdCheck size={20} className="text-green-500" />
                     )}
-                  <div className="group">
-                    <div className="flex items-center justify-center h-8 w-8 rounded-full transition-colors duration-300 group-hover:bg-red-500 dark:group-hover:bg-red-700 ">
-                      <MdClose
-                        size={20}
-                        className="dark:text-white text-black group-hover:text-black dark:group-hover:text-white"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          handleFileRemove(index);
-                        }}
-                      />
+                    <div className="group">
+                      <div className="flex items-center justify-center h-8 w-8 rounded-full transition-colors duration-300 group-hover:bg-red-500 dark:group-hover:bg-red-700 ">
+                        <MdClose
+                          size={20}
+                          className="dark:text-white text-black group-hover:text-black dark:group-hover:text-white"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleFileRemove(index);
+                          }}
+                        />
+                      </div>
                     </div>
-                  </div>
                   </div>
                 </div>
               </motion.div>
             ))
           )}
         </div>
-
-       
       </div>
       <div className="mb-3">
-          {selectedFiles.length > 0 && (
-            <div className="flex justify-center mt-4 gap-2">
-              <MyButton
-                className="bg-black dark:bg-white"
-                size="md"
-                onClick={() => {
-                  setSelectedFiles([]);
-                  setFileUrl(null);
-                  setFileCount(0);
-                    setFilesMetaInfo([]);
-                }}
-              >
-                <span className="dark:text-black text-white text-md font-medium">
-                  Clear All
-                </span>
-              </MyButton>
-              <MyButton
-                className="bg-black dark:bg-white"
-                size="md"
-                onClick={() => {
-                  uploadCertificatesForApproval(selectedFiles, event || "");
-                }}
-              >
-                <span className="dark:text-black text-white text-md font-medium">
-                  Upload All files
-                </span>
-              </MyButton>
-            </div>
-          )}
-        </div>
+        {selectedFiles.length > 0 && (
+          <div className="flex justify-center mt-4 gap-2">
+            <MyButton
+              className="bg-black dark:bg-white"
+              size="md"
+              onClick={() => {
+                setSelectedFiles([]);
+                setFileUrl(null);
+                setFileCount(0);
+                setFilesMetaInfo([]);
+              }}
+            >
+              <span className="dark:text-black text-white text-md font-medium">
+                Clear All
+              </span>
+            </MyButton>
+            <MyButton
+              className="bg-black dark:bg-white"
+              size="md"
+              onClick={() => {
+                uploadCertificatesForApproval(selectedFiles, event || "");
+              }}
+            >
+              <span className="dark:text-black text-white text-md font-medium">
+                Upload All files
+              </span>
+            </MyButton>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

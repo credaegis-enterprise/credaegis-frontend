@@ -25,7 +25,7 @@ const MemberControl: React.FC<MemberControlProps> = ({ member,setIsOpen,fetchClu
   const handleDeactivateMember = async () => {
     setLoading(true);
     try {
-      const response = await myInstance.patch(`/member-control/deactivate/${member.member_ulid}`);
+      const response = await myInstance.put(`/organization/member-control/deactivate/${member.member_ulid}`);
       toast.success(response.data.message);
       setIsOpen(false);
       fetchClusterInfo()
@@ -38,7 +38,7 @@ const MemberControl: React.FC<MemberControlProps> = ({ member,setIsOpen,fetchClu
   const handleActivateMember = async () => {
     setLoading(true);
     try {
-      const response = await myInstance.patch(`/member-control/activate/${member.member_ulid}`);
+      const response = await myInstance.put(`/organization/member-control/activate/${member.member_ulid}`);
       toast.success(response.data.message);
       setIsOpen(false);
       fetchClusterInfo()
@@ -58,7 +58,7 @@ const MemberControl: React.FC<MemberControlProps> = ({ member,setIsOpen,fetchClu
       return;
     }
     try {
-      const response = await myInstance.patch(`/member-control/delete/${member.member_ulid}`);
+      const response = await myInstance.put(`/organization/member-control/delete/${member.member_ulid}`);
       toast.success(response.data.message);
       setIsOpen(false);
       setDeletePrompt(false);

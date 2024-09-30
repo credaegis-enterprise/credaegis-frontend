@@ -43,7 +43,7 @@ const LoginForm = () => {
 
     try {
       if (selected === "organization") {
-        response = await myInstance.post("/auth/organization/login", {
+        response = await myInstance.post("/organization/auth/login", {
           organizationEmail: email,
           organizationPassword: password,
         });
@@ -75,12 +75,21 @@ const LoginForm = () => {
     setIsLoading(true);
     let response;
     try {
+      if (selected === "organization") {
+        response = await myInstance.post("/organization/auth/login/twofa", {
+          organizationEmail: email,
+          organizationPassword: password,
+          otp: otp,
+          accountType: selected,
+        });
+      } else{
       response = await myInstance.post("/auth/login/twofa", {
         userEmail: email,
         userPassword: password,
         otp: otp,
         accountType: selected,
       });
+    }
 
       toast.success(response.data.message);
       setIsLoading(false);

@@ -26,7 +26,7 @@ export default function MyNavbar() {
   useEffect(() => {
     const getUserRoles = async () => {
       try {
-        const response = await myInstance.get("/auth/checker");
+        const response = await myInstance.get("/session/check-session");
         console.log(response.data);
         setAccountType(response.data.accountType);
         setRole(response.data.role);

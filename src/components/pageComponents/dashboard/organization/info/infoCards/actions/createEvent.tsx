@@ -35,7 +35,7 @@ const CreateEvent: React.FC<CreateEventProps> = ({
     }
 
     try {
-      const response = await myInstance.post("/event-control/create", {
+      const response = await myInstance.post("/organization/event-control/create", {
         eventName: eventName,
         clusterUlid: clusterUlid,
       });

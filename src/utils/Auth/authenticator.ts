@@ -11,7 +11,7 @@ const authenticator = async()=>{
     console.log(cookie);
     try
     {
-        const response = await myInstanceNEXT.get("/auth/checker",{
+        const response = await myInstanceNEXT.get("/session/check-session",{
             headers:{
                 cookie:`test=${cookie}`
             }

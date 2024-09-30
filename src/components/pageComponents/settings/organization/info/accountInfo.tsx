@@ -1,3 +1,4 @@
+import React from 'react';
 import { MdClose, MdPersonOutline, MdUpload, MdWarning } from 'react-icons/md';
 import { Input, Spinner } from '@nextui-org/react';
 import { OrganizationSettingType } from '@/types/global.types';
@@ -39,7 +40,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
     formData.append("brandLogo", file);
 
     try {
-      const response = await myInstance.post("/settings/upload-brand-logo",formData, {
+      const response = await myInstance.post("/organization/settings/upload-brand-logo",formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -70,7 +71,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
       return
     }
     try {
-      const response = await myInstance.patch("/settings/organization/modify", {
+      const response = await myInstance.put("/organization/settings/modify-account", {
         organizationNewName: name,
       });
       toast.success(response.data.message);
@@ -86,7 +87,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
   const handleDeleteLogo = async () => {
     setIsLoading(true);
     try {
-      const response = await myInstance.delete("/settings/delete-brand-logo");
+      const response = await myInstance.delete("/organization/settings/delete-brand-logo");
       toast.success(response.data.message);
       setError(true);
       setIsOpen(false);
@@ -115,7 +116,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
             <>
             {!isLoading ? (
             <img
-              src={`${process.env.NEXT_PUBLIC_devbackendurl}/settings/brand-logo/get?organizationUlid=${settings.organization_ulid}`}
+              src={`${process.env.NEXT_PUBLIC_devbackendurl}/organization/settings/brand-logo/get`}
               alt="Brand logo not found"
               className="w-48 h-48 object-cover rounded-full shadow-md"
               onError={() => setError(true)}

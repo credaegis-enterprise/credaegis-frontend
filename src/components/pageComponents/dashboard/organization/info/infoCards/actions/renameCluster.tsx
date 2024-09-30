@@ -42,7 +42,7 @@ const RenameCluster: React.FC<RenameClusterProps> = ({
             return;
         }
         try {
-            await myInstance.patch(`cluster-control/organization/rename`, {
+            await myInstance.put(`/organization/cluster-control/rename`, {
                 clusterUlid: clusterUlid,
                 newClusterName: newClusterName,
             });

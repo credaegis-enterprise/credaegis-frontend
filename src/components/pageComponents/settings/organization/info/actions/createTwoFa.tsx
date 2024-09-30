@@ -30,7 +30,7 @@ const CreateTwoFa: React.FC<TwoFaCreateProps> = ({ setIsOpenTwofa }) => {
         const fetchQrCode = async () => {
           setIsLoading(true);
             try {
-                const response = await myInstance.post("/settings/generate-twofa");
+                const response = await myInstance.post("/organization/settings/generate-twofa");
                 setQrCode(response.data.qrcode);
             } catch (error: any) {
                
@@ -54,7 +54,7 @@ const CreateTwoFa: React.FC<TwoFaCreateProps> = ({ setIsOpenTwofa }) => {
       return;
      }
     try {
-      const response = await myInstance.post("/settings/enable-twofa", {
+      const response = await myInstance.post("/organization/settings/enable-twofa", {
         otp: otp,
       });
       toast.success(response.data.message);

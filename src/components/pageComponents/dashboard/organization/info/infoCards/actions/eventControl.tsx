@@ -27,7 +27,7 @@ const [eventName, setEventName] = useState(event.event_name);
  const handleActivateEvent = async () => {
     setLoading(true);
     try {
-      const response = await myInstance.patch(`/event-control/activate/${event.event_ulid}`);
+      const response = await myInstance.put(`/organization/event-control/activate/${event.event_ulid}`);
       toast.success(response.data.message);
       setIsOpen(false);
       fetchClusterInfo()
@@ -40,7 +40,7 @@ const [eventName, setEventName] = useState(event.event_name);
  const handleDeactivateEvent = async () => {
     setLoading(true);
     try {
-      const response = await myInstance.patch(`/event-control/deactivate/${event.event_ulid}`);
+      const response = await myInstance.put(`/organization/event-control/deactivate/${event.event_ulid}`);
       toast.success(response.data.message);
       setIsOpen(false);
       fetchClusterInfo()
@@ -61,7 +61,7 @@ const [eventName, setEventName] = useState(event.event_name);
       return;
     }
     try {
-      const response = await myInstance.patch(`/event-control/rename`, {
+      const response = await myInstance.put(`/organization/event-control/rename`, {
         newEventName: eventName,
         eventUlid: event.event_ulid,
       });

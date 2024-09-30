@@ -11,7 +11,7 @@ const fetchSettings = async () => {
 
     const cookies = getCookies();
     try {
-        const response = await myInstanceNEXT.get("/settings/organization/get",{
+        const response = await myInstanceNEXT.get("/organization/settings/get",{
             headers: {
                 cookie:`test=${cookies}`
             }

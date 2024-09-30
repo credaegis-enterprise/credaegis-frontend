@@ -43,7 +43,7 @@ const CreateMember: React.FC<CreateMemberProps> = ({
     }
 
     try {
-      const response = await myInstance.post("/member-control/create", {
+      const response = await myInstance.post("/organization/member-control/create", {
         memberName: memberName,
         memberEmail: memberEmail,
         clusterUlid: clusterUlid,
