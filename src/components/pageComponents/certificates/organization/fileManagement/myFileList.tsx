@@ -144,7 +144,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
     }
     try {
       const response = await myInstance.get(
-        `/organization/event-control/search/${value}`
+        `/organization/event-control/search/event?eventName=${value}&clusterUlid=`
       );
 
       setEventInfo(response.data.data);

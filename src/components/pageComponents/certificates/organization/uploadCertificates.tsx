@@ -1,8 +1,8 @@
 "use client";
-import MyFileList from "./myFileList";
+import MyFileList from "./fileManagement/myFileList";
 import { useState } from "react";
 import { EventType, FileInfo, MyFileType } from "@/types/global.types";
-import MyFileMeta from "./myfileMeta";
+import MyFileMeta from "./fileManagement/myfileMeta";
 import { filesMetaType } from "@/types/global.types";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";

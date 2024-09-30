@@ -1,6 +1,6 @@
 import { myInstanceNEXT } from "@/utils/Axios/axios"
 import getCookies from "@/utils/cookies/getCookies"
-import UploadCertificates from "@/components/pageComponents/certificates/uploadCertificates/uploadCertificates"
+import UploadCertificates from "@/components/pageComponents/certificates/organization/uploadCertificates"
 
 const fetchEvents = async () => {
 
@@ -63,7 +63,7 @@ const Page = async () => {
          <div className="h-full flex p-2 ">
       <div className="flex flex-col w-full">
       <div className="flex flex-col h-full overflow-hidden  ">
-         <UploadCertificates eventInfo={events} />
+         <UploadCertificates  />
       </div>
     </div>
   </div>

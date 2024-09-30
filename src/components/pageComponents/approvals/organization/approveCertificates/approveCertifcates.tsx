@@ -1,11 +1,11 @@
 import { MyButton } from "@/components/buttons/mybutton";
 import { Checkbox } from "@nextui-org/react";
-import ApprovalControl from "./approvalControl";
+import ApprovalControl from "./actions/approvalControl";
 import { useState } from "react";
 import { ApprovalsType } from "@/types/global.types";
 import { useEffect,useCallback } from "react";
-import ApprovalViewer from "./approvalViewer";
-import ApprovalModify from "./approvalModify";
+import ApprovalViewer from "./actions/approvalViewer";
+import ApprovalModify from "./actions/approvalModify";
 import MyModal from "@/components/modals/mymodal";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -43,17 +43,18 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
     let result;
     try {
       if (selectedEvent) {
-        result = await myInstance.get(`/approvals/event/get/${selectedEvent}`);
+        result = await myInstance.get(`/organization/approval-control/event/get-all/${selectedEvent}`);
         console.log(result);
       } else if (selectedCluster) {
         result = await myInstance.get(
-          `/approvals/cluster/get/${selectedCluster}`
+          `/organization/approval-control/cluster/get-all/${selectedCluster}`
         );
       }
       else{
         router.refresh();
       }
-      if (result?.data.data.length === 0 && approvalsList.length === 0) {
+      console.log(result);
+      if (result?.data.data.length === 0 || approvalsList.length === 0) {
         toast.info("No approvals found for selected filters ");
       }
       if (result) {

@@ -1,6 +1,6 @@
 import { myInstanceNEXT } from "@/utils/Axios/axios"
 import getCookies from "@/utils/cookies/getCookies"
-import UploadCertificates from "@/components/pageComponents/certificates/uploadCertificates/uploadCertificates"
+import UploadCertificates from "@/components/pageComponents/certificates/organization/uploadCertificates"
 
 
 const fetchEvents = async () => {

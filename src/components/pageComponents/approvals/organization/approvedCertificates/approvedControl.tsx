@@ -51,7 +51,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
   const debouncedSearchClusters = debounce(async (value: string) => {
     try {
       const response = await myInstance.get(
-        `/search/cluster?cluster_name=${value}`
+        `/organization/cluster-control/search/cluster?clusterName=${value}`
       );
 
       setClusterList(response.data.data);
@@ -63,7 +63,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
   const debouncedSearchEvents = debounce(async (value: string, id: string) => {
     try {
       const response = await myInstance.get(
-        `/search/event?event_name=${value}&cluster_ulid=${id}`
+        `/organization/event-control/search/event?eventName=${value}&clusterUlid=${id}`
       );
 
       setEventList(response.data.data);
@@ -103,7 +103,6 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
 
   const handleRevoke = async () => {
 
-    console.log("sknlksnlnslnlsn")
     const issuedCertificatesUlids = issuedList.reduce<string[]>((acc, issued) => {
         console.log(issued.revoked)
       if (issued.selected && !issued.revoked) {
