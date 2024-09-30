@@ -5,7 +5,9 @@ import { useState,useEffect } from "react";
 import { MyButton } from "@/components/buttons/mybutton";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
+import { Spinner } from "@nextui-org/react";
 import emailValidator from "@/utils/Validators/emailValidator";
+import { set } from "lodash";
 
 
 interface ApprovalModifyProps {
@@ -18,6 +20,7 @@ interface ApprovalModifyProps {
 const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,setIsModifyOpen }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [loading,setLoading] = useState(false);
     const [trigger, setTrigger] = useState(false);
     const [comments, setComments] = useState<string | null>(null);
     const [expiryDate, setExpiryDate] = useState<string | null>(null);
@@ -55,15 +58,15 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
             return;
           }
 
-
+          setLoading(true);
         try{ 
 
-            const response = await myInstance.patch("/approvals/modify",{
-                approval_ulid: approval.approval_ulid,
+            const response = await myInstance.put("/organization/approval-control/modify",{
+                approvalUlid: approval.approval_ulid,
                 name: name,
                 email: email,
                 comments: comments,
-                expiry_date: expiryDate
+                expiryDate: expiryDate
             })
 
             console.log(response.data);
@@ -79,6 +82,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
         catch(error){
             console.log(error);
         }
+        setLoading(false);
     }
 
   return (
@@ -133,6 +137,8 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
           <div className="flex justify-end gap-2">
             <MyButton
               className="bg-black dark:bg-white"
+              isLoading={loading}
+              spinner={<Spinner size="sm" color="default"/>}
               size="sm"
 
               onClick={() => {

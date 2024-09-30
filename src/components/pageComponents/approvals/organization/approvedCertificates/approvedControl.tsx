@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
+import { Spinner } from "@nextui-org/react";
+import { IoReload } from "react-icons/io5";
+import { IoSearch } from "react-icons/io5";
 
 interface ApprovedCertificatesProps {
  setIssuedList: (issuedList: issuedCertificatesType[]) => void;
@@ -45,6 +48,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
   const router = useRouter();
   const [clusterList, setClusterList] = useState<clusterType[]>([]);
   const [eventList, setEventList] = useState<eventType[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   // const [selectedCluster, setSelectedCluster] = useState<string | null>();
   // const [selectedEvent, setSelectedEvent] = useState<string | null>("");
 
@@ -117,9 +121,11 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
       return;
     }
 
+    setLoading(true);
+
     try {
-      const response = await myInstance.patch("/certificate/revoke", {
-        certificate_ulids: issuedCertificatesUlids,
+      const response = await myInstance.put("/organization/certificate/revoke", {
+        certificateUlids: issuedCertificatesUlids,
       });
 
       if (response.data.success) {
@@ -129,6 +135,8 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
     } catch (err) {
       console.log(err);
     }
+
+    setLoading(false);
 
 
 
@@ -187,6 +195,9 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
         </Autocomplete>
         <div className="flex items-center gap-2">
           <MyButton
+            isLoading={loading}
+            startContent={<IoSearch size={20} className="text-white dark:text-black" />}
+            spinner={<Spinner color="default" size="md"/>}
             className="bg-black dark:bg-white"
             size="sm"
             onClick={() => {
@@ -198,6 +209,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
             </span>
           </MyButton>
           <MyButton
+          startContent={<IoReload size={20} className="text-white dark:text-black" />}
             className="bg-black dark:bg-white"
             size="sm"
             onClick={() => {
@@ -212,6 +224,8 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
             </span>
           </MyButton>
           <MyButton
+          isLoading={loading}
+          spinner={<Spinner color="default" size="md"/>}
             className="bg-black dark:bg-white"
             size="sm"
             onClick={() => {

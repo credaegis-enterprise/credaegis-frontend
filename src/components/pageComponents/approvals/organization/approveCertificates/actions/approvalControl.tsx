@@ -7,6 +7,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
+import { IoReload } from "react-icons/io5";
+import { IoSearch } from "react-icons/io5";
+import { Spinner } from "@nextui-org/react";
 
 interface ApproveCertificatesProps {
   setApprovalsList: (approvalsList: ApprovalsType[]) => void;
@@ -46,6 +49,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   const router = useRouter();
   const [clusterList, setClusterList] = useState<clusterType[]>([]);
   const [eventList, setEventList] = useState<eventType[]>([]);
+  const [loading, setLoading] = useState(false);
   // const [selectedCluster, setSelectedCluster] = useState<string | null>();
   // const [selectedEvent, setSelectedEvent] = useState<string | null>("");
 
@@ -107,9 +111,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   };
 
   const handleApprove = async () => {
-    console.log(approvalsList);
-
-
+   
     const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
         if (approval.selected) {
           acc.push(approval.approval_ulid);
@@ -124,9 +126,11 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
       return;
     }
 
+    setLoading(true);
+
     try {
-      const response = await myInstance.post("/approvals/approve", {
-        approval_ulids: approvalUlids,
+      const response = await myInstance.put("/organization/approval-control/approve", {
+        approvalUlids: approvalUlids,
       });
       if (response.data.success) {
         toast.success(response.data.message);
@@ -138,9 +142,11 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     } catch (err) {
       console.log(err);
     }
+    setLoading(false);
   };
 
   const handleReject = async () => {
+
 
 
     const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
@@ -156,10 +162,11 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     toast.info("Please select atleast one approval to reject");
     return;
   }
+  setLoading(true);
 
   try{
-    const response = await myInstance.patch("/approvals/reject",{
-      approval_ulids: approvalUlids
+    const response = await myInstance.put("/organization/approval-control/reject",{
+      approvalUlids: approvalUlids
     });
 
     if(response.data.success){
@@ -170,6 +177,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   catch(err){
     console.log(err);
   }
+  setLoading(false);
 
 
   }
@@ -224,7 +232,10 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
         <div className="flex items-center gap-2">
           <MyButton
             className="bg-black dark:bg-white"
+            spinner={<Spinner size="sm" color="default" />}
+            isLoading={loading}
             size="sm"
+            startContent={<IoSearch size={20} className="text-white dark:text-black"/>}
             onClick={() => {
               getApprovals();
             }}
@@ -234,8 +245,11 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
             </span>
           </MyButton>
           <MyButton
+            isLoading={loading}
+            spinner={<Spinner size="sm" color="default" />}
             className="bg-black dark:bg-white"
             size="sm"
+            startContent={ <IoReload size={20} className="text-white dark:text-black" />}
             onClick={() => {
 
               setApprovalsList([]);
@@ -245,10 +259,12 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
             }}
           >
             <span className="dark:text-black text-white text-md font-medium">
-              Reset
+              Refresh
             </span>
           </MyButton>
           <MyButton
+            isLoading={loading}
+            spinner={<Spinner size="sm" color="default" />}
                   className="bg-black dark:bg-white"
             size="sm"
             onClick={() => {
@@ -259,7 +275,10 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
               Approve certificates
             </span>
           </MyButton>
-          <MyButton  className="bg-black dark:bg-white" size="sm" onClick={()=>{
+          <MyButton 
+          isLoading={loading}
+          spinner={<Spinner size="sm" color="default" />}
+          className="bg-black dark:bg-white" size="sm" onClick={()=>{
             handleReject();
           }}>
             <span className="dark:text-black text-white text-md font-medium">

@@ -14,6 +14,9 @@ import { MdComment } from "react-icons/md";
 import { myInstance } from "@/utils/Axios/axios";
 import { MdAccountCircle } from "react-icons/md";
 import { GrBookmark } from "react-icons/gr";
+import { RiGroup2Fill } from "react-icons/ri";
+import { Spinner } from "@nextui-org/react";
+import { set } from "lodash";
 
 
 interface ApproveCertificatesProps {
@@ -29,6 +32,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
   const [isModifyOpen, setIsModifyOpen] = useState<boolean>(false);
   const [selectedCluster, setSelectedCluster] = useState<string | null>(""); 
   const [selectedEvent, setSelectedEvent] = useState<string | null>("");
+  const [loading, setLoading] = useState(false);
 
 
 
@@ -40,6 +44,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
 
 
   const getApprovals = useCallback(async () => {
+      setLoading(true);
     let result;
     try {
       if (selectedEvent) {
@@ -71,6 +76,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
               issued_to_name: approval.issued_to_name,
               event_ulid: approval.event_ulid,
               cluster_ulid: approval.cluster_ulid,
+              cluster_name: approval.cluster_name,
               selected: false,
             };
           }
@@ -81,6 +87,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
     } catch (err) {
       console.log(err);
     }
+    setLoading(false);
 
   } , [selectedCluster, selectedEvent, router, approvalsList]);
 
@@ -115,6 +122,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
      <ApprovalControl  setApprovalsList={setApprovalsList} approvalsList={approvalsList} setSelectedCluster={setSelectedCluster}
      setSelectedEvent={setSelectedEvent} selectedEvent={selectedEvent} selectedCluster={selectedCluster}
      getApprovals={getApprovals} />
+     {!loading ? (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg border dark:border-neutral-800">
       <table className="w-full text-sm text-left">
         <thead className="text-md bg-neutral-100 dark:bg-neutral-800 rounded-t-lg sticky z-30 top-0">
@@ -134,10 +142,20 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
               className="px-6 py-3 text-neutral-700 dark:text-neutral-200 font-semibold"
             >
               <div className="flex items-center gap-1">
+                <RiGroup2Fill size={20} />
+                <span>Cluster Name</span>
+              </div>
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-neutral-700 dark:text-neutral-200 font-semibold"
+            >
+              <div className="flex items-center gap-1">
                 <MdAccountCircle size={20} /> 
                 <span>Issued To</span>
               </div>
             </th>
+
             {/* <th
               scope="col"
               className="px-6 py-3 text-neutral-700 dark:text-neutral-200 font-semibold"
@@ -191,6 +209,9 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
             <tr key={index} className="">
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
                 {approval.event_name}
+              </td>
+              <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
+                {approval.cluster_name}
               </td>
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
                 <div className="flex flex-col gap-2">
@@ -247,6 +268,11 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
         )}
       </table>
     </div>
+     ):(
+         <div className="flex justify-center items-center h-full">
+             <Spinner size="lg" color="current" className="dark:text-white text-black" />
+         </div>
+     )}
    
     {isOpen && selectedApproval && <ApprovalViewer cluster_ulid={selectedApproval.cluster_ulid} event_ulid={selectedApproval.event_ulid} approval_file_name={selectedApproval.approval_file_name} approval_file_ulid={selectedApproval.approval_file_ulid} setIsOpen={setIsOpen} isOpen={isOpen} />}
     

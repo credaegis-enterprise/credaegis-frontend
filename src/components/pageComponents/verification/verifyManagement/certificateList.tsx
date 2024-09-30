@@ -196,15 +196,15 @@ const CertificateList: React.FC<MyFileListProps> = ({
             selectedFiles &&
             selectedFiles.map((file, index) => (
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                whileHover={{
-                  scale: 1.01,
-                  boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
-                }}
-                whileTap={{ scale: 0.98 }}
+              key={index}
+              initial={{ opacity: 0, y: 3 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.05, delay: index * 0.01 }}
+              whileHover={{
+                scale: 1.01,
+                boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
+              }}
+              whileTap={{ scale: 0.98 }}
                 className={` rounded-lg  p-4  duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer
                       ${
                         fileUrl?.filename === file.name

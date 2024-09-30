@@ -6,6 +6,7 @@ import { MdInfo } from "react-icons/md";
 import { DatePicker } from "@nextui-org/react";
 import { parseDate } from "@internationalized/date";
 import { BsExclamationTriangleFill } from "react-icons/bs";
+import React from "react";
 import { Textarea } from "@nextui-org/react";
 
 interface CertificateInfoProps {

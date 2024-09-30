@@ -49,6 +49,7 @@ export interface ApprovalsType {
   event_name: string;
   event_ulid: string;
   cluster_ulid: string;
+  cluster_name: string;
   selected: boolean;
 }
 

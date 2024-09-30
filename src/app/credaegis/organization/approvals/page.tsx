@@ -30,6 +30,7 @@ const fetchApprovals = async () => {
                 issued_to_name: approval.issued_to_name,
                 event_ulid: approval.event_ulid,
                 cluster_ulid: approval.cluster_ulid,
+                cluster_name: approval.cluster_name,
                 selected: false,
               };
             }
@@ -44,7 +45,7 @@ const fetchApprovals = async () => {
 const fetchIssuedCertificates = async () => {
     const cookie = getCookies()
     try {
-        const response = await myInstanceNEXT.get("/certificate/getall", {
+        const response = await myInstanceNEXT.get("/organization/certificate/get-all", {
             headers: {
                 cookie: `test=${cookie}`
             }
