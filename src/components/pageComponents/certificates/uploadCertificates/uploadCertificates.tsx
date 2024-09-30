@@ -6,23 +6,21 @@ import MyFileMeta from "./myfileMeta";
 import { filesMetaType } from "@/types/global.types";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
+import { Spinner } from "@nextui-org/react";
 
-interface UploadCertificatesProps {
-  eventInfo: EventType[];
-}
 
-const UploadCertificates: React.FC<UploadCertificatesProps> = ({
-  eventInfo,
-}) => {
+const UploadCertificates = () => {
   const [fileUrl, setFileUrl] = useState<FileInfo | null>(null);
   const [fileCount, setFileCount] = useState<number>(0);
   const [filesMetaInfo, setFilesMetaInfo] = useState<filesMetaType[]>([]);
  const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
+ const [loading, setLoading] = useState<boolean>(false);
 
   const uploadCertificatesForApproval = async (
     selectedFiles: MyFileType[],
     event_ulid: string
   ) => {
+    
    
 
     if(selectedFiles.length !== filesMetaInfo.length){
@@ -34,6 +32,7 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({
         return;
     }
 
+    setLoading(true);
     const formData = new FormData();
     selectedFiles.forEach((file) => {
       formData.append("approvals", file);
@@ -54,7 +53,7 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({
 
     try {
       const response = await myInstance.post(
-        `/files/upload/${event_ulid}`,
+        `/organization/files/upload/${event_ulid}`,
         formData,
         {
           headers: {
@@ -71,14 +70,25 @@ const UploadCertificates: React.FC<UploadCertificatesProps> = ({
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   return (
     <div className="h-full overflow-hidden">
+       {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-gray-200 dark:bg-stone-800 p-6 rounded-lg shadow-lg flex items-center space-x-4">
+           <Spinner size="lg" color="current" className="text-black dark:text-white" />
+            <div className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+              Please wait, the files are uploading for approval.
+            </div>
+          </div>
+        </div>
+      )}
       <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 h-full">
         <div className="col-span-2 border dark:border-stone-800 rounded-lg overflow-auto">
           <MyFileList
-            eventInfo={eventInfo}
+            loading={loading}
             setFileUrl={setFileUrl}
             fileUrl={fileUrl}
             setFileCount={setFileCount}

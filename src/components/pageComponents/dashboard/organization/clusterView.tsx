@@ -52,7 +52,7 @@ const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
     
             initial={{ opacity: 0, y: 3 }} 
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.15, delay: index * 0.05 }}
+            transition={{ duration: 0.15, delay: index * 0.04 }}
                 whileHover={{
                   scale: 1.01,
                   boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",

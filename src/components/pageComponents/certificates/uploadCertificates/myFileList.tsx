@@ -11,8 +11,10 @@ import { debounce } from "lodash";
 import { myInstance } from "@/utils/Axios/axios";
 import { FileInfo, filesMetaType, MyFileType } from "@/types/global.types";
 import { ulid } from "ulid";
+import { Spinner } from "@nextui-org/react";
 
 interface MyFileListProps {
+  loading: boolean;
   setFileUrl: (file: FileInfo | null) => void;
   fileUrl: FileInfo | null;
   filesMetaInfo: filesMetaType[] | null;
@@ -33,6 +35,7 @@ interface eventInfoType {
 }
 
 const MyFileList: React.FC<MyFileListProps> = ({
+  loading,
   setFileUrl,
   fileUrl,
   setFileCount,
@@ -40,6 +43,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
   setFilesMetaInfo,
   uploadCertificatesForApproval,
   uploadSuccess,
+
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<MyFileType[]>([]);
   const [event, setEvent] = useState<string | null>(null);
@@ -219,7 +223,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
                 key={index}
                 initial={{ opacity: 0, y: 3 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.15, delay: index * 0.05 }}
+                transition={{ duration: 0.05, delay: index * 0.01 }}
                 whileHover={{
                   scale: 1.01,
                   boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
@@ -286,6 +290,8 @@ const MyFileList: React.FC<MyFileListProps> = ({
             </MyButton>
             <MyButton
               className="bg-black dark:bg-white"
+              spinner={<Spinner size="md" />}
+              isLoading={loading}
               size="md"
               onClick={() => {
                 uploadCertificatesForApproval(selectedFiles, event || "");
