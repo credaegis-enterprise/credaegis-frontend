@@ -41,12 +41,11 @@ export default function MyNavbar() {
 
   const handleLogout = async () => {
     try {
-      const response = await myInstance.post("/auth/logout");
+      const response = await myInstance.post("/organization/auth/logout");
       router.push("/login");
       toast.success(response.data.message);
     } catch (error: any) {
       console.log(error);
-      toast.error(error.response?.data.message || "An error occurred");
     }
   };
 
