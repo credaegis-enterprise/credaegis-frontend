@@ -1,8 +1,8 @@
 
 
-import LoginForm from "@/components/pageComponents/loginform/loginpage/loginForm";
+import LoginForm from "@/components/pageComponents/login/loginForm";
 import { ThemeSwitcher } from "@/components/themes/themeSwitcher";
-import VerificationLink from "@/components/pageComponents/loginform/loginpage/verificationLink";
+import VerificationLink from "@/components/pageComponents/login/verificationLink";
 
 
 const Page =  () => {

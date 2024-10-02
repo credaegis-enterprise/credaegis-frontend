@@ -20,6 +20,15 @@ const nextConfig = {
         ];
     },
     
+    images: {
+    
+      remotePatterns: [
+        {
+          hostname: 'localhost',
+        }
+      ],
+  },
+    
 
     reactStrictMode: false,
 };

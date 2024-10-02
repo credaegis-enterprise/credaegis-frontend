@@ -26,7 +26,7 @@ export default function MyNavbar() {
   useEffect(() => {
     const getUserRoles = async () => {
       try {
-        const response = await myInstance.get("/auth/checker");
+        const response = await myInstance.get("/session/check-session");
         console.log(response.data);
         setAccountType(response.data.accountType);
         setRole(response.data.role);
@@ -37,14 +37,15 @@ export default function MyNavbar() {
     getUserRoles();
   }, [router]);
 
+  console.log(accountType, role);
+
   const handleLogout = async () => {
     try {
-      const response = await myInstance.post("/auth/logout");
+      const response = await myInstance.post("/organization/auth/logout");
       router.push("/login");
       toast.success(response.data.message);
     } catch (error: any) {
       console.log(error);
-      toast.error(error.response?.data.message || "An error occurred");
     }
   };
 
@@ -61,13 +62,13 @@ export default function MyNavbar() {
 
  
       <NavbarContent className="hidden sm:flex gap-12" justify="end">
-        {role !== "member" && (
+        {(role !== "clusterMember") && (
           <NavbarItem>
             <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
           </NavbarItem>
         )}
 
-        {role !== "member" && (
+        {(role !== "clusterMember") && (
           <NavbarItem>
             <Link href={`/credaegis/${accountType}/approvals`}>approvals</Link>
           </NavbarItem>
@@ -94,13 +95,13 @@ export default function MyNavbar() {
 
     
       <NavbarMenu>
-        {role !== "member" && (
+        {(role !=="clusterMember") && (
           <NavbarMenuItem>
             <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
           </NavbarMenuItem>
         )}
 
-        {role !== "member" && (
+        {(role !=="clusterMember") && (
           <NavbarMenuItem>
             <Link href={`/credaegis/${accountType}/approvals`}>approvals</Link>
           </NavbarMenuItem>

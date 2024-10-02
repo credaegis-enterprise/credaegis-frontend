@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { useTabContext } from "@/context/tabContext";
 import { useState } from "react";
 import MyModal from "@/components/modals/mymodal";
-import CreateCluster from "./actions/createCluster";
+import CreateCluster from "./info/infoCards/actions/createCluster";
 import { ClusterType } from "@/types/global.types";
 
 interface ClusterListProps {
@@ -15,7 +15,7 @@ interface ClusterListProps {
 
 const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
 
-  const { setSelectedTab } = useTabContext();
+  const { selectedTab,setSelectedTab } = useTabContext();
  const [isOpen, setIsOpen] = useState(false);
   
   return (
@@ -49,15 +49,16 @@ const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
             clusters.map((cluster, index) => (
               <motion.div
                 key={cluster.cluster_ulid}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
+    
+            initial={{ opacity: 0, y: 3 }} 
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.15, delay: index * 0.04 }}
                 whileHover={{
                   scale: 1.01,
                   boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
+                className={`${selectedTab.id===cluster.cluster_ulid?"bg-gray-200 dark:bg-stone-700":"bg-white dark:bg-stone-900"} rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer`}
                 onClick={() => {
                   setSelectedTab({ type: "cluster", id: cluster.cluster_ulid });
                 }}

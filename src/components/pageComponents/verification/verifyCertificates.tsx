@@ -1,8 +1,8 @@
 "use client";
 
 import { useState,useEffect } from "react";
-import CertificateInfo from "./certificateInfo";
-import CertificateList from "./certificateList";
+import CertificateInfo from "./verifyManagement/certificateInfo";
+import CertificateList from "./verifyManagement/certificateList";
 import { MyButton } from "@/components/buttons/mybutton";
 import { FileInfo,MyFileType } from "@/types/global.types";
 import { MdCheckCircle } from "react-icons/md";

@@ -25,17 +25,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <style>{`
+          input::-ms-reveal,
+          input::-ms-clear {
+            display: none;
+          }
+        `}</style>
+      </head>
       <body className={`h-screen  ${GeistSans.className} `}>
        
         <Providers>
-          <ThemeProvider attribute="class" defaultTheme="white">
+          <ThemeProvider attribute="class" defaultTheme="dark">
           
             <Toaster position="top-right" richColors={true} toastOptions={{
               className:"font-sans text-md",
               duration:1000,
             }} />
              <ResponseInterceptor />
-            {/* <MyNavbar /> */}
             {children}
           </ThemeProvider>
         </Providers>

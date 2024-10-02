@@ -2,7 +2,7 @@
 import { Tab, Tabs } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { useTabContext } from "@/context/tabContext";
-import Info from "./info";
+import Info from "./info/info"
 
 
 const ManageAll = () => {
@@ -20,12 +20,7 @@ const ManageAll = () => {
     <div className="flex h-full p-2 ">
     <div className="flex flex-col w-full">
       <div className="flex flex-col lg:flex-row lg:gap-4">
-        {/* <div className="flex items-center mt-1">
-          <MdDashboard size={26} />
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 ml-2">
-            Dashboard
-          </h2>
-        </div> */}
+      
   
         <Tabs
           selectedKey={selected}
@@ -42,7 +37,7 @@ const ManageAll = () => {
       <div className="flex flex-col h-full overflow-hidden mt-4">
         {/* {selected === "info" && selectedTab.id && ( */}
         {selected === "info" && selectedTab.id ? (
-          <Info cluster_ulid={selectedTab.id} />
+          <Info clusterUlid={selectedTab.id} />
         ) : (
           <div className="flex h-full justify-center items-center text-lg   ">
             <div className="mb-20">Select a cluster to display information</div>

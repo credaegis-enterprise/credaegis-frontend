@@ -1,5 +1,5 @@
 
-import ManageAll from "@/components/pageComponents/approvals/manageAll"
+import ManageAll from "@/components/pageComponents/approvals/organization/manageAll"
 import { myInstanceNEXT } from "@/utils/Axios/axios"
 import getCookies from "@/utils/cookies/getCookies"
 import { ApprovalsType,issuedCertificatesType } from "@/types/global.types"

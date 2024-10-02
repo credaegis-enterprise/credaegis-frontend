@@ -1,12 +1,12 @@
 import { myInstanceNEXT } from "@/utils/Axios/axios"
 import getCookies from "@/utils/cookies/getCookies"
-import UploadCertificates from "@/components/pageComponents/certificates/uploadCertificates/uploadCertificates"
+import UploadCertificates from "@/components/pageComponents/certificates/organization/uploadCertificates"
 
 const fetchEvents = async () => {
 
     const cookie = getCookies()
     try {
-        const response = await myInstanceNEXT.get("/event/getall",{
+        const response = await myInstanceNEXT.get("/organization/event-control/get-all",{
             headers: {
                 cookie: `test=${cookie}`
             }
@@ -35,7 +35,7 @@ const fetchEvents = async () => {
 const fetchClusters = async () => {
     const cookies = getCookies()
     try{
-    const response = await myInstanceNEXT.get("/cluster/getall",{
+    const response = await myInstanceNEXT.get("/organization/cluster-control/get-all",{
       headers: {
           cookie:`test=${cookies}`
       }
@@ -63,7 +63,7 @@ const Page = async () => {
          <div className="h-full flex p-2 ">
       <div className="flex flex-col w-full">
       <div className="flex flex-col h-full overflow-hidden  ">
-         <UploadCertificates eventInfo={events} />
+         <UploadCertificates  />
       </div>
     </div>
   </div>
