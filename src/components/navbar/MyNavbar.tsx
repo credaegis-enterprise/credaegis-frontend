@@ -62,13 +62,13 @@ export default function MyNavbar() {
 
  
       <NavbarContent className="hidden sm:flex gap-12" justify="end">
-        {(role === "admin" || role === "clusterAdmin") && (
+        {(role !== "clusterMember") && (
           <NavbarItem>
             <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
           </NavbarItem>
         )}
 
-        {(role === "admin" || role === "clusterAdmin") && (
+        {(role !== "clusterMember") && (
           <NavbarItem>
             <Link href={`/credaegis/${accountType}/approvals`}>approvals</Link>
           </NavbarItem>
@@ -95,13 +95,13 @@ export default function MyNavbar() {
 
     
       <NavbarMenu>
-        {(role === "admin" || role === "clusterAdmin") && (
+        {(role !=="clusterMember") && (
           <NavbarMenuItem>
             <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
           </NavbarMenuItem>
         )}
 
-        {(role === "admin" || role === "clusterAdmin") && (
+        {(role !=="clusterMember") && (
           <NavbarMenuItem>
             <Link href={`/credaegis/${accountType}/approvals`}>approvals</Link>
           </NavbarMenuItem>
