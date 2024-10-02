@@ -129,7 +129,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     setLoading(true);
 
     try {
-      const response = await myInstance.put("/organization/approval-control/approve", {
+      const response = await myInstance.post("/organization/approval-control/approve", {
         approvalUlids: approvalUlids,
       });
       if (response.data.success) {
