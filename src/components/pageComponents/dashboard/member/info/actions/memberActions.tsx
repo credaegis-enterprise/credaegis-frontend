@@ -1,18 +1,18 @@
-import { Member } from "./memberView";
+import { Member } from "../memberView";
 import React, { useState } from "react";
 import { MyButton } from "@/components/buttons/mybutton";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-interface MemberInfoProps {
+interface MemberActionProps {
   member: Member;
   setIsOpen: (value: boolean) => void;
 }
 
 
 
-const MemberInfoCard: React.FC<MemberInfoProps> = ({ member,setIsOpen}) => {
+const MemberActions: React.FC<MemberActionProps> = ({ member,setIsOpen}) => {
 
 
   const router = useRouter();
@@ -82,4 +82,4 @@ const MemberInfoCard: React.FC<MemberInfoProps> = ({ member,setIsOpen}) => {
   );
 };
 
-export default MemberInfoCard;
+export default MemberActions;

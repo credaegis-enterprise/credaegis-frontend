@@ -5,7 +5,8 @@ import { MyButton } from "@/components/buttons/mybutton";
 import { MdPerson } from "react-icons/md";
 import MyModal from "@/components/modals/mymodal";
 import { useState } from "react";
-import MemberInfoCard from "./memberInfoCard";
+import MemberActions from "./actions/memberActions";
+
 import CreateMember from "./actions/createMember";
 
 
@@ -118,7 +119,7 @@ const MemberView: React.FC<MemberViewProps> = ({
           backdrop="blur"
           onClose={() => setIsInfoOpen(false)}
           title="Member Info"
-          content={<MemberInfoCard member={selectedMember || undefined} setIsOpen={setIsInfoOpen} />}
+          content={<MemberActions member={selectedMember || undefined} setIsOpen={setIsInfoOpen} />}
           button1={undefined}
           button2={undefined}
           onOpen={() => {
