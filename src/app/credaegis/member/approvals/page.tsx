@@ -3,6 +3,7 @@ import ManageAll from "@/components/pageComponents/approvals/member/manageAll"
 import { myInstanceNEXT } from "@/utils/Axios/axios"
 import getCookies from "@/utils/cookies/getCookies"
 import { ApprovalsType,issuedCertificatesType } from "@/types/global.types"
+import cluster from "cluster"
 
 
 const fetchApprovals = async () => {
@@ -29,6 +30,7 @@ const fetchApprovals = async () => {
                 issued_to_email: approval.issued_to_email,
                 issued_to_name: approval.issued_to_name,
                 cluster_ulid: approval.cluster_ulid,
+                cluster_name: approval.cluster_name,
                 event_ulid: approval.event_ulid,
                 selected: false,
               };

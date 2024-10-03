@@ -16,7 +16,7 @@ import { MdAccountCircle } from "react-icons/md";
 import { GrBookmark } from "react-icons/gr";
 import { RiGroup2Fill } from "react-icons/ri";
 import { Spinner } from "@nextui-org/react";
-import { set } from "lodash";
+
 
 
 interface ApproveCertificatesProps {
@@ -24,6 +24,8 @@ interface ApproveCertificatesProps {
     }
 
 const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}) => {
+
+  console.log(approvalsInfo);
 
   const router = useRouter();
   const [approvalsList, setApprovalsList] = useState<ApprovalsType[]>([]);
@@ -132,15 +134,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
               </div>
          
             </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-neutral-700 dark:text-neutral-200 font-semibold"
-            >
-              <div className="flex items-center gap-1">
-                <RiGroup2Fill size={20} />
-                <span>Cluster Name</span>
-              </div>
-            </th>
+           
             <th
               scope="col"
               className="px-6 py-3 text-neutral-700 dark:text-neutral-200 font-semibold"
@@ -205,9 +199,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
                 {approval.event_name}
               </td>
-              <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                {approval.cluster_name}
-              </td>
+              
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
                 <div className="flex flex-col gap-2">
                     <span>{approval.issued_to_name}</span>
