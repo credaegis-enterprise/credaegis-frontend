@@ -61,7 +61,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
           setLoading(true);
         try{ 
 
-            const response = await myInstance.put("/organization/approval-control/modify",{
+            const response = await myInstance.put("/member/approval-control/modify",{
                 approvalUlid: approval.approval_ulid,
                 name: name,
                 email: email,

@@ -14,8 +14,6 @@ import { Spinner } from "@nextui-org/react";
 interface ApproveCertificatesProps {
   setApprovalsList: (approvalsList: ApprovalsType[]) => void;
   approvalsList: ApprovalsType[];
-  selectedCluster: string | null;
-  setSelectedCluster: (cluster: string | null) => void;
   selectedEvent: string | null;
   setSelectedEvent: (event: string | null) => void;
   getApprovals: () => void;
@@ -38,8 +36,6 @@ interface eventType {
 const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   setApprovalsList,
   approvalsList,
-  selectedCluster,
-  setSelectedCluster,
   selectedEvent,
   setSelectedEvent,
   getApprovals
@@ -57,56 +53,28 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
 
 
 
-  const debouncedSearchClusters = debounce(async (value: string) => {
+
+  const debouncedSearchEvents = debounce(async (value: string) => {
     try {
       const response = await myInstance.get(
-        `/organization/cluster-control/search/cluster?clusterName=${value}`
+        `/member/event-control/search/event?eventName=${value}`
       );
 
-      setClusterList(response.data.data);
+      setEventList(response.data.events);
     } catch (err) {
       console.log(err);
     }
   }, 300);
 
-  const debouncedSearchEvents = debounce(async (value: string, id: string) => {
-    try {
-      const response = await myInstance.get(
-        `/organization/event-control/search/event?eventName=${value}&clusterUlid=${id}`
-      );
-
-      setEventList(response.data.data);
-    } catch (err) {
-      console.log(err);
-    }
-  }, 300);
-
-  const searchClusters = async (value: string) => {
-    debouncedSearchClusters(value);
-  };
+  
 
   const searchEvents = async (value: string) => {
-    let id = selectedCluster;
-    if (id == null) {
-      id = "";
-    }
-    debouncedSearchEvents(value, id);
+
+    debouncedSearchEvents(value)
   };
 
   const handleEventSelection = (key: string) => {
-    if (selectedCluster == null) {
-      const updatedClusterList = [...clusterList];
-      const event = eventList.find((event) => event.event_ulid === key);
-      if (event) {
-        updatedClusterList.push({
-          cluster_name: event.cluster_name,
-          cluster_ulid: event.cluster_ulid,
-        });
-        setClusterList(updatedClusterList);
-        setSelectedCluster(event.cluster_ulid);
-      }
-      setClusterList(updatedClusterList);
-    }
+
     setSelectedEvent(key);
   };
 
@@ -129,7 +97,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     setLoading(true);
 
     try {
-      const response = await myInstance.post("/organization/approval-control/approve", {
+      const response = await myInstance.post("/member/approval-control/approve", {
         approvalUlids: approvalUlids,
       });
       if (response.data.success) {
@@ -165,7 +133,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   setLoading(true);
 
   try{
-    const response = await myInstance.put("/organization/approval-control/reject",{
+    const response = await myInstance.put("/member/approval-control/reject",{
       approvalUlids: approvalUlids
     });
 
@@ -188,35 +156,12 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
         <MdSearch size={26} />
         <div>Search and Filter</div>
       </div>
-      <div className="flex flex-col lg:flex-row  gap-4 p-2">
-        <Autocomplete
-          label=" Cluster"
-          placeholder="Search a Cluster"
-          size="sm"
-          className=""
-          onInputChange={searchClusters}
-          selectedKey={selectedCluster}
-          onSelectionChange={(key) => {
-            setSelectedCluster(key as string);
-            setSelectedEvent("");
-          }}
-        >
-          {clusterList.map((cluster) => (
-            <AutocompleteItem
-              value={cluster.cluster_name}
-              key={cluster.cluster_ulid}
-            >
-              {cluster.cluster_name}
-            </AutocompleteItem>
-          ))}
-        </Autocomplete>
+      <div className="flex flex-col lg:flex-row  gap-4 p-2 w-3/4">
+        
         <Autocomplete
           label=" Event"
-          placeholder={`${
-            !selectedCluster
-              ? "Search an Event"
-              : `Search a Event under selected cluster `
-          }`}
+          placeholder={"Search for event"}
+           
           size="sm"
           className=""
           onInputChange={searchEvents}
@@ -253,7 +198,6 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
             onClick={() => {
 
               setApprovalsList([]);
-              setSelectedCluster(null);
               setSelectedEvent("");
               router.refresh();
             }}

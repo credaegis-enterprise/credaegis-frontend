@@ -30,7 +30,6 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
   const [selectedApproval, setSelectedApproval] = useState<ApprovalsType>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isModifyOpen, setIsModifyOpen] = useState<boolean>(false);
-  const [selectedCluster, setSelectedCluster] = useState<string | null>(""); 
   const [selectedEvent, setSelectedEvent] = useState<string | null>("");
   const [loading, setLoading] = useState(false);
 
@@ -48,13 +47,9 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
     let result;
     try {
       if (selectedEvent) {
-        result = await myInstance.get(`/organization/approval-control/event/get-all/${selectedEvent}`);
+        result = await myInstance.get(`/member/approval-control/event/get-all/${selectedEvent}`);
         console.log(result);
-      } else if (selectedCluster) {
-        result = await myInstance.get(
-          `/organization/approval-control/cluster/get-all/${selectedCluster}`
-        );
-      }
+      } 
       else{
         router.refresh();
       }
@@ -89,7 +84,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
     }
     setLoading(false);
 
-  } , [selectedCluster, selectedEvent, router, approvalsList]);
+  } , [ selectedEvent, router, approvalsList]);
 
 
 
@@ -119,8 +114,8 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
   
   return (
     <div className="h-full flex flex-col">
-     <ApprovalControl  setApprovalsList={setApprovalsList} approvalsList={approvalsList} setSelectedCluster={setSelectedCluster}
-     setSelectedEvent={setSelectedEvent} selectedEvent={selectedEvent} selectedCluster={selectedCluster}
+     <ApprovalControl  setApprovalsList={setApprovalsList} approvalsList={approvalsList} 
+     setSelectedEvent={setSelectedEvent} selectedEvent={selectedEvent} 
      getApprovals={getApprovals} />
      {!loading ? (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg border dark:border-neutral-800">

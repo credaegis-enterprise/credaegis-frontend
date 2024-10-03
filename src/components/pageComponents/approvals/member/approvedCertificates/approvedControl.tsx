@@ -14,18 +14,13 @@ import { IoSearch } from "react-icons/io5";
 interface ApprovedCertificatesProps {
  setIssuedList: (issuedList: issuedCertificatesType[]) => void;
   issuedList: issuedCertificatesType[];
-  selectedCluster: string | null;
-  setSelectedCluster: (cluster: string | null) => void;
   selectedEvent: string | null;
   setSelectedEvent: (event: string | null) => void;
   getIssuedCertificates: () => void;
   
 }
 
-interface clusterType {
-  cluster_name: string;
-  cluster_ulid: string;
-}
+
 
 interface eventType {
   event_name: string;
@@ -37,8 +32,6 @@ interface eventType {
 const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({   
     issuedList,
     setIssuedList,
-    selectedCluster,
-    setSelectedCluster,
     selectedEvent,
     setSelectedEvent,
     getIssuedCertificates,
@@ -46,62 +39,34 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
  
 }) => {
   const router = useRouter();
-  const [clusterList, setClusterList] = useState<clusterType[]>([]);
+
   const [eventList, setEventList] = useState<eventType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  // const [selectedCluster, setSelectedCluster] = useState<string | null>();
-  // const [selectedEvent, setSelectedEvent] = useState<string | null>("");
+ 
 
-  const debouncedSearchClusters = debounce(async (value: string) => {
+  
+
+  const debouncedSearchEvents = debounce(async (value: string) => {
     try {
       const response = await myInstance.get(
-        `/organization/cluster-control/search/cluster?clusterName=${value}`
+        `/member/event-control/search/event?eventName=${value}`
       );
 
-      setClusterList(response.data.data);
+      setEventList(response.data.events);
     } catch (err) {
       console.log(err);
     }
   }, 300);
 
-  const debouncedSearchEvents = debounce(async (value: string, id: string) => {
-    try {
-      const response = await myInstance.get(
-        `/organization/event-control/search/event?eventName=${value}&clusterUlid=${id}`
-      );
-
-      setEventList(response.data.data);
-    } catch (err) {
-      console.log(err);
-    }
-  }, 300);
-
-  const searchClusters = async (value: string) => {
-    debouncedSearchClusters(value);
-  };
+ 
 
   const searchEvents = async (value: string) => {
-    let id = selectedCluster;
-    if (id == null) {
-      id = "";
-    }
-    debouncedSearchEvents(value, id);
+  
+    debouncedSearchEvents(value);
   };
 
   const handleEventSelection = (key: string) => {
-    if (selectedCluster == null) {
-      const updatedClusterList = [...clusterList];
-      const event = eventList.find((event) => event.event_ulid === key);
-      if (event) {
-        updatedClusterList.push({
-          cluster_name: event.cluster_name,
-          cluster_ulid: event.cluster_ulid,
-        });
-        setClusterList(updatedClusterList);
-        setSelectedCluster(event.cluster_ulid);
-      }
-      setClusterList(updatedClusterList);
-    }
+  
     setSelectedEvent(key);
   };
 
@@ -124,7 +89,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
     setLoading(true);
 
     try {
-      const response = await myInstance.put("/organization/certificate/revoke", {
+      const response = await myInstance.put("/member/certificate/revoke", {
         certificateUlids: issuedCertificatesUlids,
       });
 
@@ -152,35 +117,11 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
         <MdSearch size={26} />
         <div>Search and Filter</div>
       </div>
-      <div className="flex flex-col lg:flex-row  gap-4 p-2">
-        <Autocomplete
-          label=" Cluster"
-          placeholder="Search a Cluster"
-          size="sm"
-          className=""
-          onInputChange={searchClusters}
-          selectedKey={selectedCluster}
-          onSelectionChange={(key) => {
-            setSelectedCluster(key as string);
-            setSelectedEvent("");
-          }}
-        >
-          {clusterList.map((cluster) => (
-            <AutocompleteItem
-              value={cluster.cluster_name}
-              key={cluster.cluster_ulid}
-            >
-              {cluster.cluster_name}
-            </AutocompleteItem>
-          ))}
-        </Autocomplete>
+      <div className="flex flex-col lg:flex-row  gap-4 p-2 w-3/4">
+        
         <Autocomplete
           label=" Event"
-          placeholder={`${
-            !selectedCluster
-              ? "Search an Event"
-              : `Search a Event under selected cluster `
-          }`}
+          placeholder={`Search for event`}
           size="sm"
           className=""
           onInputChange={searchEvents}
@@ -214,7 +155,6 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
             size="sm"
             onClick={() => {
               setIssuedList([])
-              setSelectedCluster(null);
               setSelectedEvent("");
               router.refresh();
             }}

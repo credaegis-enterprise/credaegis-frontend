@@ -23,7 +23,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
   issuedInfo,
 }) => {
   const router = useRouter();
-  const [selectedCluster, setSelectedCluster] = useState<string | null>("");
+  
   const [selectedEvent, setSelectedEvent] = useState<string | null>("");
   const [issuedList, setIssuedList] = useState<issuedCertificatesType[]>([]);
   const [loading , setLoading] = useState<boolean>(false);
@@ -37,14 +37,10 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
     try {
       if (selectedEvent) {
         result = await myInstance.get(
-          `/organization/certificate/event/get-all/${selectedEvent}`
+          `/member/certificate/event/get-all/${selectedEvent}`
         );
         console.log(result);
-      } else if (selectedCluster) {
-        result = await myInstance.get(
-          `/organization/certificate/cluster/get-all/${selectedCluster}`
-        );
-      } else {
+      }  else {
         router.refresh();
       }
       if (result?.data.data.length === 0 && issuedList.length === 0) {
@@ -63,7 +59,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
       console.log(err);
     }
     setLoading(false);
-  }, [selectedCluster, selectedEvent, router, issuedList]);
+  }, [selectedEvent, router, issuedList]);
   const handleSelectOne = (index: number) => {
     const updateList = [...issuedList];
     updateList[index].selected = !updateList[index].selected;
@@ -93,8 +89,6 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
       <ApprovedControl
         issuedList={issuedList}
         setIssuedList={setIssuedList}
-        selectedCluster={selectedCluster}
-        setSelectedCluster={setSelectedCluster}
         selectedEvent={selectedEvent}
         setSelectedEvent={setSelectedEvent}
         getIssuedCertificates={getIssuedCertificates}
