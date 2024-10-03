@@ -1,5 +1,5 @@
 
-import ManageAll from "@/components/pageComponents/approvals/organization/manageAll"
+import ManageAll from "@/components/pageComponents/approvals/member/manageAll"
 import { myInstanceNEXT } from "@/utils/Axios/axios"
 import getCookies from "@/utils/cookies/getCookies"
 import { ApprovalsType,issuedCertificatesType } from "@/types/global.types"
@@ -8,7 +8,7 @@ import { ApprovalsType,issuedCertificatesType } from "@/types/global.types"
 const fetchApprovals = async () => {
     const cookie = getCookies()
     try {
-        const response = await myInstanceNEXT.get("/approvals/cluster/getall", {
+        const response = await myInstanceNEXT.get("/member/approval-control/get-all", {
             headers: {
                 cookie: `test=${cookie}`
             }
@@ -44,7 +44,7 @@ const fetchApprovals = async () => {
 const fetchIssuedCertificates = async () => {
     const cookie = getCookies()
     try {
-        const response = await myInstanceNEXT.get("/certificate/cluster/getall", {
+        const response = await myInstanceNEXT.get("/member/certificate/get-all", {
             headers: {
                 cookie: `test=${cookie}`
             }
