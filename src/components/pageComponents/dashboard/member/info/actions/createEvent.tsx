@@ -9,12 +9,10 @@ import { toast } from "sonner";
 import { Spinner } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 interface CreateEventProps {
-  cluster_ulid: string;
   setIsOpen : (value:boolean) => void;
 }
 
 const CreateEvent: React.FC<CreateEventProps> = ({
-  cluster_ulid,
   setIsOpen
 }) => {
   const [eventName, setEventName] = useState("");
@@ -35,9 +33,8 @@ const CreateEvent: React.FC<CreateEventProps> = ({
     }
 
     try {
-      const response = await myInstance.post("/event/create", {
-        event_name: eventName,
-        cluster_ulid: cluster_ulid,
+      const response = await myInstance.post("/member/event-control/create", {
+        eventName: eventName,
       });
 
       toast.success(response.data.message);

@@ -1,8 +1,8 @@
 
 
 import { MdSettings } from "react-icons/md";
-import ManageAll from "@/components/pageComponents/settings/organization/manageAll";
-import SideBar from "@/components/pageComponents/settings/organization/sideBar";
+import ManageAll from "@/components/pageComponents/settings/member/manageAll";
+import SideBar from "@/components/pageComponents/settings/member/sideBar";
 import { myInstanceNEXT } from "@/utils/Axios/axios";
 import getCookies from "@/utils/cookies/getCookies";
 
@@ -11,7 +11,7 @@ const fetchSettings = async () => {
 
     const cookies = getCookies();
     try {
-        const response = await myInstanceNEXT.get("/settings/getSettings",{
+        const response = await myInstanceNEXT.get("/member/settings/get",{
             headers: {
                 cookie:`test=${cookies}`
             }
@@ -38,7 +38,7 @@ const Page = async () => {
                     <SideBar />
                 </div>
                 <div className="lg:col-span-6 col-span-full overflow-auto p-4 h-full  rounded-lg border border-gray-200 dark:border-stone-800 ">
-                {/* <ManageAll /> */}
+                <ManageAll settings={settings} />
                 </div>
             </div>
         </div>

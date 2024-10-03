@@ -48,7 +48,7 @@ const LoginForm = () => {
           organizationPassword: password,
         });
       } else {
-        response = await myInstance.post("/auth/login", {
+        response = await myInstance.post("/member/auth/login", {
           memberEmail: email,
           memberPassword: password,
         });

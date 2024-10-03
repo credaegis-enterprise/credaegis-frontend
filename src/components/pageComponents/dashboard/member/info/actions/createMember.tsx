@@ -43,10 +43,10 @@ const CreateMember: React.FC<CreateMemberProps> = ({
     }
 
     try {
-      const response = await myInstance.post("/member/create", {
-        member_name: memberName,
-        member_email: memberEmail,
-        cluster_ulid: cluster_ulid,
+      const response = await myInstance.post("/member/member-control/create", {
+        memberName: memberName,
+        memberEmail: memberEmail,
+        clusterUlid: cluster_ulid,
       });
 
       toast.success(response.data.message);
