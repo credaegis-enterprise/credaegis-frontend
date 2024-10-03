@@ -6,36 +6,29 @@ import { MdPerson } from "react-icons/md";
 import MyModal from "@/components/modals/mymodal";
 import { useState } from "react";
 import MemberActions from "./actions/memberActions";
+import { MemberType } from "@/types/global.types";
 
 import CreateMember from "./actions/createMember";
-
-
-export type Member = {
-  member_ulid: string;
-  member_name: string;
-  member_email: string;
-  member_password: string;
-  created_at: string;
-  updated_at: string;
-  deactivated: number;
-  deleted: number;
-  cluster_ulid: string;
-};
+import React from "react";
 
 interface MemberViewProps {
-  members: Member[];
-  cluster_ulid: string;
+  members: MemberType[];
+  clusterAdminUlid: string;
 }
 
 const MemberView: React.FC<MemberViewProps> = ({
   members,
-  cluster_ulid,
+  clusterAdminUlid,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const [selectedMember, setSelectedMember] = useState<Member>({} as Member);
+  const [selectedMember, setSelectedMember] = useState<MemberType>(
+    {} as MemberType
+  );
+
+  console.log(clusterAdminUlid)
   return (
-    <div className="h-full w-full flex flex-col ">
+    <div className="lg:h-full h-[300px] w-full flex flex-col ">
       <div className="flex justify-between p-2">
         <div className="flex gap-2 mt-1">
           <MdPerson size={26} />
@@ -59,6 +52,8 @@ const MemberView: React.FC<MemberViewProps> = ({
         <div className="space-y-2 p-2 mt-1 h-full ">
           {members &&
             members.map((member, index) => (
+              <>
+              {member.member_ulid !== clusterAdminUlid && (
               <motion.div
                 key={member.member_ulid}
                 initial={{ opacity: 0, y: 20 }}
@@ -85,10 +80,12 @@ const MemberView: React.FC<MemberViewProps> = ({
                     </p>
                   </div>
                   <div>
-                    {/* {member.deactivated === 0 ? "Active" : "Deactivated"} */}
+                  
                   </div>
                 </div>
               </motion.div>
+              )}
+              </>
             ))}
         </div>
       </div>
@@ -99,12 +96,7 @@ const MemberView: React.FC<MemberViewProps> = ({
           backdrop="blur"
           onClose={() => setIsOpen(false)}
           title="Add Member"
-          content={
-            <CreateMember
-              cluster_ulid={cluster_ulid}
-              setIsOpen={setIsOpen}
-            />
-          }
+          content={<CreateMember cluster_ulid={"1"} setIsOpen={setIsOpen} />}
           button1={<button onClick={() => setIsOpen(false)}>Close</button>}
           button2={undefined}
           onOpen={() => {
@@ -119,7 +111,12 @@ const MemberView: React.FC<MemberViewProps> = ({
           backdrop="blur"
           onClose={() => setIsInfoOpen(false)}
           title="Member Info"
-          content={<MemberActions member={selectedMember || undefined} setIsOpen={setIsInfoOpen} />}
+          content={
+            <MemberActions
+              member={selectedMember || undefined}
+              setIsOpen={setIsInfoOpen}
+            />
+          }
           button1={undefined}
           button2={undefined}
           onOpen={() => {
