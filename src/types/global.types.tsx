@@ -134,6 +134,8 @@ export interface MemberSettingType {
   organization_name: string;
   two_fa_enabled: boolean;
   brand_logo_enabled: boolean;
+  member_name: string;
+  member_email: string;
 }
 
 export interface OrganizationSettingType {

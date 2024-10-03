@@ -25,7 +25,7 @@ const ManageAll: React.FC<manageAllProps> = ({settings}) => {
 
     return(
         <div className="h-full">
-                        {/* {settingsTab.id === 'Account' && <AccountInfo settings={settings}  />} */}
+                        {settingsTab.id === 'Account' && <AccountInfo settings={settings}  />}
                         {settingsTab.id === 'Security' && <Security two_fa_enabled={settings.two_fa_enabled}/>}
                         {settingsTab.id === 'Preferences' && <p>Preferences settings content goes here.</p>}
       </div>
