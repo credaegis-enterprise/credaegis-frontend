@@ -56,6 +56,7 @@ const LoginForm = () => {
 
       if (response.data.twoFa) setIsOpen(true);
       else {
+        localStorage.setItem("currentPath","dashboard");
         toast.success(response.data.message);
         const role = response.data.loginInfo.role;
         if(role === "admin"|| role ==="clusterAdmin")
@@ -92,6 +93,7 @@ const LoginForm = () => {
     }
 
       toast.success(response.data.message);
+      localStorage.setItem("currentPath","dashboard");
       setIsLoading(false);
       setIsOpen(false);
 

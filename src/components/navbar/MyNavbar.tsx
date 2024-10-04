@@ -21,9 +21,17 @@ export default function MyNavbar() {
   const router = useRouter();
   const [accountType, setAccountType] = useState<string>("");
   const [role, setRole] = useState<string>("");
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to manage menu toggle
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selected, setSelected] = useState<string>("");
 
   useEffect(() => {
+
+
+    if(!router)
+      return
+
+    const currentPath = localStorage.getItem("currentPath");
+    setSelected(currentPath || "");
     const getUserRoles = async () => {
       try {
         const response = await myInstance.get("/session/check-session");
@@ -49,9 +57,12 @@ export default function MyNavbar() {
     }
   };
 
+  const isSelected = (menuItem: string) => selected === menuItem ? "text-green-500" : "hover:text-green-400";
+
   return (
-    <Navbar className="justify-end" maxWidth="full" onMenuOpenChange={setIsMenuOpen}>
-      <NavbarBrand>
+    <Navbar className="justify-end" maxWidth="full" onMenuOpenChange={setIsMenuOpen} 
+    >
+     <NavbarBrand>
       <NavbarContent justify="start">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -59,44 +70,80 @@ export default function MyNavbar() {
         />
       </NavbarContent>
       </NavbarBrand>
-
- 
+    
       <NavbarContent className="hidden sm:flex gap-12" justify="end">
         {(role !== "clusterMember") && (
           <NavbarItem>
-            <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
+            <Link
+              href={`/credaegis/${accountType}/dashboard`}
+              className={`${isSelected("dashboard")} transition-colors`}
+              onClick={() => {setSelected("dashboard");
+                localStorage.setItem("currentPath", "dashboard");
+              }}
+            >
+              dashboard
+            </Link>
           </NavbarItem>
         )}
+
 
         {(role !== "clusterMember") && (
           <NavbarItem>
-            <Link href={`/credaegis/${accountType}/approvals`}>approvals</Link>
+            <Link
+              href={`/credaegis/${accountType}/approvals`}
+              className={`${isSelected("approvals")} transition-colors`}
+              onClick={() => {setSelected("approvals");
+                localStorage.setItem("currentPath", "approvals");
+              }}
+            >
+              approvals
+            </Link>
           </NavbarItem>
         )}
 
         <NavbarItem>
-          <Link href={`/credaegis/${accountType}/certificates`}>certificates</Link>
+          <Link
+            href={`/credaegis/${accountType}/certificates`}
+            className={`${isSelected("certificates")} transition-colors`}
+            onClick={() => {setSelected("certificates");
+              localStorage.setItem("currentPath", "certificates");
+            }}
+          >
+            certificates
+          </Link>
         </NavbarItem>
 
         <NavbarItem>
-          <Link href={`/credaegis/${accountType}/settings`}>settings</Link>
+          <Link
+            href={`/credaegis/${accountType}/settings`}
+            className={`${isSelected("settings")} transition-colors`}
+            onClick={() => {setSelected("settings"),
+            localStorage.setItem("currentPath", "settings")
+            }}
+          >
+            settings
+          </Link>
         </NavbarItem>
 
         <NavbarItem
           onClick={() => {
-            localStorage.setItem("path", window.location.pathname);
+            localStorage.setItem("path",window.location.pathname);
           }}
         >
-          <Link href={`/verification`}>verification</Link>
+          <Link
+            href={`/verification`}
+            className={`${isSelected("verification")} transition-colors`}
+            onClick={() => setSelected("verification")}
+          >
+            verification
+          </Link>
         </NavbarItem>
       </NavbarContent>
 
     
-
-    
       <NavbarMenu>
         {(role !=="clusterMember") && (
-          <NavbarMenuItem>
+          <NavbarMenuItem className="">
             <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
           </NavbarMenuItem>
         )}

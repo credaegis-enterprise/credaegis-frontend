@@ -53,6 +53,9 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
         newPassword: newPassword,
       });
 
+      await myInstance.post("/organization/auth/logout");
+
+
       toast.success("Password changed successfully! Please login again");
       router.push("/login");
     } catch (error: any) {
