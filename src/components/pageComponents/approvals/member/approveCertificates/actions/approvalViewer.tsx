@@ -34,7 +34,7 @@ const ApprovalViewer: React.FC<ApprovalViewerProps> = ({
     </div>
     
     <iframe
-      src={`${process.env.NEXT_PUBLIC_devbackendurl}/member/files/${cluster_ulid}/${event_ulid}/${approval_file_ulid}/${approval_file_name}/get`}
+      src={`${process.env.NEXT_PUBLIC_backendurl}/member/files/${cluster_ulid}/${event_ulid}/${approval_file_ulid}/${approval_file_name}/get`}
       className="h-full w-full"
     />
 

@@ -116,7 +116,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
             <>
             {!isLoading ? (
             <img
-              src={`${process.env.NEXT_PUBLIC_devbackendurl}/organization/settings/brand-logo/get`}
+              src={`${process.env.NEXT_PUBLIC_backendurl}/organization/settings/brand-logo/get`}
               alt="Brand logo not found"
               className="w-48 h-48 object-cover rounded-full shadow-md"
               onError={() => setError(true)}
