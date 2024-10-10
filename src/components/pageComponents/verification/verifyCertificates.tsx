@@ -8,6 +8,7 @@ import { FileInfo,MyFileType } from "@/types/global.types";
 import { MdCheckCircle } from "react-icons/md";
 import { verificationStatusType } from "@/types/global.types";
 import { useRouter } from "next/navigation";
+import { Spinner } from "@nextui-org/react";
 import { ThemeSwitcher } from "@/components/themes/themeSwitcher";
 
 
@@ -17,11 +18,22 @@ const VerifyCertificates = () => {
   const [fileUrl, setFileUrl] = useState<FileInfo | null>(null);
   const [selectedFiles, setSelectedFiles] = useState<MyFileType[]>([]);
   const [fileCount, setFileCount] = useState<number>(0);
+  const [popUp, setPopUp] = useState<boolean>(false);
   const [verificationStatus, setVerificationStatus] = useState<verificationStatusType[]>([]);
 
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
+      {popUp && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-gray-200 dark:bg-stone-800 p-6 rounded-lg shadow-lg flex items-center space-x-4">
+           <Spinner size="lg" color="current" className="text-black dark:text-white" />
+            <div className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+              Please wait, your request is being processed.
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex flex-col ">
         <div className="flex justify-between">
         <div className="flex items-center justify-start p-2 gap-7">
@@ -51,7 +63,7 @@ const VerifyCertificates = () => {
       <div className="flex flex-col h-full ">
         <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 h-full ">
           <div className="col-span-2 border dark:border-stone-800 rounded-lg overflow-auto">
-            <CertificateList fileUrl={fileUrl} setFileUrl={setFileUrl} selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles}
+            <CertificateList fileUrl={fileUrl} setFileUrl={setFileUrl} selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} setPopUp={setPopUp}
             fileCount={fileCount} setFileCount={setFileCount} verificationStatus={verificationStatus} setVerificationStatus={setVerificationStatus} />
           </div>
           <div className="col-span-2 border dark:border-stone-800 rounded-lg overflow-auto ">
