@@ -21,6 +21,8 @@ interface ApprovedCertificatesProps {
   selectedEvent: string | null;
   setSelectedEvent: (event: string | null) => void;
   getIssuedCertificates: () => void;
+  selectedCount: number;
+  setSelectedCount: (count: number) => void;
   
 }
 
@@ -43,6 +45,8 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
     setSelectedCluster,
     selectedEvent,
     setSelectedEvent,
+    selectedCount,
+    setSelectedCount,
     getIssuedCertificates,
 
  
@@ -138,11 +142,9 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
     } catch (err) {
       console.log(err);
     }
-
     setLoading(false);
-
-
-
+    setPopUp(false);
+    setSelectedCount(0);
 
    
   };
@@ -258,6 +260,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
             onClick={() => {
               setIssuedList([])
               setSelectedCluster(null);
+              setSelectedCount(0);
               setSelectedEvent("");
               router.refresh();
             }}
@@ -272,7 +275,12 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
             className="bg-black dark:bg-white"
             size="sm"
             onClick={() => {
-             
+              console.log("selectedCount", selectedCount);
+              if(selectedCount === 0){
+                toast.info("Please select atleast one certificate to revoke");
+      
+              }
+              else
               setPopUp(true);
             }}
           >

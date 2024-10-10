@@ -14,6 +14,7 @@ import { Spinner } from "@nextui-org/react";
 
 import { toast } from "sonner";
 import { myInstance } from "@/utils/Axios/axios";
+import { set } from "lodash";
 
 interface ApprovedCertificatesProps {
   issuedInfo: issuedCertificatesType[];
@@ -27,6 +28,8 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
   const [selectedEvent, setSelectedEvent] = useState<string | null>("");
   const [issuedList, setIssuedList] = useState<issuedCertificatesType[]>([]);
   const [loading , setLoading] = useState<boolean>(false);
+  const [selectedCount, setSelectedCount] = useState<number>(0);
+ 
   useEffect(() => {
     setIssuedList(issuedInfo);
   }, [issuedInfo]);
@@ -65,8 +68,15 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
     setLoading(false);
   }, [selectedCluster, selectedEvent, router, issuedList]);
   const handleSelectOne = (index: number) => {
+    
     const updateList = [...issuedList];
     updateList[index].selected = !updateList[index].selected;
+    if (updateList[index].selected) {
+      setSelectedCount(selectedCount + 1);
+    }
+    if (!updateList[index].selected) {
+      setSelectedCount(selectedCount - 1);
+    }
     setIssuedList(updateList);
   };
 
@@ -75,11 +85,13 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
     updateList.map((certificate) => {
       certificate.selected = true;
     });
+    setSelectedCount(updateList.length);
     setIssuedList(updateList);
   };
 
   const handleDeselectAll = () => {
     const updateList = [...issuedList];
+    setSelectedCount(0);
     updateList.map((certificate) => {
       certificate.selected = false;
     });
@@ -98,6 +110,8 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
         selectedEvent={selectedEvent}
         setSelectedEvent={setSelectedEvent}
         getIssuedCertificates={getIssuedCertificates}
+        selectedCount={selectedCount}
+        setSelectedCount={setSelectedCount}
       />
        {!loading ? (
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg border dark:border-neutral-800">
