@@ -96,19 +96,6 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
   };
 
   const handleEventSelection = (key: string) => {
-    if (selectedCluster == null) {
-      const updatedClusterList = [...clusterList];
-      const event = eventList.find((event) => event.event_ulid === key);
-      if (event) {
-        updatedClusterList.push({
-          cluster_name: event.cluster_name,
-          cluster_ulid: event.cluster_ulid,
-        });
-        setClusterList(updatedClusterList);
-        setSelectedCluster(event.cluster_ulid);
-      }
-      setClusterList(updatedClusterList);
-    }
     setSelectedEvent(key);
   };
 
@@ -185,7 +172,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
              }}
            >
      
-             <span className=" text-white text-md font-medium">
+             <span className=" text-white text-md font-medium">\
                Revoke Certificates
              </span>
            </MyButton>

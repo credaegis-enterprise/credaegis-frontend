@@ -94,19 +94,6 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   };
 
   const handleEventSelection = (key: string) => {
-    if (selectedCluster == null) {
-      const updatedClusterList = [...clusterList];
-      const event = eventList.find((event) => event.event_ulid === key);
-      if (event) {
-        updatedClusterList.push({
-          cluster_name: event.cluster_name,
-          cluster_ulid: event.cluster_ulid,
-        });
-        setClusterList(updatedClusterList);
-        setSelectedCluster(event.cluster_ulid);
-      }
-      setClusterList(updatedClusterList);
-    }
     setSelectedEvent(key);
   };
 
