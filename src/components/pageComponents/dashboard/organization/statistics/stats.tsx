@@ -9,10 +9,10 @@ const Stats: React.FC<StatsProps> = ({ stats }) => {
   return (
     <div className="flex flex-col h-full p-6 rounded-lg shadow-lg">
       <div className="grid grid-rows-2 h-full gap-6">
-        {/* First row for organization and certificates stats */}
+
         <div className="row-span-1 flex flex-col gap-4">
-          <div className="grid grid-cols-2 gap-6">
-            {/* Organization Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
             <div className="flex flex-col gap-4 border border-gray-200 dark:border-stone-800 rounded-lg p-4 shadow-md">
               <div className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white">
                 <AiOutlineUsergroupAdd className="text-2xl text-blue-500" />
@@ -62,9 +62,8 @@ const Stats: React.FC<StatsProps> = ({ stats }) => {
           </div>
         </div>
 
-        {/* Second row for cluster and member stats */}
         <div className="row-span-1 flex flex-col gap-4">
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Top Cluster Stats */}
             <div className="flex flex-col gap-4 border border-gray-200 dark:border-stone-800 rounded-lg p-4 shadow-md">
               <div className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white">
