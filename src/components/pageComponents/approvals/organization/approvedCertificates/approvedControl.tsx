@@ -137,6 +137,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
     }
     setLoading(false);
     setPopUp(false);
+    setCurrentPage(1);
     setSelectedCount(0);
 
    
@@ -178,7 +179,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
              }}
            >
      
-             <span className=" text-white text-md font-medium">\
+             <span className=" text-white text-md font-medium">
                Revoke Certificates
              </span>
            </MyButton>
@@ -251,6 +252,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
             className="bg-black dark:bg-white"
             size="sm"
             onClick={() => {
+            
               setCurrentPage(1);
               setIssuedList([])
               setSelectedCluster(null);

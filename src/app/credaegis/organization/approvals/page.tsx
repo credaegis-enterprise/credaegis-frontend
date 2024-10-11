@@ -1,10 +1,9 @@
 
 import ManageAll from "@/components/pageComponents/approvals/organization/manageAll"
 import { myInstanceNEXT } from "@/utils/Axios/axios"
-import { ApprovalsType,issuedCertificatesType } from "@/types/global.types"
+import { ApprovalsType } from "@/types/global.types"
 import getCookies from "@/utils/cookies/getCookies"
-import cluster from "cluster"
-import { Certificate } from "crypto"
+
 
 const fetchApprovals = async () => {
     const cookie = getCookies()
