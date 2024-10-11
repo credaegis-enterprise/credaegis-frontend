@@ -22,6 +22,7 @@ interface ApproveCertificatesProps {
   selectedEvent: string | null;
   setSelectedEvent: (event: string | null) => void;
   getApprovals: () => void;
+  setMainLoading: (mainLoading:boolean) => void;
   count: number;
 }
 
@@ -43,6 +44,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   selectedCluster,
   setSelectedCluster,
   selectedEvent,
+  setMainLoading,
   setSelectedEvent,
   getApprovals,
   count,
@@ -97,6 +99,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   };
 
   const handleApprove = async () => {
+    setMainLoading(true);
     const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
       if (approval.selected) {
         acc.push(approval.approval_ulid);
@@ -129,9 +132,11 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     }
     setApproveModal(false);
     setLoading(false);
+    setMainLoading(false);
   };
 
   const handleReject = async () => {
+    setMainLoading(true);
     const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
       if (approval.selected) {
         acc.push(approval.approval_ulid);
@@ -164,6 +169,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     }
     setRejectModal(false);
     setLoading(false);
+    setMainLoading(false);
   };
 
   return (

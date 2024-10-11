@@ -33,6 +33,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({
   const [selectedCluster, setSelectedCluster] = useState<string | null>("");
   const [selectedEvent, setSelectedEvent] = useState<string | null>("");
   const [loading, setLoading] = useState(false);
+  const [mainLoading, setMainLoading] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
 
   useEffect(() => {
@@ -121,6 +122,16 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({
 
   return (
     <div className="h-full flex flex-col">
+      {/* {mainLoading&& (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-gray-200 dark:bg-stone-800 p-6 rounded-lg shadow-lg flex items-center space-x-4">
+           <Spinner size="lg" color="current" className="text-black dark:text-white" />
+            <div className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+              Please wait, your request is being processed.
+            </div>
+          </div>
+        </div>
+      )} */}
       <ApprovalControl
         setApprovalsList={setApprovalsList}
         approvalsList={approvalsList}
@@ -130,6 +141,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({
         selectedCluster={selectedCluster}
         getApprovals={getApprovals}
         count={count}
+        setMainLoading={setMainLoading}
       />
       {!loading ? (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg border dark:border-neutral-800">
