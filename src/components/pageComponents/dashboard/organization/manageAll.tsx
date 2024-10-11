@@ -4,8 +4,14 @@ import { useState, useEffect } from "react";
 import { useTabContext } from "@/context/tabContext";
 import Info from "./info/info";
 import Stats from "./statistics/stats";
+import { StatisticsType } from "@/types/global.types";
 
-const ManageAll = () => {
+
+interface ManageAllProps {
+  stats: StatisticsType;
+}
+
+const ManageAll: React.FC<ManageAllProps> = ({ stats }) => {
   const { selectedTab } = useTabContext();
   const [selected, setSelected] = useState<string>("info");
 
@@ -43,7 +49,7 @@ const ManageAll = () => {
             )
           ) : (
             <div className="flex flex-col h-full overflow-hidden mt-4">
-              <Stats />
+              <Stats stats={stats} />
             </div>
           )}
         </div>
