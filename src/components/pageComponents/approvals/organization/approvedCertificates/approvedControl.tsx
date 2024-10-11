@@ -170,9 +170,9 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
          button1={
            <MyButton
              color="danger"
-             
+             className="bg-red-500"
              size="sm"
-             spinner={<Spinner size="sm" color="default" />}
+             spinner={<Spinner size="sm" color="current" />}
              isLoading={loading}
              onClick={() => {
                 handleRevoke();

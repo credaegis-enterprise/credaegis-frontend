@@ -367,7 +367,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                     colSpan={8}
                     className="text-center text-md py-4 text-neutral-900 dark:text-neutral-100"
                   >
-                    No certificates to approve
+                    No certificate Issue History found
                   </td>
                 </tr>
               </tbody>
