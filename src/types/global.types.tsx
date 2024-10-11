@@ -201,7 +201,7 @@ interface TopEvent {
   total_certificates_issued: number;
 }
 
-export interface Statistics {
+export interface StatisticsType {
   organization_name: string;
   organization_email: string;
   organization_statistics: OrganizationStatistics;

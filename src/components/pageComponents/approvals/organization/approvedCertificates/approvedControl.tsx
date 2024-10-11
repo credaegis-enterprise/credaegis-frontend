@@ -23,6 +23,8 @@ interface ApprovedCertificatesProps {
   getIssuedCertificates: () => void;
   selectedCount: number;
   setSelectedCount: (count: number) => void;
+  setFilterOn: (filter: boolean) => void;
+  setCurrentPage: (page: number) => void;
   
 }
 
@@ -48,6 +50,9 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
     selectedCount,
     setSelectedCount,
     getIssuedCertificates,
+    setFilterOn,
+    setCurrentPage
+
 
  
 }) => {
@@ -100,6 +105,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
   };
 
   const handleRevoke = async () => {
+
 
     const issuedCertificatesUlids = issuedList.reduce<string[]>((acc, issued) => {
       if (issued.selected && !issued.revoked) {
@@ -245,15 +251,17 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
             className="bg-black dark:bg-white"
             size="sm"
             onClick={() => {
+              setCurrentPage(1);
               setIssuedList([])
               setSelectedCluster(null);
               setSelectedCount(0);
-              setSelectedEvent("");
+              setSelectedEvent(null);
+              setFilterOn(false);
               router.refresh();
             }}
           >
             <span className="dark:text-black text-white text-md font-medium">
-              Reset
+              Refresh
             </span>
           </MyButton>
           <MyButton

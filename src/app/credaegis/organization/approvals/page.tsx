@@ -9,7 +9,7 @@ import { Certificate } from "crypto"
 const fetchApprovals = async () => {
     const cookie = getCookies()
     try {
-        const response = await myInstanceNEXT.get("/organization/approval-control/get-all", {
+        const response = await myInstanceNEXT.get("/organization/approval-control/get-latest?limit=2", {
             headers: {
                 cookie: `test=${cookie}`
             }
@@ -42,10 +42,25 @@ const fetchApprovals = async () => {
 }
 
 
+const fetchIssuedCount = async () => {
+    const cookie = getCookies()
+    try {
+        const response = await myInstanceNEXT.get("/organization/certificate/get-count", {
+            headers: {
+                cookie: `test=${cookie}`
+            }
+        })
+        return response.data.data.total_count
+    } catch (error: any) {
+        console.log(error)
+    }
+}
+
+
 const fetchIssuedCertificates = async () => {
     const cookie = getCookies()
     try {
-        const response = await myInstanceNEXT.get("/organization/certificate/get-all", {
+        const response = await myInstanceNEXT.get("/organization/certificate/get-latest?startLimit=0&rowCount=5", {
             headers: {
                 cookie: `test=${cookie}`
             }
@@ -73,13 +88,14 @@ const page = async () => {
 
 
    const approvalsPromise = fetchApprovals()
+   const issuedCountPromise = fetchIssuedCount()
     const certificatesPromise = fetchIssuedCertificates()
-    const [approvals, certificates] = await Promise.all([approvalsPromise, certificatesPromise])
-    console.log(certificates)
+    const [approvals, certificates,issuedCount] = await Promise.all([approvalsPromise, certificatesPromise, issuedCountPromise])
+    console.log(issuedCount)
 
     return (
         <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 ">
-        <ManageAll approvalsInfo={approvals || []} issuedInfo={certificates || []}/>
+        <ManageAll approvalsInfo={approvals || []} issuedInfo={certificates || []} issuedCount={issuedCount}/>
      </div>
         
     )

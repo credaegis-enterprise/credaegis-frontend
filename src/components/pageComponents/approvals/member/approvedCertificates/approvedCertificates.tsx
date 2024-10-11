@@ -86,6 +86,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
 
   return (
     <div className="h-full flex flex-col">
+      
       <ApprovedControl
         issuedList={issuedList}
         setIssuedList={setIssuedList}
@@ -264,13 +265,15 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                   colSpan={6}
                   className="text-center text-md py-4 text-neutral-900 dark:text-neutral-100"
                 >
-                  No certificates to approve
+                  No history found
                 </td>
               </tr>
             </tbody>
           )}
         </table>
+      
       </div>
+
     ) : (
       <div className="flex justify-center items-center h-full">
       <Spinner size="lg" color="current" className="dark:text-white text-black" />
