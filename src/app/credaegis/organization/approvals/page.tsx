@@ -9,7 +9,7 @@ import { Certificate } from "crypto"
 const fetchApprovals = async () => {
     const cookie = getCookies()
     try {
-        const response = await myInstanceNEXT.get("/organization/approval-control/get-latest?limit=2", {
+        const response = await myInstanceNEXT.get("/organization/approval-control/get-all", {
             headers: {
                 cookie: `test=${cookie}`
             }

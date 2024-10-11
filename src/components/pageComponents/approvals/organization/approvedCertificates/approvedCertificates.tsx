@@ -166,7 +166,9 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
         });
         setIssuedList(updatedResult);
         const count = result.data.totalCount === 0 ? 1 : result.data.totalCount;
-        setTotalCount(count);
+        if (filterOn) {
+          setTotalCount(count);
+        }
       } else {
         setTotalCount(1);
       }
