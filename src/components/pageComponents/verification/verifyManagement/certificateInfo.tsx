@@ -109,35 +109,35 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                         : ""
                     }
                   />
-                  {revoked && (
-                    <>
-                      <DatePicker
-                        isReadOnly
-                        label="Revoked Date"
-                        value={parseDate(info.info?.revoked_date ?? "")}
-                        size="sm"
-                      />
-                    </>
-                  )}
-                  {info.info?.expiry_date !== null && (
-                    <>
-                      <DatePicker
-                        isInvalid={expired}
-                        isReadOnly
-                        label="Expiry Date"
-                        value={parseDate(info.info?.expiry_date ?? "")}
-                        errorMessage={"This certifcate has expired."}
-                        size="sm"
-                      />
-                    </>
+                  {revoked && info.info?.revoked_date && (
+                    <DatePicker
+                      isReadOnly
+                      label="Revoked Date"
+                      value={parseDate(info.info.revoked_date)}
+                      size="sm"
+                    />
                   )}
 
-                  <DatePicker
-                    label="Issued Date"
-                    value={parseDate(info.info?.issued_date ?? "")}
-                    isReadOnly
-                    size="sm"
-                  />
+                  {info.info?.expiry_date && (
+                    <DatePicker
+                      isInvalid={expired}
+                      isReadOnly
+                      label="Expiry Date"
+                      value={parseDate(info.info.expiry_date)}
+                      errorMessage={"This certificate has expired."}
+                      size="sm"
+                    />
+                  )}
+
+                  {info.info?.issued_date && (
+                    <DatePicker
+                      label="Issued Date"
+                      value={parseDate(info.info.issued_date)}
+                      isReadOnly
+                      size="sm"
+                    />
+                  )}
+
                   <Input
                     label="Event under which this certifcate is issued"
                     readOnly
@@ -165,7 +165,11 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                   <Textarea
                     label="Comments"
                     readOnly
-                    value={info?.info?.comments? info?.info?.comments : "There are no comments."}
+                    value={
+                      info?.info?.comments
+                        ? info?.info?.comments
+                        : "There are no comments."
+                    }
                     size="sm"
                   />
                 </div>
