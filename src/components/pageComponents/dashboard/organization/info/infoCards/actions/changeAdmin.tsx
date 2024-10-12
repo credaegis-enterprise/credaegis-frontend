@@ -5,6 +5,8 @@ import { MyButton } from "@/components/buttons/mybutton";
 import { useState } from "react";
 import { toast } from "sonner";
 import { myInstance } from "@/utils/Axios/axios";
+import { Spinner } from "@nextui-org/react";
+import { set } from "lodash";
 
 
 interface ChangeAdminProps {
@@ -25,6 +27,7 @@ const ChangeAdmin: React.FC<ChangeAdminProps> = ({
 
   const [selectedAdmin, setSelectedAdmin] = useState<string | null>(null);
   const [invalid, setInvalid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   console.log(selectedAdmin);
     console.log(clusterUlid);
@@ -32,7 +35,9 @@ const ChangeAdmin: React.FC<ChangeAdminProps> = ({
 
   const handleChangeAdmin = async () => {
     
+     setIsLoading(true);
     if (selectedAdmin === null) {
+      setIsLoading(false);
       toast.error("Please select a member");
       setInvalid(true);
       return;
@@ -51,6 +56,7 @@ const ChangeAdmin: React.FC<ChangeAdminProps> = ({
     } catch (error: any) {
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -83,6 +89,8 @@ const ChangeAdmin: React.FC<ChangeAdminProps> = ({
       <div className="flex justify-center gap-2">
         <MyButton
           className=""
+          spinner={<Spinner size="sm" color="default" />}
+          isLoading={isLoading}
           color="success"
           size="md"
           onClick={() => handleChangeAdmin()}
