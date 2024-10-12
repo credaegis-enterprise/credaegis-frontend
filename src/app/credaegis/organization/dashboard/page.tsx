@@ -5,6 +5,7 @@ import { myInstanceNEXT } from "@/utils/Axios/axios";
 import getCookies from "@/utils/cookies/getCookies";
 import ClusterView from "@/components/pageComponents/dashboard/organization/clusterView";
 import ManageAll from "@/components/pageComponents/dashboard/organization/manageAll";
+import { StatisticsType } from "@/types/global.types";
 
 const fetchClusters = async () => {
 
@@ -24,12 +25,30 @@ const fetchClusters = async () => {
   
 }
 
+const fetchStats = async () => {
+  const cookies = getCookies();
+  try{
+  const response = await myInstanceNEXT.get("/organization/cluster-control/statistics/get-all",{
+    headers: {
+        cookie:`test=${cookies}`
+    }
+    
+  });
+    return response.data.statistics;
+  }
+  catch(error: any){
+    console.log(error);
+  }
+  
+}
+
 
 const  Page =async () => {
 
 
   const clustersPromise = fetchClusters();
-  const [clusters] = await Promise.all([clustersPromise]);
+  const statsPromise = fetchStats();
+  const [clusters,stats] = await Promise.all([clustersPromise,statsPromise]);
 
 
 
@@ -41,7 +60,7 @@ const  Page =async () => {
       <ClusterView clusters={clusters}/>
       </div>
       <div className="lg:col-span-6 p-2 h-full overflow-auto col-span-full rounded-lg flex flex-col gap-4 border border-gray-200 dark:border-stone-800">
-        <ManageAll/>
+         <ManageAll stats={stats}  />
       </div>
      </div>
     </div>

@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { Spinner } from "@nextui-org/react";
 import { IoReload } from "react-icons/io5";
 import { IoSearch } from "react-icons/io5";
+import MyModal from "@/components/modals/mymodal";
+import { MdWarning } from "react-icons/md";
 
 interface ApprovedCertificatesProps {
  setIssuedList: (issuedList: issuedCertificatesType[]) => void;
@@ -19,6 +21,10 @@ interface ApprovedCertificatesProps {
   selectedEvent: string | null;
   setSelectedEvent: (event: string | null) => void;
   getIssuedCertificates: () => void;
+  selectedCount: number;
+  setSelectedCount: (count: number) => void;
+  setFilterOn: (filter: boolean) => void;
+  setCurrentPage: (page: number) => void;
   
 }
 
@@ -41,7 +47,12 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
     setSelectedCluster,
     selectedEvent,
     setSelectedEvent,
+    selectedCount,
+    setSelectedCount,
     getIssuedCertificates,
+    setFilterOn,
+    setCurrentPage
+
 
  
 }) => {
@@ -49,6 +60,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
   const [clusterList, setClusterList] = useState<clusterType[]>([]);
   const [eventList, setEventList] = useState<eventType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [popUp, setPopUp] = useState<boolean>(false);
   // const [selectedCluster, setSelectedCluster] = useState<string | null>();
   // const [selectedEvent, setSelectedEvent] = useState<string | null>("");
 
@@ -89,28 +101,15 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
   };
 
   const handleEventSelection = (key: string) => {
-    if (selectedCluster == null) {
-      const updatedClusterList = [...clusterList];
-      const event = eventList.find((event) => event.event_ulid === key);
-      if (event) {
-        updatedClusterList.push({
-          cluster_name: event.cluster_name,
-          cluster_ulid: event.cluster_ulid,
-        });
-        setClusterList(updatedClusterList);
-        setSelectedCluster(event.cluster_ulid);
-      }
-      setClusterList(updatedClusterList);
-    }
     setSelectedEvent(key);
   };
 
   const handleRevoke = async () => {
 
+
     const issuedCertificatesUlids = issuedList.reduce<string[]>((acc, issued) => {
-        console.log(issued.revoked)
       if (issued.selected && !issued.revoked) {
-        console.log(issued.revoked)
+
         acc.push(issued.certificate_ulid);
       }
       return acc;
@@ -118,6 +117,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
 
     if (issuedCertificatesUlids.length === 0) {
       toast.info("Please select atleast one certificate to revoke");
+      setPopUp(false);
       return;
     }
 
@@ -135,11 +135,10 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
     } catch (err) {
       console.log(err);
     }
-
     setLoading(false);
-
-
-
+    setPopUp(false);
+    setCurrentPage(1);
+    setSelectedCount(0);
 
    
   };
@@ -148,6 +147,46 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
 
   return (
     <div className="flex flex-col border dark:border-stone-800 border-gray-200 mb-2 rounded-lg p-2 ">
+      {popUp && (
+         <MyModal
+         size="md"
+         isOpen={popUp}
+         backdrop="blur"
+         onClose={() => {
+           setPopUp(false);
+         }}
+         onOpen={() => {
+            setPopUp(true);
+         }}
+         title="Revoke Certificates"
+         content={
+          <div className="flex gap-2">
+           <MdWarning size={30} className="text-yellow-500" />
+            <div className="text-lg font-semibold text-yellow-500">
+              Are you sure you want to revoke the selected certificates?, this is an irrriversible action.
+              </div>
+          </div>
+         }
+         button1={
+           <MyButton
+             color="danger"
+             className="bg-red-500"
+             size="sm"
+             spinner={<Spinner size="sm" color="current" />}
+             isLoading={loading}
+             onClick={() => {
+                handleRevoke();
+             }}
+           >
+     
+             <span className=" text-white text-md font-medium">
+               Revoke Certificates
+             </span>
+           </MyButton>
+         }
+         button2={undefined}
+       />
+      )}
       <div className="flex text-lg font-medium ml-2">
         <MdSearch size={26} />
         <div>Search and Filter</div>
@@ -213,14 +252,18 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
             className="bg-black dark:bg-white"
             size="sm"
             onClick={() => {
+            
+              setCurrentPage(1);
               setIssuedList([])
               setSelectedCluster(null);
-              setSelectedEvent("");
+              setSelectedCount(0);
+              setSelectedEvent(null);
+              setFilterOn(false);
               router.refresh();
             }}
           >
             <span className="dark:text-black text-white text-md font-medium">
-              Reset
+              Refresh
             </span>
           </MyButton>
           <MyButton
@@ -229,7 +272,13 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
             className="bg-black dark:bg-white"
             size="sm"
             onClick={() => {
-              handleRevoke();
+              console.log("selectedCount", selectedCount);
+              if(selectedCount === 0){
+                toast.info("Please select atleast one certificate to revoke");
+      
+              }
+              else
+              setPopUp(true);
             }}
           >
             <span className="dark:text-black text-white text-md font-medium">

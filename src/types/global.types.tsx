@@ -172,3 +172,40 @@ export interface organizationAccountInfoType {
 export interface settingsInfoType {
   two_fa_enabled: boolean;
 }
+
+//stats
+
+interface OrganizationStatistics {
+  total_events: number;
+  total_members: number;
+  total_clusters: number;
+}
+
+interface CertificateStatistics {
+  total_issued_certificates: number;
+  total_expired_certificates: number;
+  total_revoked_certificates: number;
+  total_rejected_certificates: number;
+}
+
+interface TopCluster {
+  cluster_name: string;
+  total_certificates_issued: number;
+  total_certificates_revoked: number;
+  total_certificates_rejected: number;
+}
+
+interface TopEvent {
+  event_name: string;
+  event_under_cluster: string;
+  total_certificates_issued: number;
+}
+
+export interface StatisticsType {
+  organization_name: string;
+  organization_email: string;
+  organization_statistics: OrganizationStatistics;
+  certificate_statistics: CertificateStatistics;
+  top_cluster: TopCluster;
+  top_event: TopEvent;
+}

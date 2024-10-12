@@ -2,6 +2,8 @@ import { MyButton } from "@/components/buttons/mybutton";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
 import { MdWarning } from "react-icons/md";
+import { useState } from "react";
+import { Spinner } from "@nextui-org/react";
 
 interface DeactivateClusterProps {
     clusterUlid: string;
@@ -12,7 +14,10 @@ interface DeactivateClusterProps {
 
 const DeactivateCluster: React.FC<DeactivateClusterProps> = ({ clusterName,clusterUlid,setIsOpen,fetchClusterInfo}) => {
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleDeactivateCluster = async () => {
+        setIsLoading(true);
         try {
             const response = await myInstance.put(`/organization/cluster-control/deactivate/${clusterUlid}`);
             toast.success(response.data.message);
@@ -21,6 +26,7 @@ const DeactivateCluster: React.FC<DeactivateClusterProps> = ({ clusterName,clust
         } catch (error: any) {
             console.log(error);
         }
+        setIsLoading(false);
     }
 
     return (
@@ -34,10 +40,13 @@ const DeactivateCluster: React.FC<DeactivateClusterProps> = ({ clusterName,clust
             </div>
             <div className="flex justify-center gap-4 mt-4">
                 <MyButton className="" color="warning" size="md"
+                 spinner={<Spinner size="sm" color="default" />}
+                 isLoading={isLoading}
                 onClick={()=>{handleDeactivateCluster()}}>
                     <span className="text-black text-md font-medium">Deactivate</span>
                 </MyButton>
                 <MyButton className="bg-black dark:bg-white" size="md"
+
                 onClick={() => {setIsOpen(false);}}
                 >
                     <span className="text-white dark:text-black text-md font-medium">Cancel</span>
