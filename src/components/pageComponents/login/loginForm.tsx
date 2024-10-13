@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@nextui-org/input";
+import { Input } from "@nextui-org/react";
 import { MyButton } from "@/components/buttons/mybutton";
 import { Spinner, user } from "@nextui-org/react";
 import { useState } from "react";
