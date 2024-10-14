@@ -79,16 +79,14 @@ const LoginForm = () => {
       if (selected === "organization") {
         response = await myInstance.post("/organization/auth/login/twofa", {
           organizationEmail: email,
-          organizationPassword: password,
+          organizationEnteredPassword: password,
           otp: otp,
-          accountType: selected,
         });
       } else{
       response = await myInstance.post("/auth/login/twofa", {
-        userEmail: email,
-        userPassword: password,
+        memberEmail: email,
+        memberEnteredPassword: password,
         otp: otp,
-        accountType: selected,
       });
     }
 
