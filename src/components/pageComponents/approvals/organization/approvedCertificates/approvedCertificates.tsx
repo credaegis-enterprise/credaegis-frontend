@@ -127,6 +127,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
 
   const pageChange = async (pageNumber: number) => {
     console.log("pageChange function called");
+ 
     if (pageNumber === currentPage) {
       return;
     }
@@ -134,6 +135,9 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
     setCurrentPage(pageNumber);
     const rowCount = 5;
     let result;
+
+    console.log("startLimit",startLimit);
+    console.log("pagenumber",pageNumber);
 
     try {
       if (filterOn) {
