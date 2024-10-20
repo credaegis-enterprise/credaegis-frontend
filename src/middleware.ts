@@ -1,23 +1,15 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import authenticator from './utils/Auth/authenticator'
+import { MiddlewareFactory } from './middlewares/types';
+import { orgAuth } from './middlewares/orgAuth';
+import { stackMiddlewares } from './middlewares/stackhandler';
+import { memberAuth } from './middlewares/memberAuth';
+
+
+const middlewares = [orgAuth, memberAuth];
+
+export default stackMiddlewares(middlewares);
 
  
 
-export async function middleware (request: NextRequest) {
-     
-    const isAuthenticated = await authenticator();
-    console.log(isAuthenticated);
-    if(!isAuthenticated)
-        return NextResponse.redirect(new URL('/login', request.url));
-    else
-        return NextResponse.next();
-
-        
-}
-
-export const config = {
-
-    matcher: ["/credaegis/organization/:path*", "/credaegis/member/:path*"],
-
-}

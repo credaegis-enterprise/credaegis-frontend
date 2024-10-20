@@ -173,7 +173,26 @@ export interface settingsInfoType {
   two_fa_enabled: boolean;
 }
 
-//stats
+//stats-member
+
+export interface MemberStatistics {
+  cluster_name: string;
+  cluster_stats: {
+    total_events: number;
+    total_members: number;
+    total_issued_certificates: number;
+    total_revoked_certificates: number;
+  };
+  event_stats: {
+    event_name: string;
+    total_certificates_issued: number;
+    total_certificates_revoked: number;
+  };
+};
+
+
+
+//stats-org
 
 interface OrganizationStatistics {
   total_events: number;

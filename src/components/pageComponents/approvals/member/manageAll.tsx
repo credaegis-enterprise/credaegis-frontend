@@ -9,10 +9,11 @@ import ApprovedCertificates from "./approvedCertificates/approvedCertificates";
 interface ManageAllProps {
     approvalsInfo: ApprovalsType[];
     issuedInfo: issuedCertificatesType[];
+    issuedCount: number;
 }
 
 
-const ManageAll: React.FC<ManageAllProps> = ({approvalsInfo,issuedInfo}) => {
+const ManageAll: React.FC<ManageAllProps> = ({approvalsInfo,issuedInfo,issuedCount}) => {
   const [selected, setSelected] = useState<string>("Approval requests");
 
     console.log(approvalsInfo);
@@ -36,7 +37,7 @@ const ManageAll: React.FC<ManageAllProps> = ({approvalsInfo,issuedInfo}) => {
    
       <div className="flex flex-col h-full overflow-hidden mt-4 ">
           {selected === "Approval requests" && <ApproveCertificates approvalsInfo={approvalsInfo} />}
-            {selected === "Approval history" && <ApprovedCertificates issuedInfo={issuedInfo}  />}
+            {selected === "Approval history" && <ApprovedCertificates issuedInfo={issuedInfo} issuedCount={issuedCount}  />}
 
       </div>
     </div>

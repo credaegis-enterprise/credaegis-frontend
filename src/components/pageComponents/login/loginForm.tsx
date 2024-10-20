@@ -179,6 +179,7 @@ const LoginForm = () => {
               onClick={toggleVisibility}
               aria-label="toggle password visibility"
             >
+            
               {isVisible ? (
                 <IoMdEye className="text-2xl text-default-400 pointer-events-none " />
               ) : (
