@@ -17,6 +17,21 @@ const fetchMembers = async () => {
   }
 };
 
+
+const fetchStats = async () => {
+  const cookie = getCookies();
+  try {
+    const response = await myInstanceNEXT.get("/member/member-control/statistics/get-all", {
+      headers: {
+        cookie: `test=${cookie}`,
+      },
+    });
+    return response.data.stats;
+  } catch (error: any) {
+    console.log(error);
+  }
+}
+
 const fetchEvents = async () => {
   const cookie = getCookies();
   try {
@@ -36,12 +51,15 @@ const Page = async () => {
   
   const membersPromise = fetchMembers();
   const eventsPromise = fetchEvents();
-  const [members, events] = await Promise.all([membersPromise, eventsPromise]);
+  const statsPromise = fetchStats();
+  const [members, events,stats] = await Promise.all([membersPromise, eventsPromise,statsPromise]);
   console.log(members);
+  console.log(stats);
+  
 
   return (
       <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 overflow-hidden">
- <ManageAll members={members.members} events={events} clusterAdminUlid={members.clusterAdminUlid}/>
+ <ManageAll members={members.members} events={events} stats={stats} clusterAdminUlid={members.clusterAdminUlid}/>
       </div>
   );
 };
