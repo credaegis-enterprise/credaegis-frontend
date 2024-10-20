@@ -42,6 +42,20 @@ const fetchApprovals = async () => {
     }
 }
 
+const fetchIssuedCount = async () => {
+    const cookie = getCookies()
+    try {
+        const response = await myInstanceNEXT.get("/member/certificate/get-count", {
+            headers: {
+                cookie: `test=${cookie}`
+            }
+        })
+        return response.data.data.total_count
+    } catch (error: any) {
+        console.log(error)
+    }
+}
+
 
 const fetchIssuedCertificates = async () => {
     const cookie = getCookies()
@@ -75,10 +89,13 @@ const page = async () => {
 
     const approvalsPromise = fetchApprovals()
     const issuedCertificatesPromise = fetchIssuedCertificates()
-    const [approvals, issuedCertificates] = await Promise.all([approvalsPromise, issuedCertificatesPromise])
+    const issuedCountPromise = fetchIssuedCount()
+    
+    const [approvals, issuedCertificates,issuedCount] = await Promise.all([approvalsPromise, issuedCertificatesPromise, issuedCountPromise])
+    console.log("issued",issuedCount)
     return (
         <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 ">
-        <ManageAll approvalsInfo={approvals||[]} issuedInfo={issuedCertificates||[]} />
+        <ManageAll approvalsInfo={approvals||[]} issuedInfo={issuedCertificates||[]} issuedCount={issuedCount} />
      </div>
         
     )
