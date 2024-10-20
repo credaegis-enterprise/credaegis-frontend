@@ -16,12 +16,15 @@ const authenticator = async()=>{
                 cookie:`test=${cookie}`
             }
         });
-        console.log(response.data);
-        return true
+        
+
+        return {
+            isAuthenticated:response.data.success,
+            role:response.data.role
+        }
     }
     catch(e)
     {
-        console.log(e);
         return false
     }
 }
