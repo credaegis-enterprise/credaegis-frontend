@@ -18,6 +18,8 @@ interface ApprovedCertificatesProps {
   selectedEvent: string | null;
   setSelectedEvent: (event: string | null) => void;
   getIssuedCertificates: () => void;
+  setFilterOn: (filter: boolean) => void;
+  setCurrentPage: (page: number) => void;
   
 }
 
@@ -36,6 +38,9 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
     selectedEvent,
     setSelectedEvent,
     getIssuedCertificates,
+    setCurrentPage,
+    setFilterOn
+
 
  
 }) => {
@@ -74,6 +79,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
 
   const handleRevoke = async () => {
 
+  
     const issuedCertificatesUlids = issuedList.reduce<string[]>((acc, issued) => {
         console.log(issued.revoked)
       if (issued.selected && !issued.revoked) {
@@ -103,7 +109,9 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
       console.log(err);
     }
 
+    setPopUp(false);
     setLoading(false);
+    setCurrentPage(1);
 
 
 
@@ -143,7 +151,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
              spinner={<Spinner size="sm" color="default" />}
              isLoading={loading}
              onClick={() => {
-                setPopUp(true);
+                handleRevoke();
              }}
            >
      
@@ -198,6 +206,8 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
             onClick={() => {
               setIssuedList([])
               setSelectedEvent("");
+              setFilterOn(false);
+              setCurrentPage(1);
               router.refresh();
             }}
           >
@@ -211,7 +221,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
             className="bg-black dark:bg-white"
             size="sm"
             onClick={() => {
-              handleRevoke();
+              setPopUp(true);
             }}
           >
             <span className="dark:text-black text-white text-md font-medium">
