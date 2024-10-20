@@ -10,6 +10,9 @@ import { toast } from "sonner";
 import { IoReload } from "react-icons/io5";
 import { IoSearch } from "react-icons/io5";
 import { Spinner } from "@nextui-org/react";
+import MyModal from "@/components/modals/mymodal";
+import { MdWarning } from "react-icons/md";
+
 
 interface ApproveCertificatesProps {
   setApprovalsList: (approvalsList: ApprovalsType[]) => void;
@@ -46,6 +49,8 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   const [clusterList, setClusterList] = useState<clusterType[]>([]);
   const [eventList, setEventList] = useState<eventType[]>([]);
   const [loading, setLoading] = useState(false);
+  const [approveModal, setApproveModal] = useState(false);
+  const [rejectModal, setRejectModal] = useState(false);
   // const [selectedCluster, setSelectedCluster] = useState<string | null>();
   // const [selectedEvent, setSelectedEvent] = useState<string | null>("");
 
@@ -111,6 +116,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
       console.log(err);
     }
     setLoading(false);
+    setApproveModal(false);
   };
 
   const handleReject = async () => {
@@ -146,12 +152,91 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     console.log(err);
   }
   setLoading(false);
+  setRejectModal(false);
 
 
   }
 
   return (
     <div className="flex flex-col border dark:border-stone-800 border-gray-200 mb-2 rounded-lg p-2 ">
+      {rejectModal && (
+        <MyModal
+          size="md"
+          isOpen={rejectModal}
+          backdrop="blur"
+          onClose={() => {
+            setRejectModal(false);
+          }}
+          onOpen={() => {
+            setRejectModal(true);
+          }}
+          title="Revoke Certificates"
+          content={
+            <div className="flex gap-2">
+              <MdWarning size={30} className="text-yellow-500" />
+              <div className="text-lg font-semibold text-yellow-500">
+                Are you sure you want to reject the selected certificates? This
+                will shown as rejected by this user.
+              </div>
+            </div>
+          }
+          button1={
+            <MyButton
+              color="danger"
+              size="sm"
+              spinner={<Spinner size="sm" color="current" />}
+              isLoading={loading}
+              onClick={() => {
+                handleReject();
+              }}
+            >
+              <span className=" text-white text-md font-medium">
+                Reject certificates
+              </span>
+            </MyButton>
+          }
+          button2={undefined}
+        />
+      )}
+      {approveModal && (
+        <MyModal
+          size="md"
+          isOpen={approveModal}
+          backdrop="blur"
+          onClose={() => {
+            setApproveModal(false);
+          }}
+          onOpen={() => {
+            setApproveModal(true);
+          }}
+          title="Revoke Certificates"
+          content={
+            <div className="flex gap-2">
+              <MdWarning size={30} className="text-yellow-500" />
+              <div className="text-lg font-semibold text-yellow-500">
+                Are you sure you want to Approve the selected certificates? This
+                will shown as issued by this user.
+              </div>
+            </div>
+          }
+          button1={
+            <MyButton
+              className="bg-green-400"
+              size="sm"
+              spinner={<Spinner size="sm" color="current" />}
+              isLoading={loading}
+              onClick={() => {
+                handleApprove();
+              }}
+            >
+              <span className=" text-black text-md font-medium">
+                Approve certificates
+              </span>
+            </MyButton>
+          }
+          button2={undefined}
+        />
+      )}
       <div className="flex text-lg font-medium ml-2">
         <MdSearch size={26} />
         <div>Search and Filter</div>
@@ -212,7 +297,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
                   className="bg-black dark:bg-white"
             size="sm"
             onClick={() => {
-              handleApprove();
+              setApproveModal(true);
             }}
           >
             <span className="dark:text-black text-white text-md font-medium">
@@ -223,7 +308,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           isLoading={loading}
           spinner={<Spinner size="sm" color="default" />}
           className="bg-black dark:bg-white" size="sm" onClick={()=>{
-            handleReject();
+            setRejectModal(true);
           }}>
             <span className="dark:text-black text-white text-md font-medium">
               reject certificates
