@@ -20,7 +20,7 @@ const fetchClusters = async () => {
   return response.data.clusters;
   }
   catch(error: any){
-    console.log(error);
+    // console.log(error);
   }
   
 }
@@ -37,7 +37,7 @@ const fetchStats = async () => {
     return response.data.statistics;
   }
   catch(error: any){
-    console.log(error);
+    // console.log(error);
   }
   
 }
