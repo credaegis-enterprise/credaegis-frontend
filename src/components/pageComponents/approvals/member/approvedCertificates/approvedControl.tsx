@@ -56,7 +56,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
   const debouncedSearchEvents = debounce(async (value: string) => {
     try {
       const response = await myInstance.get(
-        `/member/event-control/search/event?eventName=${value}`
+        `/member/common/event-control/search/event?eventName=${value}`
       );
 
       setEventList(response.data.events);

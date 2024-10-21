@@ -144,7 +144,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
     }
     try {
       const response = await myInstance.get(
-        `/member/event-control/search/event?eventName=${value}`
+        `/member/common/event-control/search/event?eventName=${value}`
       );
 
       setEventInfo(response.data.events);
