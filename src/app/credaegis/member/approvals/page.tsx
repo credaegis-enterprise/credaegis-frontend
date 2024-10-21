@@ -60,7 +60,7 @@ const fetchIssuedCount = async () => {
 const fetchIssuedCertificates = async () => {
     const cookie = getCookies()
     try {
-        const response = await myInstanceNEXT.get("/member/certificate/get-all", {
+        const response = await myInstanceNEXT.get("/member/certificate/cluster/get-latest?startLimit=0&rowCount=5", {
             headers: {
                 cookie: `test=${cookie}`
             }

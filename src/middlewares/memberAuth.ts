@@ -26,18 +26,17 @@ export const memberAuth: MiddlewareFactory = (next) => {
         ["approvals", "dashboard"].some((segment) =>
           pathname.includes(`/credaegis/member/${segment}`)
         ) &&
-        authInfo.role === "clusterMember"
+        (authInfo.role === "clusterMember" || authInfo.role === "admin")
       ) {
         return NextResponse.redirect(new URL("/unauthorized", request.url));
       }
 
       
-      if (authInfo.role === "clusterAdmin") {
+      if (authInfo.role === "clusterAdmin"|| authInfo.role === "clusterMember") {
         return NextResponse.next();
       }
 
 
-      return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
 
 
