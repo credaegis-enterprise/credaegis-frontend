@@ -130,6 +130,8 @@ export default function MyNavbar() {
             localStorage.setItem("path",window.location.pathname);
           }}
         >
+
+          {(role !== "clusterMember" && (
           <Link
             href={`/verification`}
             className={`${isSelected("verification")} transition-colors`}
@@ -137,6 +139,8 @@ export default function MyNavbar() {
           >
             verification
           </Link>
+
+          ))}
         </NavbarItem>
       </NavbarContent>
 
@@ -161,10 +165,12 @@ export default function MyNavbar() {
         <NavbarMenuItem>
           <Link href={`/credaegis/${accountType}/settings`}>settings</Link>
         </NavbarMenuItem>
-
+ 
+    {(role !== "clusterMember") && (
         <NavbarMenuItem>
           <Link href={`/verification`}>verification</Link>
         </NavbarMenuItem>
+    )}
       </NavbarMenu>
 
       <NavbarContent justify="end" className="gap-4">
