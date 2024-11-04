@@ -154,7 +154,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
         onInput={handleFileChange}
         multiple
       />
-      <div className="flex justify-between p-2">
+      <div className="flex justify-between p-2 gap-2">
         <div className="flex gap-2 mt-1 ">
           <HiDocumentText size={26} />
           <div className="text-xl font-semibold text-gray-800 dark:text-gray-200">
@@ -240,7 +240,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
       </div>
       <div className="mb-3">
         {selectedFiles.length > 0 && (
-          <div className="flex justify-center mt-4 gap-2">
+          <div className="flex justify-center mt-4 gap-2 p-2">
             <MyButton
               className="bg-black dark:bg-white"
               size="md"
