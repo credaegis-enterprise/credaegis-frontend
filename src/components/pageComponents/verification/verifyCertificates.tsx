@@ -34,7 +34,7 @@ const VerifyCertificates = () => {
           </div>
         </div>
       )}
-      <div className="flex flex-col ">
+      <div className="flex flex-col  ">
         <div className="flex justify-between">
         <div className="flex items-center justify-start p-2 gap-7">
           <MyButton size="sm" className="bg-black dark:bg-white  " onClick={
@@ -60,7 +60,7 @@ const VerifyCertificates = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col h-full ">
+      <div className="flex flex-col h-full overflow-auto ">
         <div className="grid grid-cols-1 lg:grid-cols-7 gap-4 h-full ">
           <div className="col-span-2 border dark:border-stone-800 rounded-lg overflow-auto">
             <CertificateList fileUrl={fileUrl} setFileUrl={setFileUrl} selectedFiles={selectedFiles} setSelectedFiles={setSelectedFiles} setPopUp={setPopUp}

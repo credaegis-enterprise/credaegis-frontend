@@ -7,14 +7,14 @@ interface StatsDisplayBoxProps {
 
 const StatsDisplayBox: React.FC<StatsDisplayBoxProps> = ({ stats }) => {
   return (
-    <div className="grid grid-rows-2 gap-5 h-full">
+    <div className="grid grid-rows-2 gap-5  h-full overflow-auto">
       {/* Cluster Stats */}
-      <div className="border dark:border-stone-800 rounded-lg p-5  ">
+      <div className="flex flex-col border dark:border-stone-800 rounded-lg p-5 h-full overflow-auto  ">
         <div className="flex items-center gap-3 mb-4 text-xl font-semibold text-gray-900 dark:text-white">
           <FaUsers className="text-3xl text-blue-500" />
           <span>Cluster Stats</span>
         </div>
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col h-full space-y-4 overflow-auto">
           <div className="flex justify-between">
             <span className="text-sm text-gray-600 dark:text-gray-400">Members</span>
             <span className="font-bold text-lg text-gray-900 dark:text-white">
@@ -34,7 +34,7 @@ const StatsDisplayBox: React.FC<StatsDisplayBoxProps> = ({ stats }) => {
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-sm text-gray-600 dark:text-gray-400">Revoked Certificates</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">Revoked Certificates ss</span>
             <span className="font-bold text-lg text-gray-900 dark:text-white">
               {stats.cluster_stats.total_revoked_certificates}
             </span>
@@ -43,12 +43,12 @@ const StatsDisplayBox: React.FC<StatsDisplayBoxProps> = ({ stats }) => {
       </div>
 
      
-      <div className="border dark:border-stone-800 rounded-lg p-5 ">
+      <div className="flex flex-col h-full border dark:border-stone-800 rounded-lg p-5 overflow-auto ">
   <div className="flex items-center gap-3 mb-4 text-xl font-semibold text-gray-900 dark:text-white">
     <FaCertificate className="text-3xl text-green-500" />
     <span>Event Stats</span>
   </div>
-  <div className="flex flex-col space-y-4">
+  <div className="flex flex-col h-full space-y-4">
     <div className="flex justify-between">
       <span className="text-sm text-gray-600 dark:text-gray-400">Most active Event</span>
       <span
