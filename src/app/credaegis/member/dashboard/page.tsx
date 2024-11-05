@@ -58,7 +58,7 @@ const Page = async () => {
   
 
   return (
-      <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 overflow-hidden">
+      <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 overflow-auto">
  <ManageAll members={members.members} events={events} stats={stats} clusterAdminUlid={members.clusterAdminUlid}/>
       </div>
   );
