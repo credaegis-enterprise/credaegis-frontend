@@ -53,7 +53,7 @@ export interface ApprovalsType {
   selected: boolean;
 }
 
-export interface ClusterType {
+export interface ClusterNamesIdType {
  name:string;
  id:string;
 }

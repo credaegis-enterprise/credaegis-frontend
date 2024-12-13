@@ -7,9 +7,10 @@ import { Input } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
 import { MdWarning } from "react-icons/md";
 import { rename } from "fs";
+import { EventInfoType } from "@/types/clusterInfo.types";
 
 interface EventControlProps {
-  event: EventType;
+  event: EventInfoType;
   setIsOpen: (value: boolean) => void;
   fetchClusterInfo: () => void;
 }
@@ -21,13 +22,13 @@ const EventControl: React.FC<EventControlProps> = ({ event,setIsOpen,fetchCluste
     console.log(event);
 const [renamePrompt, setRenamePrompt] = useState(false);
   const [loading, setLoading] = useState(false);
-const [eventName, setEventName] = useState(event.event_name);
+const [eventName, setEventName] = useState(event.name);
   const [invalid, setInvalid] = useState(false);
 
  const handleActivateEvent = async () => {
     setLoading(true);
     try {
-      const response = await myInstance.put(`/organization/event-control/activate/${event.event_ulid}`);
+      const response = await myInstance.put(`/organization/event-control/activate/${event.id}`);
       toast.success(response.data.message);
       setIsOpen(false);
       fetchClusterInfo()
@@ -40,7 +41,7 @@ const [eventName, setEventName] = useState(event.event_name);
  const handleDeactivateEvent = async () => {
     setLoading(true);
     try {
-      const response = await myInstance.put(`/organization/event-control/deactivate/${event.event_ulid}`);
+      const response = await myInstance.put(`/organization/event-control/deactivate/${event.id}`);
       toast.success(response.data.message);
       setIsOpen(false);
       fetchClusterInfo()
@@ -63,7 +64,7 @@ const [eventName, setEventName] = useState(event.event_name);
     try {
       const response = await myInstance.put(`/organization/event-control/rename`, {
         newEventName: eventName,
-        eventUlid: event.event_ulid,
+        eventUlid: event.id
       });
       toast.success(response.data.message);
       setIsOpen(false);
@@ -78,9 +79,9 @@ const [eventName, setEventName] = useState(event.event_name);
     <div className="flex flex-col gap-6 p-6 ">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col items-start gap-2">
-          <div className="text-3xl font-bold ">{event.event_name}</div>
+          <div className="text-3xl font-bold ">{event.name}</div>
           <span className="text-lg ">{}</span>
-          <span className="text-sm text-gray-400 ">created at: {new Date(event.created_at).toLocaleString()}</span>
+          <span className="text-sm text-gray-400 ">created at: {new Date(event.createdOn).toLocaleString()}</span>
         </div>
         <div className="flex justify-center gap-6 mt-4">
 

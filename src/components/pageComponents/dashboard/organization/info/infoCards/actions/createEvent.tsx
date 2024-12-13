@@ -8,13 +8,13 @@ import { toast } from "sonner";
 import { Spinner } from "@nextui-org/react";
 
 interface CreateEventProps {
-  clusterUlid: string;
+ clusterId: string;
   fetchClusterInfo: () => void;
   setIsOpen : (value:boolean) => void;
 }
 
 const CreateEvent: React.FC<CreateEventProps> = ({
-  clusterUlid,
+ clusterId,
   fetchClusterInfo,
   setIsOpen
 }) => {
@@ -37,7 +37,7 @@ const CreateEvent: React.FC<CreateEventProps> = ({
     try {
       const response = await myInstance.post("/organization/event-control/create", {
         eventName: eventName,
-        clusterUlid: clusterUlid,
+       clusterId:clusterId,
       });
 
       toast.success(response.data.message);

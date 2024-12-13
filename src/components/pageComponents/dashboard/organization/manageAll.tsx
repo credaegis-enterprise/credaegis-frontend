@@ -38,7 +38,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ stats }) => {
         <div className="flex flex-col h-full overflow-hidden mt-4">
           {selected === "info" ? (
             selectedTab.id ? (
-              <Info clusterUlid={selectedTab.id} />
+              <Info clusterId={selectedTab.id} />
             ) : (
               <div className="flex flex-col h-full justify-center items-center">
                 <div className="text-xl font-semibold text-gray-800 dark:text-gray-200">

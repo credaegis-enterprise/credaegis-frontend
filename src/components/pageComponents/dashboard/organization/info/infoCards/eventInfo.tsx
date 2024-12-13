@@ -8,19 +8,20 @@ import { Spinner, user } from "@nextui-org/react";
 import { EventType } from "@/types/global.types";
 import EventControl from "./actions/eventControl";
 import { set } from "lodash";
+import { EventInfoType } from "@/types/clusterInfo.types";
 
 interface EventInfoProps {
-  events: EventType[];
+  events: EventInfoType[] ;
   fetchClusterInfo: () => void;
-    clusterUlid: string;
+   clusterId: string;
     loading: boolean;
 }
 
-const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUlid,loading }) => {
+const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterId,loading }) => {
 
  const [isOpen, setIsOpen] = useState(false);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] =  useState<EventType>({} as EventType);
+  const [selectedEvent, setSelectedEvent] =  useState<EventInfoType>();
 
 
   return (
@@ -55,7 +56,7 @@ const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUl
           
           events && events.map((event, index) => (
             <motion.div
-            key={event.event_ulid}
+            key={event.name}
             initial={{ opacity: 0, y: 3 }} 
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.15, delay: index * 0.05 }}
@@ -69,7 +70,7 @@ const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUl
 
             >
               <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                {event.event_name}
+                {event.name}
               </h3>
             </motion.div>
           ))
@@ -91,7 +92,7 @@ const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUl
             backdrop="blur"
             onClose={() => setIsOpen(false)}
             title="Create an Event"
-            content={<CreateEvent fetchClusterInfo={fetchClusterInfo} clusterUlid={clusterUlid} setIsOpen={setIsOpen}/>}
+            content={<CreateEvent fetchClusterInfo={fetchClusterInfo}clusterId={clusterId} setIsOpen={setIsOpen}/>}
             button1={<button onClick={() => setIsOpen(false)}>Close</button>}
             button2={undefined}
             onOpen={() => {setIsOpen(true);}}
@@ -104,7 +105,7 @@ const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterUl
           backdrop="blur"
           onClose={() => setIsInfoOpen(false)}
           title="Event info"
-          content={<EventControl event={selectedEvent || undefined} setIsOpen={setIsInfoOpen} fetchClusterInfo={fetchClusterInfo}/>}
+          content={selectedEvent && <EventControl event={selectedEvent} setIsOpen={setIsInfoOpen} fetchClusterInfo={fetchClusterInfo}/>}
           button1={undefined}
           button2={undefined}
           onOpen={() => {

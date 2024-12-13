@@ -6,9 +6,10 @@ import { toast } from "sonner";
 import { Input } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
 import { MdWarning } from "react-icons/md";
+import { MemberInfoType } from "@/types/clusterInfo.types";
 
 interface MemberControlProps {
-  member: MemberType;
+  member: MemberInfoType;
   setIsOpen: (value: boolean) => void;
   fetchClusterInfo: () => void;
 }
@@ -25,7 +26,7 @@ const MemberControl: React.FC<MemberControlProps> = ({ member,setIsOpen,fetchClu
   const handleDeactivateMember = async () => {
     setLoading(true);
     try {
-      const response = await myInstance.put(`/organization/member-control/deactivate/${member.member_ulid}`);
+      const response = await myInstance.put(`/organization/member-control/deactivate/${member.id}`);
       toast.success(response.data.message);
       setIsOpen(false);
       fetchClusterInfo()
@@ -38,7 +39,7 @@ const MemberControl: React.FC<MemberControlProps> = ({ member,setIsOpen,fetchClu
   const handleActivateMember = async () => {
     setLoading(true);
     try {
-      const response = await myInstance.put(`/organization/member-control/activate/${member.member_ulid}`);
+      const response = await myInstance.put(`/organization/member-control/activate/${member.id}`);
       toast.success(response.data.message);
       setIsOpen(false);
       fetchClusterInfo()
@@ -52,13 +53,13 @@ const MemberControl: React.FC<MemberControlProps> = ({ member,setIsOpen,fetchClu
   const handleMemberDelete = async () => {
     setLoading(true);
     setInvalid(false);
-    if(memberEmail !== member.member_email){
+    if(memberEmail !== member.email){
       toast.error("Email does not match");
       setInvalid(true);
       return;
     }
     try {
-      const response = await myInstance.put(`/organization/member-control/delete/${member.member_ulid}`);
+      const response = await myInstance.put(`/organization/member-control/delete/${member.id}`);
       toast.success(response.data.message);
       setIsOpen(false);
       setDeletePrompt(false);
@@ -73,9 +74,9 @@ const MemberControl: React.FC<MemberControlProps> = ({ member,setIsOpen,fetchClu
     <div className="flex flex-col gap-6 p-6 ">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col items-start gap-2">
-          <div className="text-3xl font-bold ">{member.member_name}</div>
-          <span className="text-lg ">{member.member_email}</span>
-          <span className="text-sm text-gray-400 ">created at: {new Date(member.created_at).toLocaleString()}</span>
+          <div className="text-3xl font-bold ">{member.username}</div>
+          <span className="text-lg ">{member.email}</span>
+          <span className="text-sm text-gray-400 ">created at: {new Date(member.createdOn).toLocaleString()}</span>
         </div>
         <div className="flex justify-center gap-6 mt-4">
 
