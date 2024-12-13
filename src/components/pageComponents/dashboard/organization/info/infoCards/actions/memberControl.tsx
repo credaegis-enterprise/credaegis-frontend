@@ -7,6 +7,7 @@ import { Input } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
 import { MdWarning } from "react-icons/md";
 import { MemberInfoType } from "@/types/clusterInfo.types";
+import { set } from "lodash";
 
 interface MemberControlProps {
   member: MemberInfoType;
@@ -56,6 +57,7 @@ const MemberControl: React.FC<MemberControlProps> = ({ member,setIsOpen,fetchClu
     if(memberEmail !== member.email){
       toast.error("Email does not match");
       setInvalid(true);
+      setLoading(false);
       return;
     }
     try {
@@ -82,7 +84,7 @@ const MemberControl: React.FC<MemberControlProps> = ({ member,setIsOpen,fetchClu
 
         {!deletePrompt && 
   <>
-          {!member.deactivated ? (
+          {member.deactivated === false ? (
             <MyButton color="warning" className="" size="md"
             isLoading={loading}
             spinner={<Spinner size="sm" color="default" />}

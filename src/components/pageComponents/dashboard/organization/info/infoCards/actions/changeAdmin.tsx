@@ -45,11 +45,7 @@ const ChangeAdmin: React.FC<ChangeAdminProps> = ({
     }
 
     try {
-      const response = await myInstance.put("/organization/cluster-control/change-admin", {
-        clusterUlid: clusterUlid,
-        newAdminUlid: selectedAdmin,
-      });
-      console.log(response.data.message);
+      const response = await myInstance.put(`/organization/cluster-control/change-admin/${clusterUlid}/${selectedAdmin}`);
       toast.success(response.data.message);
       fetchClusterInfo();
       setIsOpen(false);

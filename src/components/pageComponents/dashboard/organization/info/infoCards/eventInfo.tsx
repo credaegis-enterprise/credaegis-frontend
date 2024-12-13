@@ -47,7 +47,7 @@ const EventInfo: React.FC<EventInfoProps> = ({ events,fetchClusterInfo,clusterId
       <div className=" mt-2  h-full  overflow-auto">
         {!loading ? (
         <div className="space-y-2 p-2 mt-1 h-full">
-          {!events? (
+          {events.length===0? (
             <div className="flex h-full justify-center items-center text-lg">
               No events available.
             </div>

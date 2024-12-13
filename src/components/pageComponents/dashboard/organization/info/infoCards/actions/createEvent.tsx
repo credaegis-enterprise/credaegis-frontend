@@ -19,6 +19,7 @@ const CreateEvent: React.FC<CreateEventProps> = ({
   setIsOpen
 }) => {
   const [eventName, setEventName] = useState("");
+  const [eventDescription, setEventDescription] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [invalid, setInvalid] = useState(false);
 
@@ -37,7 +38,8 @@ const CreateEvent: React.FC<CreateEventProps> = ({
     try {
       const response = await myInstance.post("/organization/event-control/create", {
         eventName: eventName,
-       clusterId:clusterId,
+        description: eventDescription,
+        clusterId:clusterId,
       });
 
       toast.success(response.data.message);
@@ -61,6 +63,15 @@ const CreateEvent: React.FC<CreateEventProps> = ({
           value={eventName}
           onChange={(e) => setEventName(e.target.value)}
         />
+        <Input
+          isRequired={true}
+          type="text"
+          label="Event Description"
+          size="md"
+          value={eventDescription}
+          onChange={(e) => setEventDescription(e.target.value)}
+        />
+
         <MyButton
           className="bg-black dark:bg-white"
           size="md"
