@@ -11,13 +11,13 @@ const fetchClusters = async () => {
 
   const cookies = getCookies();
   try{
-  const response = await myInstanceNEXT.get("/organization/cluster-control/get-all",{
+  const response = await myInstanceNEXT.get("/organization/cluster-control/get-clusters",{
     headers: {
-        cookie:`test=${cookies}`
+        cookie:`SESSION=${cookies}`
     }
     
   });
-  return response.data.clusters;
+  return response.data.responseData;
   }
   catch(error: any){
     // console.log(error);

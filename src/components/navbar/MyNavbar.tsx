@@ -34,10 +34,10 @@ export default function MyNavbar() {
     setSelected(currentPath || "");
     const getUserRoles = async () => {
       try {
-        const response = await myInstance.get("/session/check-session");
+        const response = await myInstance.get("organization/auth/session-check");
         console.log(response.data);
-        setAccountType(response.data.accountType);
-        setRole(response.data.role);
+        setAccountType(response.data.responseData.accountType);
+        setRole(response.data.responseData.role);
       } catch (error: any) {
         console.log(error);
       }
