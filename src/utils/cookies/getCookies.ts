@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 const getCookies = () => {
     const mycookies = cookies();
-    const cookie = mycookies.get("test")?.value || "";
+    const cookie = mycookies.get("SESSION")?.value || "";
     return cookie;
    
 }
