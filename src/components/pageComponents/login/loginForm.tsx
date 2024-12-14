@@ -56,7 +56,7 @@ const LoginForm = () => {
 
       console.log(response);
 
-      if (response.data.twoFa) setIsOpen(true);
+      if (response.data.responseData.mfaEnabled) setIsOpen(true);
       else {
         localStorage.setItem("currentPath","dashboard");
         toast.success(response.data.message);
@@ -69,7 +69,6 @@ const LoginForm = () => {
 
       setIsLoading(false);
     } catch (error: any) {
-
       setIsLoading(false);
     }
   };

@@ -15,13 +15,17 @@ function ResponseInterceptor() {
       response => response,
       (error: AxiosError) => {
         if (error.response) {
-          toast.error((error.response.data as any)?.message || "An error occurred");
+          
           switch (error.response.status) {
             case 403:
               router.push('/login');
             break;
+            case 401:
+              toast.error("Invalid credentials");
+              break;
             default:
-              console.error("An unexpected error occurred:", error.response.status);
+              toast.error((error.response.data as any)?.message || "An error occurred");
+              break;
           }
         } else {
           console.error("No response from the server:", error);
