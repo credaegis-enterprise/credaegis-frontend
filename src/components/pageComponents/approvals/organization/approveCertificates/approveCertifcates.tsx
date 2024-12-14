@@ -257,7 +257,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({
                       {approval.expiryDate ? approval.expiryDate : "N/A"}
                     </td>
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      {approval.comments ? approval.comments : "N/A"}
+                      {approval.comment ? approval.comment : "N/A"}
                     </td>
                     <td className="px-6 py-4 text-center">
                       <div className="flex justify-center gap-4">

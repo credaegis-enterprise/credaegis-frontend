@@ -1,7 +1,7 @@
 
 export interface ApprovalInfoType{
     id: string;
-    comments: string;
+    comment: string;
     organizationName: string;
     recipientEmail: string;
     recipientName: string;

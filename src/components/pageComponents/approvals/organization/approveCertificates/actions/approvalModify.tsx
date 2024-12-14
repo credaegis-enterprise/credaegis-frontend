@@ -32,7 +32,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
         if(approval){
             setName(approval.recipientName);
             setEmail(approval.recipientEmail);
-            setComments(approval.comments);
+            setComments(approval.comment);
             setExpiryDate(approval.expiryDate);
         }
     }, [approval,trigger]);
@@ -66,7 +66,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
                 approvalUlid: approval.id,
                 name: name,
                 email: email,
-                comments: comments,
+                comment: comments,
                 expiryDate: expiryDate
             })
 

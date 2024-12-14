@@ -4,6 +4,12 @@ export interface AdminInfoType {
     email: string;
 }
 
+
+export interface ClusterSearchInfoType {
+    id: String;
+    name: String;
+}
+
 export interface EventInfoType {
     id: string;
     name: string;
