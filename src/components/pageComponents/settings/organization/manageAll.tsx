@@ -3,12 +3,12 @@ import Security from "./info/security";
 import {useEffect } from "react";
 import { useTabContext } from "@/context/tabContext";
 import AccountInfo from "./info/accountInfo";
-import { OrganizationSettingType } from "@/types/global.types";
+import { AccountInfoType, UserInfo } from "@/types/accountInfo.types";
 
 
 
 interface manageAllProps {
-   settings: OrganizationSettingType;
+   settings: AccountInfoType
 }
 
 
@@ -26,7 +26,7 @@ const ManageAll: React.FC<manageAllProps> = ({settings}) => {
     return(
         <div className="h-full">
                         {settingsTab.id === 'Account' && <AccountInfo settings={settings}  />}
-                        {settingsTab.id === 'Security' && <Security two_fa_enabled={settings.two_fa_enabled}/>}
+                        {settingsTab.id === 'Security' && <Security two_fa_enabled={settings.userInfo.mfaEnabled}/>}
                         {settingsTab.id === 'Preferences' && <p>Preferences settings content goes here.</p>}
       </div>
     )

@@ -9,10 +9,11 @@ import { toast } from 'sonner';
 import { myInstance } from '@/utils/Axios/axios';
 import { set, toArray } from 'lodash';
 import { useRouter } from 'next/navigation';
+import { AccountInfoType } from '@/types/accountInfo.types';
 
 
 interface AccountInfoProps {
-  settings: OrganizationSettingType;
+  settings: AccountInfoType
 }
 
 const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
@@ -25,8 +26,8 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [nameError, setNameError] = useState<boolean>(false);
   useEffect(() => {
-    setName(settings.organization_name);
-  }, [settings.organization_name]);
+    setName(settings.organizationInfo.name);
+  }, [settings.organizationInfo.name]);
 
 
 
@@ -167,7 +168,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
             type="text"
             label="Registered Email"
             size="lg"
-            value={settings.organization_email}
+            value={settings.userInfo.email}
             readOnly
 
           />
@@ -198,7 +199,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
             <MyButton className='bg-black dark:bg-white text-white dark:text-black' size='sm'
             onClick={() => {
               setIsEditing(!isEditing);
-              setName(settings.organization_name);
+              setName(settings.organizationInfo.name);
               toast.info("Edit mode disabled");
             }}
             >

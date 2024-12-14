@@ -11,12 +11,12 @@ const fetchSettings = async () => {
 
     const cookies = getCookies();
     try {
-        const response = await myInstanceNEXT.get("/organization/settings/get",{
+        const response = await myInstanceNEXT.get("/organization/account/me",{
             headers: {
-                cookie:`test=${cookies}`
+                cookie:`SESSION=${cookies}`
             }
         });
-        return response.data
+        return response.data.responseData
     } catch (error: any) {
         console.log(error);
     }
@@ -39,7 +39,7 @@ const Page = async () => {
                     <SideBar />
                 </div>
                 <div className="lg:col-span-6 col-span-full overflow-auto p-4 h-full  rounded-lg border border-gray-200 dark:border-stone-800 ">
-                <ManageAll settings={result.settings}/>
+                <ManageAll settings={result}/>
                 </div>
             </div>
         </div>
