@@ -59,30 +59,15 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({
         router.refresh();
       }
       console.log(result);
-      if (result?.data.data.length === 0 || approvalsList.length === 0) {
+      if (result?.data.responseData.length === 0 || approvalsList.length === 0) {
         toast.info("No approvals found for selected filters ");
       }
       if (result) {
-        const updatedResult: ApprovalsType[] = result.data.data.map(
-          (approval: any) => {
-            return {
-              approval_ulid: approval.approval_ulid,
-              approval_file_ulid: approval.approval_file_ulid,
-              approval_file_name: approval.approval_file_name,
-              comments: approval.comments,
-              expiry_date: approval.expiry_date,
-              event_name: approval.event_name,
-              issued_to_email: approval.issued_to_email,
-              issued_to_name: approval.issued_to_name,
-              event_ulid: approval.event_ulid,
-              cluster_ulid: approval.cluster_ulid,
-              cluster_name: approval.cluster_name,
-              selected: false,
-            };
-          }
-        );
+        console.log("shjshjjshjsjsh")
+        console.log(result.data.responseData);
+       const updatedResult : ApprovalInfoType[] = result.data.responseData;
 
-        // setApprovalsList(updatedResult);
+        setApprovalsList(updatedResult);
       }
     } catch (err) {
       console.log(err);

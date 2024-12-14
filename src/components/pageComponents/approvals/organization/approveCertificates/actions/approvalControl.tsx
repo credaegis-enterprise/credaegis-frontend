@@ -98,7 +98,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
       return acc;
     }, []);
 
-    console.log(approvalUlids);
+    
 
     if (approvalUlids.length === 0) {
       toast.info("Please select atleast one approval to approve");
@@ -111,7 +111,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
       const response = await myInstance.post(
         "/organization/approval-control/approve",
         {
-          approvalUlids: approvalUlids,
+          approvalCertificateIds: approvalUlids,
         }
       );
       if (response.data.success) {
@@ -147,7 +147,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
       const response = await myInstance.put(
         "/organization/approval-control/reject",
         {
-          approvalUlids: approvalUlids,
+          approvalCertificateIds: approvalUlids,
         }
       );
 
