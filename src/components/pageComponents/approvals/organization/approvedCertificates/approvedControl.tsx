@@ -12,10 +12,11 @@ import { IoReload } from "react-icons/io5";
 import { IoSearch } from "react-icons/io5";
 import MyModal from "@/components/modals/mymodal";
 import { MdWarning } from "react-icons/md";
+import { CertificateInfoType } from "@/types/issuedCertificateInfo.types";
 
 interface ApprovedCertificatesProps {
- setIssuedList: (issuedList: issuedCertificatesType[]) => void;
-  issuedList: issuedCertificatesType[];
+ setIssuedList: (issuedList: CertificateInfoType[]) => void;
+  issuedList: CertificateInfoType[];
   selectedCluster: string | null;
   setSelectedCluster: (cluster: string | null) => void;
   selectedEvent: string | null;
@@ -110,7 +111,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
     const issuedCertificatesUlids = issuedList.reduce<string[]>((acc, issued) => {
       if (issued.selected && !issued.revoked) {
 
-        acc.push(issued.certificate_ulid);
+        acc.push(issued.id);
       }
       return acc;
     }, []);

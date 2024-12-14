@@ -1,10 +1,11 @@
 
 import ManageAll from "@/components/pageComponents/approvals/organization/manageAll"
 import { myInstanceNEXT } from "@/utils/Axios/axios"
-import { ApprovalsType } from "@/types/global.types"
+import { ApprovalsType, issuedCertificatesType } from "@/types/global.types"
 import getCookies from "@/utils/cookies/getCookies"
 import { ApprovalInfoType } from "@/types/approvalInfo.type"
 import { select } from "@nextui-org/react"
+import { CertificateInfoType } from "@/types/issuedCertificateInfo.types"
 
 
 const fetchApprovals = async () => {
@@ -29,7 +30,7 @@ const fetchApprovals = async () => {
 const fetchIssuedCount = async () => {
     const cookie = getCookies()
     try {
-        const response = await myInstanceNEXT.get("/organization/approval-control/get-count?status=pending", {
+        const response = await myInstanceNEXT.get("/organization/certificate-control/issued/get-count", {
             headers: {
                 cookie: `SESSION=${cookie}`
             }
@@ -44,15 +45,15 @@ const fetchIssuedCount = async () => {
 const fetchIssuedCertificates = async () => {
     const cookie = getCookies()
     try {
-        const response = await myInstanceNEXT.get("/organization/certificate/get-latest?startLimit=0&rowCount=5", {
+        const response = await myInstanceNEXT.get("/organization/certificate-control/get-latest?page=0&size=5", {
             headers: {
-                cookie: `test=${cookie}`
+                cookie: `SESSION=${cookie}`
             }
         })
-        if(response.data.data?.length === 0){
+        if(response.data.responseData?.length === 0){
             return []
         }
-        const  updatedResult = response.data.data.map((Certificate:any) => {
+        const  updatedResult:CertificateInfoType[] = response.data.responseData.map((Certificate:any) => {
             return {
                 ...Certificate,
                 selected: false
@@ -74,12 +75,12 @@ const page = async () => {
    const approvalsPromise = fetchApprovals()
    const issuedCountPromise = fetchIssuedCount()
     const certificatesPromise = fetchIssuedCertificates()
-    const [approvals, issuedCount] = await Promise.all([approvalsPromise, issuedCountPromise])
+    const [approvals, issuedCount,issuedCertificates] = await Promise.all([approvalsPromise, issuedCountPromise,certificatesPromise])
     console.log(issuedCount)
 
     return (
         <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 ">
-        <ManageAll approvalsInfo={approvals || []} issuedCount={issuedCount}/>
+        <ManageAll approvalsInfo={approvals || []} issuedInfo={issuedCertificates||[]} issuedCount={issuedCount}/>
      </div>
         
     )

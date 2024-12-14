@@ -1,6 +1,6 @@
 import { MyButton } from "@/components/buttons/mybutton";
 import { Checkbox } from "@nextui-org/react";
-import { EventType, ClusterType } from "@/types/global.types";
+
 import { use, useCallback, useState } from "react";
 import { ApprovalsType, issuedCertificatesType } from "@/types/global.types";
 import { useEffect } from "react";
@@ -17,9 +17,10 @@ import { myInstance } from "@/utils/Axios/axios";
 import { Pagination } from "@nextui-org/react";
 import { start } from "repl";
 import { filter, set } from "lodash";
+import { CertificateInfoType } from "@/types/issuedCertificateInfo.types";
 
 interface ApprovedCertificatesProps {
-  issuedInfo: issuedCertificatesType[];
+  issuedInfo: CertificateInfoType[];
   issuedCount: number;
 }
 
@@ -31,7 +32,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
   const [selectedCluster, setSelectedCluster] = useState<string | null>(null);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
-  const [issuedList, setIssuedList] = useState<issuedCertificatesType[]>([]);
+  const [issuedList, setIssuedList] = useState<CertificateInfoType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedCount, setSelectedCount] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -296,49 +297,47 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                 {issuedList.map((certificate, index) => (
                   <tr key={index} className="">
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      {certificate.event_name}
+                      {certificate.recipientName}
                     </td>
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
                       <div className="flex flex-col gap-2">
-                        <span>{certificate.issued_to_name}</span>
+                        <span>{certificate.recipientName}</span>
                         <span className="text-xs text-gray-700 dark:text-gray-300">
-                          {certificate.issued_to_email}
+                          {certificate.recipientEmail}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      {certificate.certificate_name}
+                      {certificate.certificateName}
                     </td>
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
                       <div className="flex flex-col gap-2">
                         <span>
-                          {certificate.approved_by_organization ||
-                            certificate.approved_by_member}
+                          {certificate.issuerName}
                         </span>
                         <span className="text-xs text-gray-700 dark:text-gray-300">
-                          {certificate.approved_by_organization_email ||
-                            certificate.approved_by_member_email}
+                          {certificate.issuerEmail}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      {certificate.issued_date}
+                      {certificate.issuedDate}
                     </td>
                     <td
                       className={`px-6 py-4 font-medium text-center 
   ${
     certificate.revoked
       ? "text-red-400 dark:text-red-400"
-      : certificate.expiry_date &&
-        new Date(certificate.expiry_date) < new Date()
+      : certificate.expiryDate &&
+        new Date(certificate.expiryDate) < new Date()
       ? "text-yellow-500 dark:text-yellow-400"
       : "text-green-500 dark:text-green-400"
   }`}
                     >
                       {certificate.revoked
                         ? "Revoked"
-                        : certificate.expiry_date &&
-                          new Date(certificate.expiry_date) < new Date()
+                        : certificate.expiryDate &&
+                          new Date(certificate.expiryDate) < new Date()
                         ? "Expired"
                         : "Valid"}
                     </td>
