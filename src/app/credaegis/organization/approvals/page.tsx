@@ -3,6 +3,8 @@ import ManageAll from "@/components/pageComponents/approvals/organization/manage
 import { myInstanceNEXT } from "@/utils/Axios/axios"
 import { ApprovalsType } from "@/types/global.types"
 import getCookies from "@/utils/cookies/getCookies"
+import { ApprovalInfoType } from "@/types/approvalInfo.type"
+import { select } from "@nextui-org/react"
 
 
 const fetchApprovals = async () => {
@@ -10,31 +12,14 @@ const fetchApprovals = async () => {
     try {
         const response = await myInstanceNEXT.get("/organization/approval-control/get-all", {
             headers: {
-                cookie: `test=${cookie}`
+                cookie: `SESSION=${cookie}`
             }
         })
-        if(response.data.data?.length === 0){
+        if(response.data.responseData.length === 0){
             return []
         }
-        const updatedResult: ApprovalsType[] = response.data.data.map(
-            (approval: any) => {
-              return {
-                approval_ulid: approval.approval_ulid,
-                approval_file_name: approval.approval_file_name,
-                approval_file_ulid: approval.approval_file_ulid,
-                comments: approval.comments,
-                expiry_date: approval.expiry_date,
-                event_name: approval.event_name,
-                issued_to_email: approval.issued_to_email,
-                issued_to_name: approval.issued_to_name,
-                event_ulid: approval.event_ulid,
-                cluster_ulid: approval.cluster_ulid,
-                cluster_name: approval.cluster_name,
-                selected: false,
-              };
-            }
-          );
-        return updatedResult
+       
+        return response.data.responseData
     } catch (error: any) {
         console.log(error)
     }
@@ -44,12 +29,12 @@ const fetchApprovals = async () => {
 const fetchIssuedCount = async () => {
     const cookie = getCookies()
     try {
-        const response = await myInstanceNEXT.get("/organization/certificate/get-count", {
+        const response = await myInstanceNEXT.get("/organization/approval-control/get-count?status=pending", {
             headers: {
-                cookie: `test=${cookie}`
+                cookie: `SESSION=${cookie}`
             }
         })
-        return response.data.data.total_count
+        return response.data.responseData.count
     } catch (error: any) {
         console.log(error)
     }
@@ -89,12 +74,12 @@ const page = async () => {
    const approvalsPromise = fetchApprovals()
    const issuedCountPromise = fetchIssuedCount()
     const certificatesPromise = fetchIssuedCertificates()
-    const [approvals, certificates,issuedCount] = await Promise.all([approvalsPromise, certificatesPromise, issuedCountPromise])
+    const [approvals, issuedCount] = await Promise.all([approvalsPromise, issuedCountPromise])
     console.log(issuedCount)
 
     return (
         <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 ">
-        <ManageAll approvalsInfo={approvals || []} issuedInfo={certificates || []} issuedCount={issuedCount}/>
+        <ManageAll approvalsInfo={approvals || []} issuedCount={issuedCount}/>
      </div>
         
     )

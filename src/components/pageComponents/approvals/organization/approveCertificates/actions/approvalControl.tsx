@@ -13,10 +13,11 @@ import { Spinner } from "@nextui-org/react";
 import MyModal from "@/components/modals/mymodal";
 import { MdWarning } from "react-icons/md";
 import { count } from "console";
+import { ApprovalInfoType } from "@/types/approvalInfo.type";
 
 interface ApproveCertificatesProps {
-  setApprovalsList: (approvalsList: ApprovalsType[]) => void;
-  approvalsList: ApprovalsType[];
+  setApprovalsList: (approvalsList: ApprovalInfoType[]) => void;
+  approvalsList: ApprovalInfoType[];
   selectedCluster: string | null;
   setSelectedCluster: (cluster: string | null) => void;
   selectedEvent: string | null;
@@ -102,7 +103,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     setMainLoading(true);
     const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
       if (approval.selected) {
-        acc.push(approval.approval_ulid);
+        acc.push(approval.id);
       }
       return acc;
     }, []);
@@ -139,7 +140,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     setMainLoading(true);
     const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
       if (approval.selected) {
-        acc.push(approval.approval_ulid);
+        acc.push(approval.id);
       }
       return acc;
     }, []);

@@ -12,6 +12,7 @@ import { myInstance } from "@/utils/Axios/axios";
 import { FileInfo, filesMetaType, MyFileType } from "@/types/global.types";
 import { ulid } from "ulid";
 import { Spinner } from "@nextui-org/react";
+import { EventSearchInfoType } from "@/types/event.types";
 
 interface MyFileListProps {
   loading: boolean;
@@ -27,13 +28,6 @@ interface MyFileListProps {
   uploadSuccess: boolean;
 }
 
-interface eventInfoType {
-  event_name: string;
-  event_ulid: string;
-  cluster_ulid: string;
-  cluster_name: string;
-}
-
 const MyFileList: React.FC<MyFileListProps> = ({
   loading,
   setFileUrl,
@@ -47,7 +41,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<MyFileType[]>([]);
   const [event, setEvent] = useState<string | null>(null);
-  const [eventInfo, setEventInfo] = useState<eventInfoType[]>([]);
+  const [eventInfo, setEventInfo] = useState<EventSearchInfoType[]>([]);
   console.log(event);
   const inputFile = useRef<HTMLInputElement>(null);
   const handleUploadClick = () => {
@@ -144,10 +138,10 @@ const MyFileList: React.FC<MyFileListProps> = ({
     }
     try {
       const response = await myInstance.get(
-        `/organization/event-control/search/event?eventName=${value}&clusterUlid=`
+        `/organization/event-control/search?name=${value}`
       );
 
-      setEventInfo(response.data.data);
+      setEventInfo(response.data.responseData);
     } catch (err) {
       console.log(err);
     }
@@ -203,8 +197,8 @@ const MyFileList: React.FC<MyFileListProps> = ({
           onSelectionChange={(key) => setEvent(key as string | null)}
         >
           {eventInfo.map((event) => (
-            <AutocompleteItem key={event.event_ulid} value={event.event_name}>
-              {event.event_name}
+            <AutocompleteItem key={event.id} value={event.name}>
+              {event.name}
             </AutocompleteItem>
           ))}
         </Autocomplete>
