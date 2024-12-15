@@ -13,6 +13,7 @@ import { IoSearch } from "react-icons/io5";
 import MyModal from "@/components/modals/mymodal";
 import { MdWarning } from "react-icons/md";
 import { CertificateInfoType } from "@/types/issuedCertificateInfo.types";
+import { ClusterInfoType, EventInfoType } from "@/types/clusterInfo.types";
 
 interface ApprovedCertificatesProps {
  setIssuedList: (issuedList: CertificateInfoType[]) => void;
@@ -29,17 +30,7 @@ interface ApprovedCertificatesProps {
   
 }
 
-interface clusterType {
-  cluster_name: string;
-  cluster_ulid: string;
-}
 
-interface eventType {
-  event_name: string;
-  event_ulid: string;
-  cluster_ulid: string;
-  cluster_name: string;
-}
 
 const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({   
     issuedList,
@@ -58,8 +49,8 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
  
 }) => {
   const router = useRouter();
-  const [clusterList, setClusterList] = useState<clusterType[]>([]);
-  const [eventList, setEventList] = useState<eventType[]>([]);
+  const [clusterList, setClusterList] = useState<ClusterInfoType[]>([]);
+  const [eventList, setEventList] = useState<EventInfoType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [popUp, setPopUp] = useState<boolean>(false);
   // const [selectedCluster, setSelectedCluster] = useState<string | null>();
@@ -68,10 +59,10 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
   const debouncedSearchClusters = debounce(async (value: string) => {
     try {
       const response = await myInstance.get(
-        `/organization/cluster-control/search/cluster?clusterName=${value}`
+        `/organization/cluster-control/cluster/search?name=${value}`
       );
 
-      setClusterList(response.data.data);
+      setClusterList(response.data.responseData);
     } catch (err) {
       console.log(err);
     }
@@ -80,10 +71,10 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
   const debouncedSearchEvents = debounce(async (value: string, id: string) => {
     try {
       const response = await myInstance.get(
-        `/organization/event-control/search/event?eventName=${value}&clusterUlid=${id}`
+        `/organization/event-control/event/cluster/search?name=${value}&clusterId=${id}`
       );
 
-      setEventList(response.data.data);
+      setEventList(response.data.responseData);
     } catch (err) {
       console.log(err);
     }
@@ -125,8 +116,8 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
     setLoading(true);
 
     try {
-      const response = await myInstance.put("/organization/certificate/revoke", {
-        certificateUlids: issuedCertificatesUlids,
+      const response = await myInstance.put("/organization/certificate-control/revoke", {
+        certificateIds: issuedCertificatesUlids,
       });
 
       if (response.data.success) {
@@ -207,10 +198,10 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
         >
           {clusterList.map((cluster) => (
             <AutocompleteItem
-              value={cluster.cluster_name}
-              key={cluster.cluster_ulid}
+              value={cluster.name}
+              key={cluster.id}
             >
-              {cluster.cluster_name}
+              {cluster.name}
             </AutocompleteItem>
           ))}
         </Autocomplete>
@@ -228,8 +219,8 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
           onSelectionChange={(key) => handleEventSelection(key as string)}
         >
           {eventList.map((event) => (
-            <AutocompleteItem value={event.event_name} key={event.event_ulid}>
-              {event.event_name}
+            <AutocompleteItem value={event.name} key={event.id}>
+              {event.name}
             </AutocompleteItem>
           ))}
         </Autocomplete>

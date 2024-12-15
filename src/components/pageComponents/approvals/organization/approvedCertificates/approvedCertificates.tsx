@@ -51,32 +51,26 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
       if (selectedEvent) {
      
         result = await myInstance.get(
-          `/organization/certificate/event/get-latest/${selectedEvent}?startLimit=0&rowCount=5`
+          `/organization/certificate-control/event/${selectedEvent}/get-latest?page=0&size=5`
         );
 
         console.log(result);
       } else if (selectedCluster) {
         result = await myInstance.get(
-          `/organization/certificate/cluster/get-latest/${selectedCluster}?startLimit=0&rowCount=5`
+          `/organization/certificate-control/cluster/${selectedCluster}/get-latest?page=0&size=5`
         );
       } else {
         router.refresh();
       }
 
-      if (result?.data.data.length === 0 && issuedList.length === 0) {
+      if (result?.data.responseData.length === 0 && issuedList.length === 0) {
         toast.info("No certficates found for selected filters ");
       }
       if (result) {
-        console.log("hello");
-        console.log(result.data.data);
-        const updatedResult = result.data.data.map((certificate: any) => {
-          return {
-            ...certificate,
-            selected: false,
-          };
-        });
+        
+        const updatedResult: CertificateInfoType[] = result.data.responseData
 
-        const count = result.data.totalCount === 0 ? 1 : result.data.totalCount;
+        const count = issuedCount === 0 ? 1 : issuedCount;
         setTotalCount(count);
         setIssuedList(updatedResult);
         setFilterOn(true);
@@ -127,50 +121,43 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
   console.log("total count", totalCount);
 
   const pageChange = async (pageNumber: number) => {
-    console.log("pageChange function called");
+    console.log("pageChange function called"+ pageNumber);
  
     if (pageNumber === currentPage) {
       return;
     }
-    const startLimit = (pageNumber - 1) * 5;
     setCurrentPage(pageNumber);
     const rowCount = 5;
     let result;
 
-    console.log("startLimit",startLimit);
-    console.log("pagenumber",pageNumber);
 
     try {
       if (filterOn) {
         if (selectedEvent) {
           result = await myInstance.get(
-            `/organization/certificate/event/get-latest/${selectedEvent}?startLimit=${startLimit}&rowCount=${rowCount}`
+            `/organization/certificate-control/event/${selectedEvent}/get-latest?page=${pageNumber-1}&size=${rowCount}`
           );
 
-          console.log(result);
+
         } else if (selectedCluster) {
           result = await myInstance.get(
-            `/organization/certificate/cluster/get-latest/${selectedCluster}?startLimit=${startLimit}&rowCount=${rowCount}`
+            `/organization/certificate-control/cluster/${selectedCluster}/get-latest?page=${pageNumber-1}&size=${rowCount}`
           );
         }
       } else {
         result = await myInstance.get(
-          `/organization/certificate/get-latest?startLimit=${startLimit}&rowCount=${rowCount}`
+          `/organization/certificate-control/get-latest?page=${pageNumber-1}&size=${rowCount}`
         );
       }
 
-      if (result?.data.data.length === 0 && issuedList.length === 0) {
+      if (result?.data.responseData.length === 0 && issuedList.length === 0) {
         toast.info("No certficates found for selected filters ");
       }
       if (result) {
-        const updatedResult = result.data.data.map((certificate: any) => {
-          return {
-            ...certificate,
-            selected: false,
-          };
-        });
+        const updatedResult: CertificateInfoType[] = result.data.responseData
         setIssuedList(updatedResult);
-        const count = result.data.totalCount === 0 ? 1 : result.data.totalCount;
+
+        const count = issuedCount === 0 ? 1 : issuedCount;
         if (filterOn) {
           setTotalCount(count);
         }
@@ -297,7 +284,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                 {issuedList.map((certificate, index) => (
                   <tr key={index} className="">
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      {certificate.recipientName}
+                      {certificate.eventName}
                     </td>
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
                       <div className="flex flex-col gap-2">

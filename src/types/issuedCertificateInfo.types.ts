@@ -1,4 +1,4 @@
-export interface  CertificateInfo  {
+export interface  CertificateInfoType  {
   id: string;
   selected: boolean;
   issuerName: string;
