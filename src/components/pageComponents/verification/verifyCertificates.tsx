@@ -6,7 +6,7 @@ import CertificateList from "./verifyManagement/certificateList";
 import { MyButton } from "@/components/buttons/mybutton";
 import { FileInfo,MyFileType } from "@/types/global.types";
 import { MdCheckCircle } from "react-icons/md";
-import { verificationStatusType } from "@/types/global.types";
+import { verificationResponseType } from "@/types/certificateVerificationTypes";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@nextui-org/react";
 import { ThemeSwitcher } from "@/components/themes/themeSwitcher";
@@ -19,7 +19,7 @@ const VerifyCertificates = () => {
   const [selectedFiles, setSelectedFiles] = useState<MyFileType[]>([]);
   const [fileCount, setFileCount] = useState<number>(0);
   const [popUp, setPopUp] = useState<boolean>(false);
-  const [verificationStatus, setVerificationStatus] = useState<verificationStatusType[]>([]);
+  const [verificationStatus, setVerificationStatus] = useState<verificationResponseType[]>([]);
 
 
   return (

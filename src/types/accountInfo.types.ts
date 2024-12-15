@@ -8,7 +8,7 @@ export interface UserInfo {
     username: string;
     email: string;
     mfaEnabled: boolean;
-    profileUrl: string | null;
+    brandLogoEnabled: boolean;
     deactivated: boolean;
     deleted: boolean;
     adminCluster: string | null;

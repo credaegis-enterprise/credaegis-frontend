@@ -40,10 +40,10 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
     const file = toArray(e.target.files)[0];
     console.log(file);
     const formData = new FormData();
-    formData.append("brandLogo", file);
+    formData.append("logo", file);
 
     try {
-      const response = await myInstance.post("/organization/settings/upload-brand-logo",formData, {
+      const response = await myInstance.post("/organization/account/upload/brand-logo",formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -51,6 +51,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
       });
       toast.success(response.data.message);
       setError(false);
+      router.refresh();
       setIsLoading(false);
     } catch (error: any) {
       console.log(error);
@@ -97,7 +98,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
   const handleDeleteLogo = async () => {
     setIsLoading(true);
     try {
-      const response = await myInstance.delete("/organization/settings/delete-brand-logo");
+      const response = await myInstance.delete("/organization/account/remove/brand-logo");
       toast.success(response.data.message);
       setError(true);
       setIsOpen(false);
@@ -122,11 +123,11 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
       <div className="flex flex-col lg:flex-row border border-gray-300 dark:border-stone-800 rounded-xl overflow-hidden">
         <input type="file" ref={inputRef} className="hidden" onChange={(e) => handleBrandLogoUpload(e)} />
         <div className="relative lg:w-1/3 w-full flex items-center justify-center  p-6">
-          {!error ? (
-            <>
+          
+
             {!isLoading ? (
             <img
-              src={`${process.env.NEXT_PUBLIC_devbackendurl}/organization/settings/brand-logo/get`}
+              src={`${process.env.NEXT_PUBLIC_devbackendurl}/organization/account/serve/brand-logo`}
               alt="Brand logo not found"
               className="w-48 h-48 object-cover rounded-full shadow-md"
               onError={() => setError(true)}
@@ -136,25 +137,24 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
             <Spinner size='lg' color='current' className='text-black dark:text-white'/>
             </div>
           )}
-            </>
-          ) : (
-            <div className="flex flex-col items-center justify-center w-48 h-48 rounded-full cursor-pointer transition-all duration-200 hover:bg-gray-100 dark:hover:bg-stone-900 hover:scale-105 "
-            onClick={()=>{
-              inputRef.current?.click();
-            }}>
-              <MdUpload size={36} className="text-gray-500 dark:text-gray-400" />
-              <p className="text-gray-600 dark:text-gray-300 mt-2">Upload Logo</p>
-            </div>
-          )}
+            
 
 
-          {!error && (
-            <MdClose
+         {settings.userInfo.brandLogoEnabled?
+           ( <MdClose
               size={30}
               className="absolute bottom-6 right-6 text-gray-600 dark:text-gray-400 cursor-pointer transition-colors hover:text-gray-900 dark:hover:text-red-400"
               onClick={() => setIsOpen(true)}
             />
-          )}
+           ):(
+            <MdUpload
+            size={30}
+            className="absolute bottom-6 right-6 text-gray-600 dark:text-gray-400 cursor-pointer transition-colors hover:text-gray-900 dark:hover:text-blue-400"
+            onClick={() => inputRef.current?.click()}
+          />
+           )
+          }
+          
         </div>
 
    

@@ -15,7 +15,7 @@ function ResponseInterceptor() {
       response => response,
       (error: AxiosError) => {
         if (error.response) {
-          
+          console.error("Error response from the server:", error.response);
           switch (error.response.status) {
             case 403:
               router.push('/login');
