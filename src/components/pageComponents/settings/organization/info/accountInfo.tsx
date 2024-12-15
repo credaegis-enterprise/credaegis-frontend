@@ -21,12 +21,14 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
   const [error, setError] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [userName, setUserName] = useState<string>("");
   const [isLoading,setIsLoading] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [nameError, setNameError] = useState<boolean>(false);
   useEffect(() => {
     setName(settings.organizationInfo.name);
+    setUserName(settings.userInfo.username);
   }, [settings.organizationInfo.name]);
 
 
@@ -71,9 +73,16 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
       setIsLoading(false);
       return
     }
+    if(userName === ""){
+      setNameError(true);
+      toast.error("User name cannot be empty");
+      setIsLoading(false);
+      return
+    }
     try {
-      const response = await myInstance.put("/organization/settings/modify-account", {
-        organizationNewName: name,
+      const response = await myInstance.put("/organization/account/update-info", {
+       organizationName: name,
+        username: userName
       });
       toast.success(response.data.message);
       setIsEditing(!isEditing);
@@ -150,6 +159,18 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
 
    
         <div className="flex flex-col lg:w-2/3 w-full p-6 space-y-4">
+
+        <Input
+            type="text"
+            label="Username"
+            isInvalid={nameError}
+            errorMessage="User name cannot be empty"
+            size="lg"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            readOnly={!isEditing}
+            className="  "
+          />
 
           <Input
             type="text"
