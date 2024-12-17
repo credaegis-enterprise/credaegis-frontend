@@ -96,7 +96,7 @@ const MemberView: React.FC<MemberViewProps> = ({
           backdrop="blur"
           onClose={() => setIsOpen(false)}
           title="Add Member"
-          content={<CreateMember cluster_ulid={"1"} setIsOpen={setIsOpen} />}
+          content={<CreateMember  setIsOpen={setIsOpen} />}
           button1={<button onClick={() => setIsOpen(false)}>Close</button>}
           button2={undefined}
           onOpen={() => {

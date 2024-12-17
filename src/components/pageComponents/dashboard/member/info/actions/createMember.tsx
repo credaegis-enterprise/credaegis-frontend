@@ -11,12 +11,11 @@ import { useRouter } from "next/navigation";
 
 
 interface CreateMemberProps {
-  cluster_ulid: string;
+
     setIsOpen: (value: boolean) => void;
 }
 
 const CreateMember: React.FC<CreateMemberProps> = ({
-  cluster_ulid,
   setIsOpen,
 }) => {
   const [memberName, setMemberName] = useState("");
@@ -44,9 +43,8 @@ const CreateMember: React.FC<CreateMemberProps> = ({
 
     try {
       const response = await myInstance.post("/member/member-control/create", {
-        memberName: memberName,
-        memberEmail: memberEmail,
-        clusterUlid: cluster_ulid,
+        username: memberName,
+        email: memberEmail,
       });
 
       toast.success(response.data.message);
