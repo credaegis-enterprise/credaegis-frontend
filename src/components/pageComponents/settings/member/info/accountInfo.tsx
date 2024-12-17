@@ -9,10 +9,11 @@ import { myInstance } from '@/utils/Axios/axios';
 import { set, toArray } from 'lodash';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { AccountInfoType } from '@/types/accountInfo.types';
 
 
 interface AccountInfoProps {
-  settings: MemberSettingType;
+  settings: AccountInfoType;
 }
 
 const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
@@ -25,8 +26,8 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
   const [name, setName] = useState<string>("");
   const [nameError, setNameError] = useState<boolean>(false);
   useEffect(() => {
-    setName(settings.member_name);
-  }, [settings.member_name]);
+    setName(settings.userInfo.username);
+  }, [settings.userInfo.username]);
 
 
 
@@ -41,8 +42,8 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
     
     setIsLoading(true);
     try {
-      const response = await myInstance.put("/member/settings/modify-account", {
-        memberNewName: name,
+      const response = await myInstance.put("/member/account/update-info", {
+        username: name,
       });
       toast.success(response.data.message);
       setIsEditing(false);
@@ -70,11 +71,11 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
       <div className="flex flex-col lg:flex-row border border-gray-300 dark:border-stone-800 rounded-xl overflow-hidden">
         
         <div className="relative lg:w-1/3 w-full flex items-center justify-center  p-6">
-          {!error ? (
+    
             <>
             {!isLoading ? (
             <img
-              src={`${process.env.NEXT_PUBLIC_devbackendurl}/member/settings/brand-logo/get`}
+              src={`${process.env.NEXT_PUBLIC_devbackendurl}/member/account/serve/brand-logo`}
               alt="Brand logo not found"
               className="w-48 h-48 object-cover rounded-full shadow-md"
               onError={() => setError(true)}
@@ -85,13 +86,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
             </div>
           )}
             </>
-          ) : (
-            <div className="flex flex-col items-center justify-center w-48 h-48 rounded-full  "
-           >
-            <MdPerson size={60} className="text-gray-300 dark:text-gray-700" />
-             
-            </div>
-          )}
+
 
 
         </div>
@@ -105,7 +100,8 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
             type="text"
             label="Registered Under"
             size="lg"
-            value={settings.organization_name}
+            value={settings.userInfo.username}
+            isDisabled={isEditing}
             readOnly
 
           />
@@ -114,7 +110,8 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
             type="text"
             label="your registered Email"
             size="lg"
-            value={settings.member_email}
+            value={settings.userInfo.email}
+            isDisabled={isEditing}
             readOnly
           />
 
@@ -154,7 +151,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
             <MyButton className='bg-black dark:bg-white text-white dark:text-black' size='sm'
             onClick={() => {
               setIsEditing(!isEditing);
-              setName(settings.member_name);
+              setName(settings.userInfo.username);
               toast.info("Edit mode disabled");
             }}
             >

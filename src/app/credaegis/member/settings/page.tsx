@@ -5,25 +5,27 @@ import ManageAll from "@/components/pageComponents/settings/member/manageAll";
 import SideBar from "@/components/pageComponents/settings/member/sideBar";
 import { myInstanceNEXT } from "@/utils/Axios/axios";
 import getCookies from "@/utils/cookies/getCookies";
+import { AccountInfoType } from "@/types/accountInfo.types";
 
 
 const fetchSettings = async () => {
 
-    const cookies = getCookies();
+    const cookies = getCookies("MEMBER_SESSION");
     try {
-        const response = await myInstanceNEXT.get("/member/settings/get",{
+        const response = await myInstanceNEXT.get("/member/account/me",{
             headers: {
-                cookie:`test=${cookies}`
+                cookie:`MEMBER_SESSION=${cookies}`
             }
         });
-        return response.data.settings;
+        return response.data.responseData as AccountInfoType;
     } catch (error: any) {
         console.log(error);
     }
 }
 const Page = async () => {
 
-    const settings = await fetchSettings();             
+    const settings = await fetchSettings(); 
+    console.log(settings);            
    
     return (
         <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300">
@@ -38,7 +40,7 @@ const Page = async () => {
                     <SideBar />
                 </div>
                 <div className="lg:col-span-6 col-span-full overflow-auto p-4 h-full  rounded-lg border border-gray-200 dark:border-stone-800 ">
-                <ManageAll settings={settings} />
+                {settings && <ManageAll settings={settings} /> }
                 </div>
             </div>
         </div>
