@@ -48,12 +48,14 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
   const handleChangePassword = async () => {
     setIsLoadingPassword(true);
     try {
-      const response = await myInstance.put("/member/settings/change-password", {
+      const response = await myInstance.put("/member/account/change-password", {
         oldPassword: oldPassword,
         newPassword: newPassword,
+        confirmPassword: confirmPassword,
       });
 
-      await myInstance.post("/member/auth/logout");
+      // await myInstance.post("/organization/auth/logout");
+
 
       toast.success("Password changed successfully! Please login again");
       router.push("/login");
@@ -72,7 +74,7 @@ const Security: React.FC<SecurityProps> = ({ two_fa_enabled }) => {
   const disableTwoFa = async () => {
     setIsLoadingDisable(true);
     try {
-      const response = await myInstance.put("/member/settings/disable-twofa");
+      const response = await myInstance.put("member/account/mfa/disable");
       toast.success(response.data.message);
     } catch (error: any) {
       console.log(error);
