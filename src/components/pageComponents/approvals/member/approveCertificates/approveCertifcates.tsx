@@ -245,7 +245,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
          </div>
      )}
    
-    {isOpen && selectedApproval && <ApprovalViewer cluster_ulid={selectedApproval.clusterId} event_ulid={selectedApproval.eventId} approval_file_name={selectedApproval.approvalCertificateName} approval_file_ulid={selectedApproval.id} setIsOpen={setIsOpen} isOpen={isOpen} />}
+    {isOpen && selectedApproval && <ApprovalViewer approvalId={selectedApproval.id} approvalFileName={selectedApproval.approvalCertificateName} setIsOpen={setIsOpen} isOpen={isOpen} />}
     
     {isModifyOpen && selectedApproval && 
     <MyModal

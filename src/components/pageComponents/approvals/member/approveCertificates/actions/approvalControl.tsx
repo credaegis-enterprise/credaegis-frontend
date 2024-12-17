@@ -95,7 +95,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
 
     try {
       const response = await myInstance.post("/member/approval-control/approve", {
-        approvalCertificateUlids: approvalUlids,
+        approvalCertificateIds: approvalUlids,
       });
       if (response.data.success) {
         toast.success(response.data.message);
@@ -132,7 +132,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
 
   try{
     const response = await myInstance.put("/member/approval-control/reject",{
-      approvalCertificateUlids: approvalUlids
+      approvalCertificateIds: approvalUlids
     });
 
     if(response.data.success){
