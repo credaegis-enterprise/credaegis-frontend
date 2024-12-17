@@ -30,7 +30,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ stats }) => {
             className="mt-2 lg:mt-0 lg:w-auto w-full"
           >
             {/* <Tab key="certificates" title="Certificates" /> */}
-            <Tab key="statistics" title="Statistics" />
+            {/* <Tab key="statistics" title="Statistics" /> */}
             <Tab key="info" title="Info" />
           </Tabs>
         </div>
@@ -49,7 +49,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ stats }) => {
             )
           ) : (
             <div className="flex flex-col h-full overflow-hidden mt-4">
-              <Stats stats={stats} />
+              {/* <Stats stats={stats} /> */}
             </div>
           )}
         </div>

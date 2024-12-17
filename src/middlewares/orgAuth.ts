@@ -10,7 +10,7 @@ export const orgAuth: MiddlewareFactory = (next) => {
     if (
       ["/credaegis/organization"]?.some((path) => pathname.startsWith(path))
     ) {
-      const authInfo = await authenticator();
+      const authInfo = await authenticator("organization", "ORGANIZATION_SESSION");
       console.log(authInfo);
 
       if(authInfo && !authInfo.isAuthenticated){
@@ -18,8 +18,7 @@ export const orgAuth: MiddlewareFactory = (next) => {
         return NextResponse.redirect(new URL("/login", request.url));
       }
 
-      if (authInfo && authInfo.isAuthenticated && authInfo.role === "admin") {
-   console.log("Admin user");
+      if (authInfo && authInfo.isAuthenticated && authInfo.role === "ADMIN") {
           return NextResponse.next();
       }
       else

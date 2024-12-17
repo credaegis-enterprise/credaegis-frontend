@@ -9,7 +9,7 @@ export const memberAuth: MiddlewareFactory = (next) => {
 
 
     if (pathname.startsWith("/credaegis/member")) {
-      const authInfo = await authenticator();
+      const authInfo = await authenticator("member","MEMBER_SESSION");
 
  
       if (!authInfo || !authInfo.isAuthenticated) {
@@ -17,7 +17,7 @@ export const memberAuth: MiddlewareFactory = (next) => {
       }
 
 
-      if (authInfo.role === "admin") {
+      if (authInfo.role === "ADMIN") {
         return NextResponse.redirect(new URL("/unauthorized", request.url));
       }
 
@@ -26,13 +26,13 @@ export const memberAuth: MiddlewareFactory = (next) => {
         ["approvals", "dashboard"].some((segment) =>
           pathname.includes(`/credaegis/member/${segment}`)
         ) &&
-        (authInfo.role === "clusterMember" || authInfo.role === "admin")
+        (authInfo.role === "MEMBER" || authInfo.role === "ADMIN")
       ) {
         return NextResponse.redirect(new URL("/unauthorized", request.url));
       }
 
       
-      if (authInfo.role === "clusterAdmin"|| authInfo.role === "clusterMember") {
+      if (authInfo.role === "CLUSTER_ADMIN"|| authInfo.role === "MEMBER") {
         return NextResponse.next();
       }
 
