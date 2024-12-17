@@ -13,7 +13,7 @@ const fetchApprovals = async () => {
     try {
         const response = await myInstanceNEXT.get("/organization/approval-control/get-all", {
             headers: {
-                cookie: `SESSION=${cookie}`
+                cookie: `ORGANIZATION_SESSION=${cookie}`
             }
         })
         if(response.data.responseData.length === 0){
@@ -32,7 +32,7 @@ const fetchIssuedCount = async () => {
     try {
         const response = await myInstanceNEXT.get("/organization/certificate-control/issued/get-count", {
             headers: {
-                cookie: `SESSION=${cookie}`
+                cookie: `ORGANIZATION_SESSION=${cookie}`
             }
         })
         return response.data.responseData.count
@@ -47,7 +47,7 @@ const fetchIssuedCertificates = async () => {
     try {
         const response = await myInstanceNEXT.get("/organization/certificate-control/get-latest?page=0&size=5", {
             headers: {
-                cookie: `SESSION=${cookie}`
+                cookie: `ORGANIZATION_SESSION=${cookie}`
             }
         })
         if(response.data.responseData?.length === 0){

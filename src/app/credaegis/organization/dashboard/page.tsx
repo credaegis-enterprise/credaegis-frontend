@@ -13,11 +13,12 @@ const fetchClusters = async () => {
   try{
   const response = await myInstanceNEXT.get("/organization/cluster-control/get-clusters",{
     headers: {
-        cookie:`SESSION=${cookies}`
+        cookie:`ORGANIZATION_SESSION=${cookies}`
     }
     
   });
   return response.data.responseData;
+  console.log(response.data);
   }
   catch(error: any){
     // console.log(error);
@@ -30,7 +31,7 @@ const fetchStats = async () => {
   try{
   const response = await myInstanceNEXT.get("/organization/cluster-control/statistics/get-all",{
     headers: {
-        cookie:`test=${cookies}`
+        cookie:`ORGANIZATION_SESSION=${cookies}`
     }
     
   });
@@ -49,6 +50,7 @@ const  Page =async () => {
   const clustersPromise = fetchClusters();
   const statsPromise = fetchStats();
   const [clusters,stats] = await Promise.all([clustersPromise,statsPromise]);
+  console.log(clusters);
 
 
 

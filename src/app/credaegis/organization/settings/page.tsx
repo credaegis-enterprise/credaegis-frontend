@@ -13,7 +13,7 @@ const fetchSettings = async () => {
     try {
         const response = await myInstanceNEXT.get("/organization/account/me",{
             headers: {
-                cookie:`SESSION=${cookies}`
+                cookie:`ORGANIZATION_SESSION=${cookies}`
             }
         });
         return response.data.responseData
