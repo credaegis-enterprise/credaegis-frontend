@@ -9,7 +9,7 @@ import getCookies from "@/utils/cookies/getCookies";
 
 const fetchSettings = async () => {
 
-    const cookies = getCookies();
+    const cookies = getCookies("ORGANIZATION_SESSION");
     try {
         const response = await myInstanceNEXT.get("/organization/account/me",{
             headers: {

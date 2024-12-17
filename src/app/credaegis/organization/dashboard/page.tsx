@@ -9,7 +9,7 @@ import { StatisticsType } from "@/types/global.types";
 
 const fetchClusters = async () => {
 
-  const cookies = getCookies();
+  const cookies = getCookies("ORGANIZATION_SESSION");
   try{
   const response = await myInstanceNEXT.get("/organization/cluster-control/get-clusters",{
     headers: {
@@ -27,7 +27,7 @@ const fetchClusters = async () => {
 }
 
 const fetchStats = async () => {
-  const cookies = getCookies();
+  const cookies = getCookies("ORGANIZATION_SESSION");
   try{
   const response = await myInstanceNEXT.get("/organization/cluster-control/statistics/get-all",{
     headers: {

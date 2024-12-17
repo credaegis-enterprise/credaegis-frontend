@@ -4,13 +4,15 @@ import ManageAll from "@/components/pageComponents/dashboard/member/manageAll";
 
 
 const fetchMembers = async () => {
-  const cookie = getCookies();
+  const cookie = getCookies("MEMBER_SESSION");
   try {
     const response = await myInstanceNEXT.get("/member/member-control/get-all", {
       headers: {
-        cookie: `SESSION=${cookie}`,
+        cookie: `MEMBER_SESSION=${cookie}`,
       },
     });
+
+    console.log(response.data);
     return response.data.responseData.members;
   } catch (error: any) {
     console.log(error);
@@ -19,27 +21,29 @@ const fetchMembers = async () => {
 
 
 const fetchStats = async () => {
-  const cookie = getCookies();
+  const cookie = getCookies("MEMBER_SESSION");
   try {
-    const response = await myInstanceNEXT.get("/member/member-control/statistics/get-all", {
-      headers: {
-        cookie: `SESSION=${cookie}`,
-      },
-    });
-    return response.data.stats;
+    // const response = await myInstanceNEXT.get("/member/member-control/statistics/get-all", {
+    //   headers: {
+    //     cookie: `MEMBER_SESSION=${cookie}`,
+    //   },
+    // });
+    return "stats";
   } catch (error: any) {
     console.log(error);
   }
 }
 
 const fetchEvents = async () => {
-  const cookie = getCookies();
+  const cookie = getCookies("MEMBER_SESSION");
   try {
     const response = await myInstanceNEXT.get("/member/event-control/get-all", {
       headers: {
-        cookie: `SESSION=${cookie}`,
+        cookie: `MEMBER_SESSION=${cookie}`,
       },
     });
+
+    console.log(response.data);
 
     return response.data.responseData.events;
   } catch (error: any) {
@@ -59,7 +63,7 @@ const Page = async () => {
 
   return (
       <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 overflow-auto">
- <ManageAll members={members} events={events} stats={stats} />
+ <ManageAll members={members} events={events}  />
       </div>
   );
 };

@@ -9,7 +9,7 @@ import { EventInfoType, MemberInfoType } from "@/types/clusterInfo.types";
 interface ManageAllProps {
     members: MemberInfoType[];
     events: EventInfoType[];
-    stats: MemberStatistics;
+
     }
 
 

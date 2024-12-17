@@ -9,7 +9,7 @@ import { CertificateInfoType } from "@/types/issuedCertificateInfo.types"
 
 
 const fetchApprovals = async () => {
-    const cookie = getCookies()
+    const cookie = getCookies("ORGANIZATION_SESSION")
     try {
         const response = await myInstanceNEXT.get("/organization/approval-control/get-all", {
             headers: {
@@ -28,7 +28,7 @@ const fetchApprovals = async () => {
 
 
 const fetchIssuedCount = async () => {
-    const cookie = getCookies()
+    const cookie = getCookies("ORGANIZATION_SESSION")
     try {
         const response = await myInstanceNEXT.get("/organization/certificate-control/issued/get-count", {
             headers: {
@@ -43,7 +43,7 @@ const fetchIssuedCount = async () => {
 
 
 const fetchIssuedCertificates = async () => {
-    const cookie = getCookies()
+    const cookie = getCookies("ORGANIZATION_SESSION")
     try {
         const response = await myInstanceNEXT.get("/organization/certificate-control/get-latest?page=0&size=5", {
             headers: {
