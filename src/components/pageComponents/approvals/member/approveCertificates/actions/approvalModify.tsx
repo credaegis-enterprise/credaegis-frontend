@@ -8,10 +8,11 @@ import { toast } from "sonner";
 import { Spinner } from "@nextui-org/react";
 import emailValidator from "@/utils/Validators/emailValidator";
 import { set } from "lodash";
+import { ApprovalInfoType } from "@/types/approvalInfo.type";
 
 
 interface ApprovalModifyProps {
-  approval: ApprovalsType;
+  approval: ApprovalInfoType;
   getApprovals: () => void;
   setIsModifyOpen: (value: boolean) => void;
 
@@ -29,10 +30,10 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
 
     useEffect(() => {
         if(approval){
-            setName(approval.issued_to_name);
-            setEmail(approval.issued_to_email);
-            setComments(approval.comments);
-            setExpiryDate(approval.expiry_date);
+            setName(approval.recipientName);
+            setEmail(approval.recipientEmail);
+            setComments(approval.comment);
+            setExpiryDate(approval.expiryDate);
         }
     }, [approval,trigger]);
 
@@ -62,7 +63,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
         try{ 
 
             const response = await myInstance.put("/member/approval-control/modify",{
-                approvalUlid: approval.approval_ulid,
+                approvalUlid: approval.id,
                 name: name,
                 email: email,
                 comments: comments,

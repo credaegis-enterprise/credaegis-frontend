@@ -40,20 +40,20 @@ const UploadCertificates = () => {
 
     const meta = filesMetaInfo.map((file) => {
       return {
-        filename: file.filename,
-        name: file.name,
-        email: file.email,
-        expiry_date: file.expiryDate || null,
+        fileName: file.filename,
+        recipientName: file.name,
+        recipientEmail: file.email,
+        expiryDate: file.expiryDate || null,
         comments: file.Comment || null,
       };
     });
 
-    formData.append("metadata", JSON.stringify(meta));
+    formData.append("info", JSON.stringify(meta));
     console.log(event_ulid);
 
     try {
       const response = await myInstance.post(
-        `/member/files/upload/${event_ulid}`,
+        `/member/approval-control/upload/${event_ulid}`,
         formData,
         {
           headers: {

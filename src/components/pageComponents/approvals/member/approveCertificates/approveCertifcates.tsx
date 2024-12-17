@@ -16,11 +16,12 @@ import { MdAccountCircle } from "react-icons/md";
 import { GrBookmark } from "react-icons/gr";
 import { RiGroup2Fill } from "react-icons/ri";
 import { Spinner } from "@nextui-org/react";
+import { ApprovalInfoType } from "@/types/approvalInfo.type";
 
 
 
 interface ApproveCertificatesProps {
-    approvalsInfo: ApprovalsType[];
+    approvalsInfo: ApprovalInfoType[];
     }
 
 const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}) => {
@@ -28,8 +29,8 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
   console.log(approvalsInfo);
 
   const router = useRouter();
-  const [approvalsList, setApprovalsList] = useState<ApprovalsType[]>([]);
-  const [selectedApproval, setSelectedApproval] = useState<ApprovalsType>();
+  const [approvalsList, setApprovalsList] = useState<ApprovalInfoType[]>([]);
+  const [selectedApproval, setSelectedApproval] = useState<ApprovalInfoType>();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isModifyOpen, setIsModifyOpen] = useState<boolean>(false);
   const [selectedEvent, setSelectedEvent] = useState<string | null>("");
@@ -55,31 +56,14 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
       else{
         router.refresh();
       }
-      console.log(result);
-      if (result?.data.data.length === 0 || approvalsList.length === 0) {
+    
+      if (result?.data.responseData.length === 0 || approvalsList.length === 0) {
         toast.info("No approvals found for selected filters ");
       }
       if (result) {
-        const updatedResult: ApprovalsType[] = result.data.data.map(
-          (approval: any) => {
-            return {
-              approval_ulid: approval.approval_ulid,
-              approval_file_ulid: approval.approval_file_ulid,
-              approval_file_name: approval.approval_file_name,
-              comments: approval.comments,
-              expiry_date: approval.expiry_date,
-              event_name: approval.event_name,
-              issued_to_email: approval.issued_to_email,
-              issued_to_name: approval.issued_to_name,
-              event_ulid: approval.event_ulid,
-              cluster_ulid: approval.cluster_ulid,
-              cluster_name: approval.cluster_name,
-              selected: false,
-            };
-          }
-        );
+       
 
-        setApprovalsList(updatedResult);
+        setApprovalsList(result.data.responseData);
       }
     } catch (err) {
       console.log(err);
@@ -197,13 +181,13 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
             {approvalsList.map((approval, index) => (
             <tr key={index} className="">
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                {approval.event_name}
+                {approval.eventName}
               </td>
               
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
                 <div className="flex flex-col gap-2">
-                    <span>{approval.issued_to_name}</span>
-                    <span className="text-xs text-gray-700 dark:text-gray-300">{approval.issued_to_email}</span>
+                    <span>{approval.recipientName}</span>
+                    <span className="text-xs text-gray-700 dark:text-gray-300">{approval.recipientEmail}</span>
                 </div>
 
               </td>
@@ -211,10 +195,10 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
                {approval.issued_to_email}
               </td> */}
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-             {approval.expiry_date? approval.expiry_date : "N/A"}
+             {approval.expiryDate? approval.expiryDate : "N/A"}
               </td>
               <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-             {approval.comments? approval.comments : "N/A"}
+             {approval.comment? approval.comment : "N/A"}
               </td>
               <td className="px-6 py-4 text-center">
                 <div className="flex justify-center gap-4">
@@ -261,7 +245,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
          </div>
      )}
    
-    {isOpen && selectedApproval && <ApprovalViewer cluster_ulid={selectedApproval.cluster_ulid} event_ulid={selectedApproval.event_ulid} approval_file_name={selectedApproval.approval_file_name} approval_file_ulid={selectedApproval.approval_file_ulid} setIsOpen={setIsOpen} isOpen={isOpen} />}
+    {isOpen && selectedApproval && <ApprovalViewer cluster_ulid={selectedApproval.clusterId} event_ulid={selectedApproval.eventId} approval_file_name={selectedApproval.approvalCertificateName} approval_file_ulid={selectedApproval.id} setIsOpen={setIsOpen} isOpen={isOpen} />}
     
     {isModifyOpen && selectedApproval && 
     <MyModal

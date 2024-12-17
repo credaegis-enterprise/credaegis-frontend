@@ -52,16 +52,10 @@ const fetchIssuedCertificates = async () => {
         })
         if(response.data.responseData?.length === 0){
             return []
-        }
-        const  updatedResult:CertificateInfoType[] = response.data.responseData.map((Certificate:any) => {
-            return {
-                ...Certificate,
-                selected: false
-            }
-        }
-        )
+        
 
-        return updatedResult
+        }
+        return response.data.responseData
 
     
     } catch (error: any) {
