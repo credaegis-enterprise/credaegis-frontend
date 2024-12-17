@@ -38,7 +38,7 @@ const ManageAll: React.FC<ManageAllProps> = ({approvalsInfo,issuedInfo,issuedCou
    
       <div className="flex flex-col h-full overflow-hidden mt-4 ">
           {selected === "Approval requests" && <ApproveCertificates approvalsInfo={approvalsInfo} />}
-            {/* {selected === "Approval history" && <ApprovedCertificates issuedInfo={issuedInfo} issuedCount={issuedCount}  />} */}
+            {selected === "Approval history" && <ApprovedCertificates issuedInfo={issuedInfo} issuedCount={issuedCount}  />}
 
       </div>
     </div>

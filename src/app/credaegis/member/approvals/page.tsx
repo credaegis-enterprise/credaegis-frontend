@@ -26,7 +26,7 @@ const fetchApprovals = async () => {
 const fetchIssuedCount = async () => {
     const cookie = getCookies("MEMBER_SESSION")
     try {
-        const response = await myInstanceNEXT.get("/organization/certificate-control/issued/get-count", {
+        const response = await myInstanceNEXT.get("/member/certificate-control/issued/get-count", {
             headers: {
                 cookie: `MEMBER_SESSION=${cookie}`
             }
