@@ -51,7 +51,7 @@ export default function OrganizationNavbar() {
     try {
       const response = await myInstance.post("/member/auth/logout");
       router.push("/login");
-      toast.success(response.data.message);
+      toast.success("Logout successful");
     } catch (error: any) {
       console.log(error);
     }
