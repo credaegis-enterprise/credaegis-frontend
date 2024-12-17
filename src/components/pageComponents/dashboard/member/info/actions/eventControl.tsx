@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MyButton } from "@/components/buttons/mybutton";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
-import { Input } from "@nextui-org/react";
+import { Input, Textarea } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
 import { MdWarning } from "react-icons/md";
 import { useRouter } from "next/navigation";
@@ -18,7 +18,10 @@ const EventControl: React.FC<EventControlProps> = ({ event, setIsOpen }) => {
   const [renamePrompt, setRenamePrompt] = useState(false);
   const [loading, setLoading] = useState(false);
   const [eventName, setEventName] = useState(event.name);
+  const [eventDescription, setEventDescription] = useState(event.description);
   const [invalid, setInvalid] = useState(false);
+
+  console.log(event);
 
   const handleActivateEvent = async () => {
     setLoading(true);
@@ -57,10 +60,15 @@ const EventControl: React.FC<EventControlProps> = ({ event, setIsOpen }) => {
       setInvalid(true);
       return;
     }
+
+    if(eventDescription === ""){
+      setInvalid(true);
+      return;
+    }
     try {
-      const response = await myInstance.put(`/member/event-control/rename`, {
-        newEventName: eventName,
-        eventUlid: event.id,
+      const response = await myInstance.put(`/member/event-control/update/${event.id}`, {
+        eventName: eventName,
+        eventDescription: eventDescription,
       });
       toast.success(response.data.message);
       setIsOpen(false);
@@ -76,6 +84,7 @@ const EventControl: React.FC<EventControlProps> = ({ event, setIsOpen }) => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col items-start gap-2">
           <div className="text-3xl font-bold ">{event.name}</div>
+          <div className="text-lg  font-normal text-gray-200">{event.description}</div>
           <span className="text-lg ">{}</span>
           <span className="text-sm text-gray-400 ">
             created at: {new Date(event.createdOn).toLocaleString()}
@@ -122,7 +131,7 @@ const EventControl: React.FC<EventControlProps> = ({ event, setIsOpen }) => {
                   setRenamePrompt(true);
                 }}
               >
-                <span className="text-black text-sm font-medium">Rename</span>
+                <span className="text-black text-sm font-medium">Edit</span>
               </MyButton>
             </>
           )}
@@ -145,6 +154,18 @@ const EventControl: React.FC<EventControlProps> = ({ event, setIsOpen }) => {
                 errorMessage="Name cannot be empty"
                 onChange={(e) => setEventName(e.target.value)}
               />
+
+<Textarea
+                type="text"
+                label="Enter the new description"
+                size="md"
+                className="w-full"
+                value={eventDescription}
+                isInvalid={invalid}
+                errorMessage="Description cannot be empty"
+                onChange={(e) => setEventDescription(e.target.value)}
+              />
+
 
               <MyButton
                 className="dark:bg-white bg-black"

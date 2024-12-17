@@ -91,7 +91,7 @@ const MemberView: React.FC<MemberViewProps> = ({
       </div>
       {isOpen && (
         <MyModal
-          size="md"
+          size="lg"
           isOpen={isOpen}
           backdrop="blur"
           onClose={() => setIsOpen(false)}
@@ -106,7 +106,7 @@ const MemberView: React.FC<MemberViewProps> = ({
       )}
       {isInfoOpen && (
         <MyModal
-          size="sm"
+          size="lg"
           isOpen={isInfoOpen}
           backdrop="blur"
           onClose={() => setIsInfoOpen(false)}

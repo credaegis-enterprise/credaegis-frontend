@@ -45,7 +45,7 @@ const fetchEvents = async () => {
 
     console.log(response.data);
 
-    return response.data.responseData.events;
+    return response.data.responseData;
   } catch (error: any) {
     console.log(error);
   }
@@ -57,8 +57,7 @@ const Page = async () => {
   const eventsPromise = fetchEvents();
   const statsPromise = fetchStats();
   const [members, events,stats] = await Promise.all([membersPromise, eventsPromise,statsPromise]);
-  console.log(members);
-  console.log(stats);
+  console.log(events)
   
 
   return (
