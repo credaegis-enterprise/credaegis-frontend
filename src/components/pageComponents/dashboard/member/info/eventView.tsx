@@ -10,9 +10,10 @@ import CreateEvent from "./actions/createEvent";
 import { EventType } from "@/types/global.types";
 import EventControl from "./actions/eventControl";
 import { set } from "lodash";
+import { EventInfoType } from "@/types/clusterInfo.types";
 
 interface EventsViewProps {
-  events: EventType[];
+  events: EventInfoType[];
 
 }
 
@@ -23,11 +24,9 @@ const EventView: React.FC<EventsViewProps> = ({ events }) => {
 
  const [isOpen, setIsOpen] = useState(false);
  const [isInfoOpen, setIsInfoOpen] = useState(false);
- const [selectedEvent, setSelectedEvent] =  useState<EventType>({} as EventType);
+ const [selectedEvent, setSelectedEvent] =  useState<EventInfoType>({} as EventInfoType);
 
-//  if (!events) {
-//     return <div className="flex h-full justify-center items-center text-lg">No events available.</div>;
-//   }
+
   return (
     <div className="lg:h-full h-[300px] w-full flex flex-col ">
       <div className="flex justify-between p-2">
@@ -57,7 +56,7 @@ const EventView: React.FC<EventsViewProps> = ({ events }) => {
           
           events && events.map((event, index) => (
             <motion.div
-              key={event.event_ulid}
+              key={event.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.1, delay: index * 0.015 }}
@@ -70,7 +69,7 @@ const EventView: React.FC<EventsViewProps> = ({ events }) => {
               className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
             >
               <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                {event.event_name}
+                {event.name}
               </h3>
             </motion.div>
           ))

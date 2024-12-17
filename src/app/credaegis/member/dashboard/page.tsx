@@ -8,10 +8,10 @@ const fetchMembers = async () => {
   try {
     const response = await myInstanceNEXT.get("/member/member-control/get-all", {
       headers: {
-        cookie: `test=${cookie}`,
+        cookie: `SESSION=${cookie}`,
       },
     });
-    return response.data;
+    return response.data.responseData.members;
   } catch (error: any) {
     console.log(error);
   }
@@ -23,7 +23,7 @@ const fetchStats = async () => {
   try {
     const response = await myInstanceNEXT.get("/member/member-control/statistics/get-all", {
       headers: {
-        cookie: `test=${cookie}`,
+        cookie: `SESSION=${cookie}`,
       },
     });
     return response.data.stats;
@@ -37,11 +37,11 @@ const fetchEvents = async () => {
   try {
     const response = await myInstanceNEXT.get("/member/event-control/get-all", {
       headers: {
-        cookie: `test=${cookie}`,
+        cookie: `SESSION=${cookie}`,
       },
     });
 
-    return response.data.events;
+    return response.data.responseData.events;
   } catch (error: any) {
     console.log(error);
   }
@@ -59,7 +59,7 @@ const Page = async () => {
 
   return (
       <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 overflow-auto">
- <ManageAll members={members.members} events={events} stats={stats} clusterAdminUlid={members.clusterAdminUlid}/>
+ <ManageAll members={members} events={events} stats={stats} />
       </div>
   );
 };
