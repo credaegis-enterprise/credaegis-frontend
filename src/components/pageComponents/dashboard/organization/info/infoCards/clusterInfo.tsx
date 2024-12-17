@@ -11,15 +11,16 @@ import { useRouter } from "next/navigation";
 import { ClusterInfoType } from "@/types/global.types";
 import RenameCluster from "./actions/renameCluster";
 import { Input, Spinner } from "@nextui-org/react";
+import ClusterDetailsResponseType from "@/types/clusterInfo.types";
 
 interface ClusterInfoProps {
-  cluster: ClusterInfoType | undefined;
+  clusterDetails: ClusterDetailsResponseType | undefined;
   fetchClusterInfo: () => void;
   loading: boolean;
 }
 
 const ClusterInfo: React.FC<ClusterInfoProps> = ({
-  cluster,
+  clusterDetails,
   fetchClusterInfo,
   loading,
 }) => {
@@ -28,11 +29,13 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [clusterName, setClusterName] = useState("");
 
-  if (!cluster) {
+  console.log("clusterDetails here", clusterDetails);
+
+  if (!clusterDetails) {
     return <div className="text-center">No cluster information available.</div>;
   }
 
-  const admin = cluster.adminInfo[0];
+  const admin = clusterDetails.adminInfo
 
   const handleOpenModal = (action: string) => {
     setSelectedAction(action);
@@ -44,8 +47,8 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
       case "deactivate":
         return (
           <DeactivateCluster
-            clusterName={cluster.cluster_name}
-            clusterUlid={cluster.cluster_ulid}
+            clusterName={clusterDetails.clusterInfo.name}
+            clusterUlid={clusterDetails.clusterInfo.id}
             setIsOpen={setIsOpen}
             fetchClusterInfo={fetchClusterInfo}
           />
@@ -53,18 +56,18 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
       case "changeAdmin":
         return (
           <ChangeAdmin
-            adminUlid={cluster.adminInfo[0].admin_ulid}
+            adminUlid={clusterDetails.adminInfo.id}
             setIsOpen={setIsOpen}
-            clusterUlid={cluster.cluster_ulid}
+            clusterUlid={clusterDetails.clusterInfo.id}
             fetchClusterInfo={fetchClusterInfo}
-            members={cluster.membersInfo}
+            members={clusterDetails.members}
           />
         );
       case "rename":
         return (
           <RenameCluster
-            clusterName={cluster.cluster_name}
-            clusterUlid={cluster.cluster_ulid}
+            clusterName={clusterDetails.clusterInfo.name}
+            clusterUlid={clusterDetails.clusterInfo.id}
             setIsOpen={setIsOpen}
             fetchClusterInfo={fetchClusterInfo}
           />
@@ -79,7 +82,7 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
   const handleActivateCluster = async () => {
     try {
       const response = await myInstance.put(
-        `/organization/cluster-control/activate/${cluster.cluster_ulid}`
+        `/organization/cluster-control/activate/${clusterDetails.clusterInfo.id}`
       );
 
       toast.success(response.data.message);
@@ -109,17 +112,17 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
                 <MdInfo size={32} className="text-blue-500" />
                 <div>
                   <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-                    {cluster.cluster_name}
+                    {clusterDetails.clusterInfo.name}
                   </h1>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Created at: {new Date(cluster.created_at).toLocaleString()}
+                    Created at: {new Date(clusterDetails.clusterInfo.createdOn).toLocaleString()}
                   </p>
                 </div>
               </div>
             </div>
             <div className="row-span-1">
               <div className="flex  lg:justify-start justify-end lg:ml-12  flex-row lg:items-center gap-2 mt-4 lg:mt-0">
-                {cluster.deactivated === 0 ? (
+                {clusterDetails.clusterInfo.deactivated === false ? (
                   <MyButton
                     className="bg-black dark:bg-white"
                     size="sm"
@@ -165,10 +168,10 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
                 <FaUserShield size={32} className="text-green-500" />
                 <div>
                   <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                    {admin?.admin_name || "N/A"}
+                    {admin?.name|| "N/A"}
                   </h2>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {admin?.admin_email || "N/A"}
+                    {admin?.email || "N/A"}
                   </p>
                 </div>
               </div>

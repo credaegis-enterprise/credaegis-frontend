@@ -1,4 +1,4 @@
-import MyNavbar from "@/components/navbar/MyNavbar";
+import MemberNavbar from "@/components/navbar/memberNavbar";
 import { TabProvider } from "@/context/tabContext";
 
 export default function OrganizationLayout({
@@ -8,7 +8,7 @@ export default function OrganizationLayout({
 }) {
   return (
     <div className="flex flex-col h-screen">
-      <MyNavbar />
+        <MemberNavbar />
 
       <div className="flex-grow lg:overflow-hidden">
         <TabProvider>{children}</TabProvider>

@@ -2,9 +2,9 @@
 import { cookies } from "next/headers";
 
 
-const getCookies = () => {
+const getCookies = (name:string) => {
     const mycookies = cookies();
-    const cookie = mycookies.get("test")?.value || "";
+    const cookie = mycookies.get(name)?.value || "";
     return cookie;
    
 }

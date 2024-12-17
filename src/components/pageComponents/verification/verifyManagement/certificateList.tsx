@@ -7,12 +7,14 @@ import {
   MyFileType,
   FileInfo,
   verificationStatusType,
+  verificationInfoType,
 } from "@/types/global.types";
 import { toast } from "sonner";
 import { ulid } from "ulid";
 import { myInstance } from "@/utils/Axios/axios";
 import { set } from "lodash";
 import { input } from "@nextui-org/react";
+import { verificationResponseType } from "@/types/certificateVerificationTypes";
 
 interface MyFileListProps {
   setFileUrl: (file: FileInfo | null) => void;
@@ -21,8 +23,8 @@ interface MyFileListProps {
   setSelectedFiles: (files: MyFileType[]) => void;
   fileCount: number;
   setFileCount: (count: number) => void;
-  verificationStatus: verificationStatusType[];
-  setVerificationStatus: (verificationStatus: verificationStatusType[]) => void;
+  verificationStatus: verificationResponseType[];
+  setVerificationStatus: (verificationStatus: verificationResponseType[]) => void;
   setPopUp: (popUp: boolean) => void;
 }
 
@@ -45,11 +47,11 @@ const CertificateList: React.FC<MyFileListProps> = ({
       return;
     }
     const formData = new FormData();
-    selectedFiles.forEach((file) => formData.append("toVerify", file));
+    selectedFiles.forEach((file) => formData.append("certificates", file));
 
     try {
       const response = await myInstance.post(
-        "/verification/check-authenticity",
+        "/organization/external/verify",
         formData,
         {
           headers: {
@@ -59,7 +61,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
       );
 
       if (response.data.success) {
-        setVerificationStatus(response.data.verificationStatus);
+        setVerificationStatus(response.data.responseData);
         toast.success(
           "Successfully checked the authenticity of the certificates"
         );
@@ -131,7 +133,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
     const newFiles = [...selectedFiles];
     newFiles.splice(index, 1);
     const updatedVerificationStatus = verificationStatus.filter(
-      (status) => status.filename !== selectedFiles[index].name
+      (status) => status.certificateName !== selectedFiles[index].name
     );
 
     setVerificationStatus(updatedVerificationStatus);

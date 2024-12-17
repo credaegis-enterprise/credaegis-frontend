@@ -17,6 +17,7 @@ const CreateEvent: React.FC<CreateEventProps> = ({
 }) => {
   const [eventName, setEventName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [description, setDescription] = useState("");
   const [invalid, setInvalid] = useState(false);
   const router = useRouter();
 
@@ -35,6 +36,7 @@ const CreateEvent: React.FC<CreateEventProps> = ({
     try {
       const response = await myInstance.post("/member/event-control/create", {
         eventName: eventName,
+        description: description,
       });
 
       toast.success(response.data.message);
@@ -57,6 +59,15 @@ const CreateEvent: React.FC<CreateEventProps> = ({
           size="md"
           value={eventName}
           onChange={(e) => setEventName(e.target.value)}
+        />
+
+    <Input
+          isRequired={true}
+          type="text"
+          label="Description"
+          size="md"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
         <MyButton
           className="bg-black dark:bg-white"

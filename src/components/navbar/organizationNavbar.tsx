@@ -17,7 +17,7 @@ import { myInstance } from "@/utils/Axios/axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-export default function MyNavbar() {
+export default function OrganizationNavbar() {
   const router = useRouter();
   const [accountType, setAccountType] = useState<string>("");
   const [role, setRole] = useState<string>("");
@@ -34,10 +34,10 @@ export default function MyNavbar() {
     setSelected(currentPath || "");
     const getUserRoles = async () => {
       try {
-        const response = await myInstance.get("/session/check-session");
+        const response = await myInstance.get("organization/auth/session-check");
         console.log(response.data);
-        setAccountType(response.data.accountType);
-        setRole(response.data.role);
+        setAccountType(response.data.responseData.accountType);
+        setRole(response.data.responseData.role);
       } catch (error: any) {
         console.log(error);
       }
@@ -51,7 +51,7 @@ export default function MyNavbar() {
     try {
       const response = await myInstance.post("/organization/auth/logout");
       router.push("/login");
-      toast.success(response.data.message);
+      toast.success("Logout successful");
     } catch (error: any) {
       console.log(error);
     }
@@ -72,7 +72,7 @@ export default function MyNavbar() {
       </NavbarBrand>
     
       <NavbarContent className="hidden sm:flex gap-12" justify="end">
-        {(role !== "clusterMember") && (
+    
           <NavbarItem>
             <Link
               href={`/credaegis/${accountType}/dashboard`}
@@ -84,13 +84,13 @@ export default function MyNavbar() {
               dashboard
             </Link>
           </NavbarItem>
-        )}
+        
 
 
-        {(role !== "clusterMember") && (
+
           <NavbarItem>
             <Link
-              href={`/credaegis/${accountType}/approvals`}
+              href={`/credaegis/organization/approvals`}
               className={`${isSelected("approvals")} transition-colors`}
               onClick={() => {setSelected("approvals");
                 localStorage.setItem("currentPath", "approvals");
@@ -99,11 +99,10 @@ export default function MyNavbar() {
               approvals
             </Link>
           </NavbarItem>
-        )}
 
         <NavbarItem>
           <Link
-            href={`/credaegis/${accountType}/certificates`}
+            href={`/credaegis/organization/certificates`}
             className={`${isSelected("certificates")} transition-colors`}
             onClick={() => {setSelected("certificates");
               localStorage.setItem("currentPath", "certificates");
@@ -115,7 +114,7 @@ export default function MyNavbar() {
 
         <NavbarItem>
           <Link
-            href={`/credaegis/${accountType}/settings`}
+            href={`/credaegis/organization/settings`}
             className={`${isSelected("settings")} transition-colors`}
             onClick={() => {setSelected("settings"),
             localStorage.setItem("currentPath", "settings")
@@ -131,7 +130,7 @@ export default function MyNavbar() {
           }}
         >
 
-          {(role !== "clusterMember" && (
+   
           <Link
             href={`/verification`}
             className={`${isSelected("verification")} transition-colors`}
@@ -140,23 +139,23 @@ export default function MyNavbar() {
             verification
           </Link>
 
-          ))}
+        
         </NavbarItem>
       </NavbarContent>
 
     
       <NavbarMenu>
-        {(role !=="clusterMember") && (
+
           <NavbarMenuItem className="">
             <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
           </NavbarMenuItem>
-        )}
+        
 
-        {(role !=="clusterMember") && (
+        
           <NavbarMenuItem>
             <Link href={`/credaegis/${accountType}/approvals`}>approvals</Link>
           </NavbarMenuItem>
-        )}
+        
 
         <NavbarMenuItem>
           <Link href={`/credaegis/${accountType}/certificates`}>certificates</Link>
@@ -166,11 +165,11 @@ export default function MyNavbar() {
           <Link href={`/credaegis/${accountType}/settings`}>settings</Link>
         </NavbarMenuItem>
  
-    {(role !== "clusterMember") && (
+
         <NavbarMenuItem>
           <Link href={`/verification`}>verification</Link>
         </NavbarMenuItem>
-    )}
+    
       </NavbarMenu>
 
       <NavbarContent justify="end" className="gap-4">

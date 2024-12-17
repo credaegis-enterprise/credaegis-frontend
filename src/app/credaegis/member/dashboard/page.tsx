@@ -4,14 +4,16 @@ import ManageAll from "@/components/pageComponents/dashboard/member/manageAll";
 
 
 const fetchMembers = async () => {
-  const cookie = getCookies();
+  const cookie = getCookies("MEMBER_SESSION");
   try {
     const response = await myInstanceNEXT.get("/member/member-control/get-all", {
       headers: {
-        cookie: `test=${cookie}`,
+        cookie: `MEMBER_SESSION=${cookie}`,
       },
     });
-    return response.data;
+
+    console.log(response.data);
+    return response.data.responseData.members;
   } catch (error: any) {
     console.log(error);
   }
@@ -19,29 +21,31 @@ const fetchMembers = async () => {
 
 
 const fetchStats = async () => {
-  const cookie = getCookies();
+  const cookie = getCookies("MEMBER_SESSION");
   try {
-    const response = await myInstanceNEXT.get("/member/member-control/statistics/get-all", {
-      headers: {
-        cookie: `test=${cookie}`,
-      },
-    });
-    return response.data.stats;
+    // const response = await myInstanceNEXT.get("/member/member-control/statistics/get-all", {
+    //   headers: {
+    //     cookie: `MEMBER_SESSION=${cookie}`,
+    //   },
+    // });
+    return "stats";
   } catch (error: any) {
     console.log(error);
   }
 }
 
 const fetchEvents = async () => {
-  const cookie = getCookies();
+  const cookie = getCookies("MEMBER_SESSION");
   try {
     const response = await myInstanceNEXT.get("/member/event-control/get-all", {
       headers: {
-        cookie: `test=${cookie}`,
+        cookie: `MEMBER_SESSION=${cookie}`,
       },
     });
 
-    return response.data.events;
+    console.log(response.data);
+
+    return response.data.responseData;
   } catch (error: any) {
     console.log(error);
   }
@@ -53,13 +57,12 @@ const Page = async () => {
   const eventsPromise = fetchEvents();
   const statsPromise = fetchStats();
   const [members, events,stats] = await Promise.all([membersPromise, eventsPromise,statsPromise]);
-  console.log(members);
-  console.log(stats);
+  console.log(events)
   
 
   return (
       <div className="p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 overflow-auto">
- <ManageAll members={members.members} events={events} stats={stats} clusterAdminUlid={members.clusterAdminUlid}/>
+ <ManageAll members={members} events={events}  />
       </div>
   );
 };

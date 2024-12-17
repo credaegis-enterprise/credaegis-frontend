@@ -9,10 +9,11 @@ import { toast } from 'sonner';
 import { myInstance } from '@/utils/Axios/axios';
 import { set, toArray } from 'lodash';
 import { useRouter } from 'next/navigation';
+import { AccountInfoType } from '@/types/accountInfo.types';
 
 
 interface AccountInfoProps {
-  settings: OrganizationSettingType;
+  settings: AccountInfoType
 }
 
 const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
@@ -20,13 +21,15 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
   const [error, setError] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [userName, setUserName] = useState<string>("");
   const [isLoading,setIsLoading] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [nameError, setNameError] = useState<boolean>(false);
   useEffect(() => {
-    setName(settings.organization_name);
-  }, [settings.organization_name]);
+    setName(settings.organizationInfo.name);
+    setUserName(settings.userInfo.username);
+  }, [settings.organizationInfo.name]);
 
 
 
@@ -37,10 +40,10 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
     const file = toArray(e.target.files)[0];
     console.log(file);
     const formData = new FormData();
-    formData.append("brandLogo", file);
+    formData.append("logo", file);
 
     try {
-      const response = await myInstance.post("/organization/settings/upload-brand-logo",formData, {
+      const response = await myInstance.post("/organization/account/upload/brand-logo",formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -48,6 +51,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
       });
       toast.success(response.data.message);
       setError(false);
+      router.refresh();
       setIsLoading(false);
     } catch (error: any) {
       console.log(error);
@@ -70,9 +74,16 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
       setIsLoading(false);
       return
     }
+    if(userName === ""){
+      setNameError(true);
+      toast.error("User name cannot be empty");
+      setIsLoading(false);
+      return
+    }
     try {
-      const response = await myInstance.put("/organization/settings/modify-account", {
-        organizationNewName: name,
+      const response = await myInstance.put("/organization/account/update-info", {
+       organizationName: name,
+        username: userName
       });
       toast.success(response.data.message);
       setIsEditing(!isEditing);
@@ -87,7 +98,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
   const handleDeleteLogo = async () => {
     setIsLoading(true);
     try {
-      const response = await myInstance.delete("/organization/settings/delete-brand-logo");
+      const response = await myInstance.delete("/organization/account/remove/brand-logo");
       toast.success(response.data.message);
       setError(true);
       setIsOpen(false);
@@ -112,11 +123,11 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
       <div className="flex flex-col lg:flex-row border border-gray-300 dark:border-stone-800 rounded-xl overflow-hidden">
         <input type="file" ref={inputRef} className="hidden" onChange={(e) => handleBrandLogoUpload(e)} />
         <div className="relative lg:w-1/3 w-full flex items-center justify-center  p-6">
-          {!error ? (
-            <>
+          
+
             {!isLoading ? (
             <img
-              src={`${process.env.NEXT_PUBLIC_devbackendurl}/organization/settings/brand-logo/get`}
+              src={`${process.env.NEXT_PUBLIC_devbackendurl}/organization/account/serve/brand-logo`}
               alt="Brand logo not found"
               className="w-48 h-48 object-cover rounded-full shadow-md"
               onError={() => setError(true)}
@@ -126,29 +137,40 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
             <Spinner size='lg' color='current' className='text-black dark:text-white'/>
             </div>
           )}
-            </>
-          ) : (
-            <div className="flex flex-col items-center justify-center w-48 h-48 rounded-full cursor-pointer transition-all duration-200 hover:bg-gray-100 dark:hover:bg-stone-900 hover:scale-105 "
-            onClick={()=>{
-              inputRef.current?.click();
-            }}>
-              <MdUpload size={36} className="text-gray-500 dark:text-gray-400" />
-              <p className="text-gray-600 dark:text-gray-300 mt-2">Upload Logo</p>
-            </div>
-          )}
+            
 
 
-          {!error && (
-            <MdClose
+         {settings.userInfo.brandLogoEnabled?
+           ( <MdClose
               size={30}
               className="absolute bottom-6 right-6 text-gray-600 dark:text-gray-400 cursor-pointer transition-colors hover:text-gray-900 dark:hover:text-red-400"
               onClick={() => setIsOpen(true)}
             />
-          )}
+           ):(
+            <MdUpload
+            size={30}
+            className="absolute bottom-6 right-6 text-gray-600 dark:text-gray-400 cursor-pointer transition-colors hover:text-gray-900 dark:hover:text-blue-400"
+            onClick={() => inputRef.current?.click()}
+          />
+           )
+          }
+          
         </div>
 
    
         <div className="flex flex-col lg:w-2/3 w-full p-6 space-y-4">
+
+        <Input
+            type="text"
+            label="Username"
+            isInvalid={nameError}
+            errorMessage="User name cannot be empty"
+            size="lg"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            readOnly={!isEditing}
+            className="  "
+          />
 
           <Input
             type="text"
@@ -167,7 +189,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
             type="text"
             label="Registered Email"
             size="lg"
-            value={settings.organization_email}
+            value={settings.userInfo.email}
             readOnly
 
           />
@@ -198,7 +220,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
             <MyButton className='bg-black dark:bg-white text-white dark:text-black' size='sm'
             onClick={() => {
               setIsEditing(!isEditing);
-              setName(settings.organization_name);
+              setName(settings.organizationInfo.name);
               toast.info("Edit mode disabled");
             }}
             >

@@ -4,20 +4,22 @@ import { useState } from "react";
 import ApproveCertificates from "./approveCertificates/approveCertifcates";
 import { ApprovalsType,issuedCertificatesType } from "@/types/global.types";
 import ApprovedCertificates from "./approvedCertificates/approvedCertificates";
+import { ApprovalInfoType } from "@/types/approvalInfo.type";
+import { CertificateInfoType } from "@/types/issuedCertificateInfo.types";
 
 
 interface ManageAllProps {
-    approvalsInfo: ApprovalsType[];
-    issuedInfo: issuedCertificatesType[];
+    approvalsInfo: ApprovalInfoType[];
+    issuedInfo: CertificateInfoType[]
     issuedCount: number;
 }
 
 
-const ManageAll: React.FC<ManageAllProps> = ({approvalsInfo,issuedInfo,issuedCount}) => {
+const ManageAll: React.FC<ManageAllProps> = ({approvalsInfo,issuedCount,issuedInfo}) => {
   const [selected, setSelected] = useState<string>("Approval requests");
 
     console.log(approvalsInfo);
-    console.log(issuedInfo);
+
   return (
     <div className="h-full flex p-2 ">
       <div className="flex flex-col w-full">

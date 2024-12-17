@@ -1,16 +1,17 @@
 import { AiFillCheckCircle } from "react-icons/ai";
 import { useState, useEffect } from "react";
-import { verificationStatusType, FileInfo } from "@/types/global.types";
+import { verificationResponseType } from "@/types/certificateVerificationTypes";
 import { Input } from "@nextui-org/react";
 import { MdInfo } from "react-icons/md";
 import { DatePicker } from "@nextui-org/react";
 import { parseDate } from "@internationalized/date";
 import { BsExclamationTriangleFill } from "react-icons/bs";
+import { FileInfo } from "@/types/global.types";
 import React from "react";
 import { Textarea } from "@nextui-org/react";
 
 interface CertificateInfoProps {
-  verificationStatus: verificationStatusType[];
+  verificationStatus: verificationResponseType[] | null;
   fileUrl: FileInfo | null;
 }
 
@@ -18,7 +19,7 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
   verificationStatus,
   fileUrl,
 }) => {
-  const [info, setInfo] = useState<verificationStatusType | null>(null);
+  const [info, setInfo] = useState<verificationResponseType| null>(null);
   const [verificationStatusPresent, setVerificationStatusPresent] =
     useState<boolean>(false);
   const [isIssued, setIsIssued] = useState<boolean>(false);
@@ -30,7 +31,7 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
   useEffect(() => {
     if (fileUrl && verificationStatus) {
       const fileInfo = verificationStatus.find(
-        (status) => status.filename === fileUrl.filename
+        (status) => status.certificateName === fileUrl.filename
       );
       if (fileInfo === undefined) {
         setVerificationStatusPresent(false);
@@ -40,14 +41,14 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
         if (fileInfo.isIssued) setIsIssued(true);
         else setIsIssued(false);
 
-        console.log(fileInfo.info?.expiry_date);
 
-        if (fileInfo.info?.revoked === 1) {
+
+        if (fileInfo.info?.revoked === true) {
           setAuthenticityStatus("This certificate has been revoked.");
           setRevoked(true);
         } else if (
-          fileInfo.info?.expiry_date &&
-          new Date(fileInfo.info?.expiry_date) < new Date()
+          fileInfo.info?.expiryDate &&
+          new Date(fileInfo.info?.expiryDate) < new Date()
         ) {
           setAuthenticityStatus("Your certificate has expired.");
           setExpired(true);
@@ -109,30 +110,30 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                         : ""
                     }
                   />
-                  {revoked && info.info?.revoked_date && (
+                  {revoked && info.info?.revokedDate && (
                     <DatePicker
                       isReadOnly
                       label="Revoked Date"
-                      value={parseDate(info.info.revoked_date)}
+                      value={parseDate(info.info.revokedDate)}
                       size="sm"
                     />
                   )}
 
-                  {info.info?.expiry_date && (
+                  {info.info?.expiryDate && (
                     <DatePicker
                       isInvalid={expired}
                       isReadOnly
                       label="Expiry Date"
-                      value={parseDate(info.info.expiry_date)}
+                      value={parseDate(info.info.expiryDate)}
                       errorMessage={"This certificate has expired."}
                       size="sm"
                     />
                   )}
 
-                  {info.info?.issued_date && (
+                  {info.info?.issuedDate && (
                     <DatePicker
                       label="Issued Date"
-                      value={parseDate(info.info.issued_date)}
+                      value={parseDate(info.info.issuedDate)}
                       isReadOnly
                       size="sm"
                     />
@@ -141,25 +142,25 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                   <Input
                     label="Event under which this certifcate is issued"
                     readOnly
-                    value={info?.info?.event_name}
+                    value={info?.info?.eventName ?? ""}
                     size="sm"
                   />
                   <Input
                     label="Name of the certificate holder"
                     readOnly
-                    value={info?.info?.issued_to_name}
+                    value={info?.info?.recipientName}
                     size="sm"
                   />
                   <Input
                     label="email"
                     readOnly
-                    value={info?.info?.issued_to_email}
+                    value={info?.info?.recipientEmail}
                     size="sm"
                   />
                   <Input
                     label="Issuing Organization name"
                     readOnly
-                    value={info?.info?.organization_name}
+                    value={info?.info?.organizationName}
                     size="sm"
                   />
                   <Textarea

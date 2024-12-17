@@ -30,7 +30,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ stats }) => {
             className="mt-2 lg:mt-0 lg:w-auto w-full"
           >
             {/* <Tab key="certificates" title="Certificates" /> */}
-            <Tab key="statistics" title="Statistics" />
+            {/* <Tab key="statistics" title="Statistics" /> */}
             <Tab key="info" title="Info" />
           </Tabs>
         </div>
@@ -38,7 +38,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ stats }) => {
         <div className="flex flex-col h-full overflow-hidden mt-4">
           {selected === "info" ? (
             selectedTab.id ? (
-              <Info clusterUlid={selectedTab.id} />
+              <Info clusterId={selectedTab.id} />
             ) : (
               <div className="flex flex-col h-full justify-center items-center">
                 <div className="text-xl font-semibold text-gray-800 dark:text-gray-200">
@@ -49,7 +49,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ stats }) => {
             )
           ) : (
             <div className="flex flex-col h-full overflow-hidden mt-4">
-              <Stats stats={stats} />
+              {/* <Stats stats={stats} /> */}
             </div>
           )}
         </div>

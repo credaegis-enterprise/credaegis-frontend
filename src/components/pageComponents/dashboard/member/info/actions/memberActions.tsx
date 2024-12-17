@@ -8,11 +8,12 @@ import { set } from "lodash";
 import { Input } from "@nextui-org/react";
 import { Spinner } from "@nextui-org/react";
 import { MdWarning } from "react-icons/md";
+import { MemberInfoType } from "@/types/clusterInfo.types";
 
 
 
 interface MemberActionProps {
-  member: MemberType
+  member: MemberInfoType;
   setIsOpen: (value: boolean) => void;
 }
 
@@ -33,7 +34,7 @@ const MemberActions: React.FC<MemberActionProps> = ({ member,setIsOpen}) => {
 
     setLoading(true);
     setInvalid(false);
-    if(memberEmail !== member.member_email){
+    if(memberEmail !== member.email){
       toast.error("Email does not match");
       setInvalid(true);
       setLoading(false);
@@ -42,7 +43,7 @@ const MemberActions: React.FC<MemberActionProps> = ({ member,setIsOpen}) => {
 
 
     try {
-      const response = await myInstance.put(`/member/member-control/delete/${member.member_ulid}`);
+      const response = await myInstance.put(`/member/member-control/delete/${member.id}`);
       toast.success(response.data.message);
       setIsOpen(false);
     } catch (error: any) {
@@ -57,7 +58,7 @@ const MemberActions: React.FC<MemberActionProps> = ({ member,setIsOpen}) => {
   const handleDeactivateMember = async () => {
     try {
       
-      const response = await myInstance.put(`/member/member-control/deactivate/${member.member_ulid}`);
+      const response = await myInstance.put(`/member/member-control/deactivate/${member.id}`);
       toast.success(response.data.message);
       setIsOpen(false);
   
@@ -71,7 +72,7 @@ const MemberActions: React.FC<MemberActionProps> = ({ member,setIsOpen}) => {
 
   const handleActivateMember = async () => {
     try {
-      const response = await myInstance.put(`/member/member-control/activate/${member.member_ulid}`);
+      const response = await myInstance.put(`/member/member-control/activate/${member.id}`);
       toast.success(response.data.message);
       setIsOpen(false);
      
@@ -86,9 +87,9 @@ const MemberActions: React.FC<MemberActionProps> = ({ member,setIsOpen}) => {
     <div className="flex flex-col gap-6 p-6 ">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col items-start gap-2">
-          <div className="text-3xl font-bold ">{member.member_name}</div>
-          <span className="text-lg ">{member.member_email}</span>
-          <span className="text-sm text-gray-400 ">created at: {new Date(member.created_at).toLocaleString()}</span>
+          <div className="text-3xl font-bold ">{member.username}</div>
+          <span className="text-lg ">{member.email}</span>
+          <span className="text-sm text-gray-400 ">created at: {new Date(member.createdOn).toLocaleString()}</span>
         </div>
         <div className="flex justify-center gap-6 mt-4">
           {!deletePrompt && (

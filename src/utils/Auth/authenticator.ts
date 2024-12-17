@@ -4,23 +4,23 @@ import {myInstanceNEXT} from "../Axios/axios";
 import getCookies from "../cookies/getCookies";
 
 
-const authenticator = async()=>{
+const authenticator = async(accountType:string,cookieName:string)=>{
 
     console.log("Authenticator Invoked");
-    const cookie = getCookies();
-    console.log(cookie);
+    const cookie = getCookies(cookieName);
     try
     {
-        const response = await myInstanceNEXT.get("/session/check-session",{
+        const response = await myInstanceNEXT.get(`${accountType}/auth/session-check`,{
             headers:{
-                cookie:`test=${cookie}`
+                cookie:`${cookieName}=${cookie}`
             }
         });
         
 
         return {
             isAuthenticated:response.data.success,
-            role:response.data.role
+            accountType:response.data.responseData.accountType,
+            role:response.data.responseData.role,
         }
     }
     catch(e)

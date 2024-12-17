@@ -10,13 +10,13 @@ import emailValidator from "@/utils/Validators/emailValidator";
 
 
 interface CreateMemberProps {
-  clusterUlid: string;
+  clusterId: string;
   fetchClusterInfo: () => void;
     setIsOpen: (value: boolean) => void;
 }
 
 const CreateMember: React.FC<CreateMemberProps> = ({
-  clusterUlid,
+  clusterId,
   fetchClusterInfo,
   setIsOpen,
 }) => {
@@ -44,9 +44,9 @@ const CreateMember: React.FC<CreateMemberProps> = ({
 
     try {
       const response = await myInstance.post("/organization/member-control/create", {
-        memberName: memberName,
-        memberEmail: memberEmail,
-        clusterUlid: clusterUlid,
+        username: memberName,
+        email: memberEmail,
+        clusterId: clusterId,
       });
 
       toast.success(response.data.message);

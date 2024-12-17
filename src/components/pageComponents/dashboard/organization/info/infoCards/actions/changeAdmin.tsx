@@ -7,12 +7,13 @@ import { toast } from "sonner";
 import { myInstance } from "@/utils/Axios/axios";
 import { Spinner } from "@nextui-org/react";
 import { set } from "lodash";
+import { MemberInfoType } from "@/types/clusterInfo.types";
 
 
 interface ChangeAdminProps {
   clusterUlid: string;
   fetchClusterInfo: () => void;
-  members: MemberType[];
+  members: MemberInfoType[];
   setIsOpen: (value: boolean) => void;
   adminUlid: string;
 }
@@ -44,11 +45,7 @@ const ChangeAdmin: React.FC<ChangeAdminProps> = ({
     }
 
     try {
-      const response = await myInstance.put("/organization/cluster-control/change-admin", {
-        clusterUlid: clusterUlid,
-        newAdminUlid: selectedAdmin,
-      });
-      console.log(response.data.message);
+      const response = await myInstance.put(`/organization/cluster-control/change-admin/${clusterUlid}/${selectedAdmin}`);
       toast.success(response.data.message);
       fetchClusterInfo();
       setIsOpen(false);
@@ -73,10 +70,10 @@ const ChangeAdmin: React.FC<ChangeAdminProps> = ({
         className="w-full"
       >
         {members
-          .filter((member) => member.member_ulid !== adminUlid)
+          .filter((member) => member.id !== adminUlid)
           .map((member) => (
-            <SelectItem key={member.member_ulid} value={member.member_ulid}>
-              {member.member_name}
+            <SelectItem key={member.id} value={member.id}>
+              {member.username}
             </SelectItem>
           ))}
       </Select>

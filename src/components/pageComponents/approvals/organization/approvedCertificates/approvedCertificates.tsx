@@ -1,6 +1,6 @@
 import { MyButton } from "@/components/buttons/mybutton";
 import { Checkbox } from "@nextui-org/react";
-import { EventType, ClusterType } from "@/types/global.types";
+
 import { use, useCallback, useState } from "react";
 import { ApprovalsType, issuedCertificatesType } from "@/types/global.types";
 import { useEffect } from "react";
@@ -17,9 +17,10 @@ import { myInstance } from "@/utils/Axios/axios";
 import { Pagination } from "@nextui-org/react";
 import { start } from "repl";
 import { filter, set } from "lodash";
+import { CertificateInfoType } from "@/types/issuedCertificateInfo.types";
 
 interface ApprovedCertificatesProps {
-  issuedInfo: issuedCertificatesType[];
+  issuedInfo: CertificateInfoType[];
   issuedCount: number;
 }
 
@@ -31,7 +32,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
   const [selectedCluster, setSelectedCluster] = useState<string | null>(null);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
-  const [issuedList, setIssuedList] = useState<issuedCertificatesType[]>([]);
+  const [issuedList, setIssuedList] = useState<CertificateInfoType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedCount, setSelectedCount] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -50,32 +51,26 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
       if (selectedEvent) {
      
         result = await myInstance.get(
-          `/organization/certificate/event/get-latest/${selectedEvent}?startLimit=0&rowCount=5`
+          `/organization/certificate-control/event/${selectedEvent}/get-latest?page=0&size=5`
         );
 
         console.log(result);
       } else if (selectedCluster) {
         result = await myInstance.get(
-          `/organization/certificate/cluster/get-latest/${selectedCluster}?startLimit=0&rowCount=5`
+          `/organization/certificate-control/cluster/${selectedCluster}/get-latest?page=0&size=5`
         );
       } else {
         router.refresh();
       }
 
-      if (result?.data.data.length === 0 && issuedList.length === 0) {
+      if (result?.data.responseData.length === 0 && issuedList.length === 0) {
         toast.info("No certficates found for selected filters ");
       }
       if (result) {
-        console.log("hello");
-        console.log(result.data.data);
-        const updatedResult = result.data.data.map((certificate: any) => {
-          return {
-            ...certificate,
-            selected: false,
-          };
-        });
+        
+        const updatedResult: CertificateInfoType[] = result.data.responseData
 
-        const count = result.data.totalCount === 0 ? 1 : result.data.totalCount;
+        const count = issuedCount === 0 ? 1 : issuedCount;
         setTotalCount(count);
         setIssuedList(updatedResult);
         setFilterOn(true);
@@ -126,50 +121,43 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
   console.log("total count", totalCount);
 
   const pageChange = async (pageNumber: number) => {
-    console.log("pageChange function called");
+    console.log("pageChange function called"+ pageNumber);
  
     if (pageNumber === currentPage) {
       return;
     }
-    const startLimit = (pageNumber - 1) * 5;
     setCurrentPage(pageNumber);
     const rowCount = 5;
     let result;
 
-    console.log("startLimit",startLimit);
-    console.log("pagenumber",pageNumber);
 
     try {
       if (filterOn) {
         if (selectedEvent) {
           result = await myInstance.get(
-            `/organization/certificate/event/get-latest/${selectedEvent}?startLimit=${startLimit}&rowCount=${rowCount}`
+            `/organization/certificate-control/event/${selectedEvent}/get-latest?page=${pageNumber-1}&size=${rowCount}`
           );
 
-          console.log(result);
+
         } else if (selectedCluster) {
           result = await myInstance.get(
-            `/organization/certificate/cluster/get-latest/${selectedCluster}?startLimit=${startLimit}&rowCount=${rowCount}`
+            `/organization/certificate-control/cluster/${selectedCluster}/get-latest?page=${pageNumber-1}&size=${rowCount}`
           );
         }
       } else {
         result = await myInstance.get(
-          `/organization/certificate/get-latest?startLimit=${startLimit}&rowCount=${rowCount}`
+          `/organization/certificate-control/get-latest?page=${pageNumber-1}&size=${rowCount}`
         );
       }
 
-      if (result?.data.data.length === 0 && issuedList.length === 0) {
+      if (result?.data.responseData.length === 0 && issuedList.length === 0) {
         toast.info("No certficates found for selected filters ");
       }
       if (result) {
-        const updatedResult = result.data.data.map((certificate: any) => {
-          return {
-            ...certificate,
-            selected: false,
-          };
-        });
+        const updatedResult: CertificateInfoType[] = result.data.responseData
         setIssuedList(updatedResult);
-        const count = result.data.totalCount === 0 ? 1 : result.data.totalCount;
+
+        const count = issuedCount === 0 ? 1 : issuedCount;
         if (filterOn) {
           setTotalCount(count);
         }
@@ -296,49 +284,47 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                 {issuedList.map((certificate, index) => (
                   <tr key={index} className="">
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      {certificate.event_name}
+                      {certificate.eventName}
                     </td>
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
                       <div className="flex flex-col gap-2">
-                        <span>{certificate.issued_to_name}</span>
+                        <span>{certificate.recipientName}</span>
                         <span className="text-xs text-gray-700 dark:text-gray-300">
-                          {certificate.issued_to_email}
+                          {certificate.recipientEmail}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      {certificate.certificate_name}
+                      {certificate.certificateName}
                     </td>
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
                       <div className="flex flex-col gap-2">
                         <span>
-                          {certificate.approved_by_organization ||
-                            certificate.approved_by_member}
+                          {certificate.issuerName}
                         </span>
                         <span className="text-xs text-gray-700 dark:text-gray-300">
-                          {certificate.approved_by_organization_email ||
-                            certificate.approved_by_member_email}
+                          {certificate.issuerEmail}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      {certificate.issued_date}
+                      {certificate.issuedDate}
                     </td>
                     <td
                       className={`px-6 py-4 font-medium text-center 
   ${
     certificate.revoked
       ? "text-red-400 dark:text-red-400"
-      : certificate.expiry_date &&
-        new Date(certificate.expiry_date) < new Date()
+      : certificate.expiryDate &&
+        new Date(certificate.expiryDate) < new Date()
       ? "text-yellow-500 dark:text-yellow-400"
       : "text-green-500 dark:text-green-400"
   }`}
                     >
                       {certificate.revoked
                         ? "Revoked"
-                        : certificate.expiry_date &&
-                          new Date(certificate.expiry_date) < new Date()
+                        : certificate.expiryDate &&
+                          new Date(certificate.expiryDate) < new Date()
                         ? "Expired"
                         : "Valid"}
                     </td>

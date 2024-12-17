@@ -9,15 +9,16 @@ import { StatisticsType } from "@/types/global.types";
 
 const fetchClusters = async () => {
 
-  const cookies = getCookies();
+  const cookies = getCookies("ORGANIZATION_SESSION");
   try{
-  const response = await myInstanceNEXT.get("/organization/cluster-control/get-all",{
+  const response = await myInstanceNEXT.get("/organization/cluster-control/get-clusters",{
     headers: {
-        cookie:`test=${cookies}`
+        cookie:`ORGANIZATION_SESSION=${cookies}`
     }
     
   });
-  return response.data.clusters;
+  return response.data.responseData;
+  console.log(response.data);
   }
   catch(error: any){
     // console.log(error);
@@ -26,11 +27,11 @@ const fetchClusters = async () => {
 }
 
 const fetchStats = async () => {
-  const cookies = getCookies();
+  const cookies = getCookies("ORGANIZATION_SESSION");
   try{
   const response = await myInstanceNEXT.get("/organization/cluster-control/statistics/get-all",{
     headers: {
-        cookie:`test=${cookies}`
+        cookie:`ORGANIZATION_SESSION=${cookies}`
     }
     
   });
@@ -49,6 +50,7 @@ const  Page =async () => {
   const clustersPromise = fetchClusters();
   const statsPromise = fetchStats();
   const [clusters,stats] = await Promise.all([clustersPromise,statsPromise]);
+  console.log(clusters);
 
 
 

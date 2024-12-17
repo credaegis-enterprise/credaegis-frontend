@@ -11,10 +11,12 @@ import { Spinner } from "@nextui-org/react";
 import { IoReload } from "react-icons/io5";
 import { IoSearch } from "react-icons/io5";
 import MyModal from "@/components/modals/mymodal";
+import { CertificateInfoType } from "@/types/issuedCertificateInfo.types";
+import { EventSearchInfoType } from "@/types/event.types";
 
 interface ApprovedCertificatesProps {
- setIssuedList: (issuedList: issuedCertificatesType[]) => void;
-  issuedList: issuedCertificatesType[];
+ setIssuedList: (issuedList: CertificateInfoType[]) => void;
+  issuedList: CertificateInfoType[];
   selectedEvent: string | null;
   setSelectedEvent: (event: string | null) => void;
   getIssuedCertificates: () => void;
@@ -25,12 +27,7 @@ interface ApprovedCertificatesProps {
 
 
 
-interface eventType {
-  event_name: string;
-  event_ulid: string;
-  cluster_ulid: string;
-  cluster_name: string;
-}
+
 
 const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({   
     issuedList,
@@ -46,7 +43,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
 }) => {
   const router = useRouter();
 
-  const [eventList, setEventList] = useState<eventType[]>([]);
+  const [eventList, setEventList] = useState<EventSearchInfoType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [popUp, setPopUp] = useState<boolean>(false);
  
@@ -56,10 +53,10 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
   const debouncedSearchEvents = debounce(async (value: string) => {
     try {
       const response = await myInstance.get(
-        `/member/common/event-control/search/event?eventName=${value}`
+        `/member/event-control/event/name/search?name=${value}`
       );
 
-      setEventList(response.data.events);
+      setEventList(response.data.responseData);
     } catch (err) {
       console.log(err);
     }
@@ -84,7 +81,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
         console.log(issued.revoked)
       if (issued.selected && !issued.revoked) {
         console.log(issued.revoked)
-        acc.push(issued.certificate_ulid);
+        acc.push(issued.id);
       }
       return acc;
     }, []);
@@ -97,8 +94,8 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
     setLoading(true);
 
     try {
-      const response = await myInstance.put("/member/certificate/revoke", {
-        certificateUlids: issuedCertificatesUlids,
+      const response = await myInstance.put("/member/certificate-control/revoke", {
+        certificateIds: issuedCertificatesUlids,
       });
 
       if (response.data.success) {
@@ -179,8 +176,8 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
           onSelectionChange={(key) => handleEventSelection(key as string)}
         >
           {eventList.map((event) => (
-            <AutocompleteItem value={event.event_name} key={event.event_ulid}>
-              {event.event_name}
+            <AutocompleteItem value={event.name} key={event.id}>
+              {event.name}
             </AutocompleteItem>
           ))}
         </Autocomplete>

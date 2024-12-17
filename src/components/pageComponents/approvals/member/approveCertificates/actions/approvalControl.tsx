@@ -12,11 +12,13 @@ import { IoSearch } from "react-icons/io5";
 import { Spinner } from "@nextui-org/react";
 import MyModal from "@/components/modals/mymodal";
 import { MdWarning } from "react-icons/md";
+import { ApprovalInfoType } from "@/types/approvalInfo.type";
+import { EventSearchInfoType } from "@/types/event.types";
 
 
 interface ApproveCertificatesProps {
-  setApprovalsList: (approvalsList: ApprovalsType[]) => void;
-  approvalsList: ApprovalsType[];
+  setApprovalsList: (approvalsList: ApprovalInfoType[]) => void;
+  approvalsList:  ApprovalInfoType[];
   selectedEvent: string | null;
   setSelectedEvent: (event: string | null) => void;
   getApprovals: () => void;
@@ -24,17 +26,8 @@ interface ApproveCertificatesProps {
 
 }
 
-interface clusterType {
-  cluster_name: string;
-  cluster_ulid: string;
-}
 
-interface eventType {
-  event_name: string;
-  event_ulid: string;
-  cluster_ulid: string;
-  cluster_name: string;
-}
+
 
 const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   setApprovalsList,
@@ -46,8 +39,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
 
 
   const router = useRouter();
-  const [clusterList, setClusterList] = useState<clusterType[]>([]);
-  const [eventList, setEventList] = useState<eventType[]>([]);
+  const [eventList, setEventList] = useState<EventSearchInfoType[]>([]);
   const [loading, setLoading] = useState(false);
   const [approveModal, setApproveModal] = useState(false);
   const [rejectModal, setRejectModal] = useState(false);
@@ -62,10 +54,10 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   const debouncedSearchEvents = debounce(async (value: string) => {
     try {
       const response = await myInstance.get(
-        `/member/common/event-control/search/event?eventName=${value}`
+        `/member/event-control/event/name/search?name=${value}`
       );
 
-      setEventList(response.data.events);
+      setEventList(response.data.responseData);
     } catch (err) {
       console.log(err);
     }
@@ -87,7 +79,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
    
     const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
         if (approval.selected) {
-          acc.push(approval.approval_ulid);
+          acc.push(approval.id);
         }
         return acc;
       }, []);
@@ -103,7 +95,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
 
     try {
       const response = await myInstance.post("/member/approval-control/approve", {
-        approvalUlids: approvalUlids,
+        approvalCertificateIds: approvalUlids,
       });
       if (response.data.success) {
         toast.success(response.data.message);
@@ -125,7 +117,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
 
     const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
       if (approval.selected) {
-        acc.push(approval.approval_ulid);
+        acc.push(approval.id);
       }
       return acc;
     }, []);
@@ -140,7 +132,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
 
   try{
     const response = await myInstance.put("/member/approval-control/reject",{
-      approvalUlids: approvalUlids
+      approvalCertificateIds: approvalUlids
     });
 
     if(response.data.success){
@@ -254,8 +246,8 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           onSelectionChange={(key) => handleEventSelection(key as string)}
         >
           {eventList.map((event) => (
-            <AutocompleteItem value={event.event_name} key={event.event_ulid}>
-              {event.event_name}
+            <AutocompleteItem value={event.name} key={event.id}>
+              {event.name}
             </AutocompleteItem>
           ))}
         </Autocomplete>

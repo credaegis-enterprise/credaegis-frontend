@@ -13,10 +13,13 @@ import { Spinner } from "@nextui-org/react";
 import MyModal from "@/components/modals/mymodal";
 import { MdWarning } from "react-icons/md";
 import { count } from "console";
+import { ApprovalInfoType } from "@/types/approvalInfo.type";
+import { ClusterSearchInfoType } from "@/types/clusterInfo.types";
+import { EventSearchInfoType } from "@/types/event.types";
 
 interface ApproveCertificatesProps {
-  setApprovalsList: (approvalsList: ApprovalsType[]) => void;
-  approvalsList: ApprovalsType[];
+  setApprovalsList: (approvalsList: ApprovalInfoType[]) => void;
+  approvalsList: ApprovalInfoType[];
   selectedCluster: string | null;
   setSelectedCluster: (cluster: string | null) => void;
   selectedEvent: string | null;
@@ -24,18 +27,6 @@ interface ApproveCertificatesProps {
   getApprovals: () => void;
   setMainLoading: (mainLoading:boolean) => void;
   count: number;
-}
-
-interface clusterType {
-  cluster_name: string;
-  cluster_ulid: string;
-}
-
-interface eventType {
-  event_name: string;
-  event_ulid: string;
-  cluster_ulid: string;
-  cluster_name: string;
 }
 
 const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
@@ -50,8 +41,8 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   count,
 }) => {
   const router = useRouter();
-  const [clusterList, setClusterList] = useState<clusterType[]>([]);
-  const [eventList, setEventList] = useState<eventType[]>([]);
+  const [clusterList, setClusterList] = useState<ClusterSearchInfoType[]>([]);
+  const [eventList, setEventList] = useState<EventSearchInfoType[]>([]);
   const [loading, setLoading] = useState(false);
   const [approveModal, setApproveModal] = useState(false);
   const [rejectModal, setRejectModal] = useState(false);
@@ -61,10 +52,10 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   const debouncedSearchClusters = debounce(async (value: string) => {
     try {
       const response = await myInstance.get(
-        `/organization/cluster-control/search/cluster?clusterName=${value}`
+        `/organization/cluster-control/cluster/search?name=${value}`
       );
 
-      setClusterList(response.data.data);
+      setClusterList(response.data.responseData||[]);
     } catch (err) {
       console.log(err);
     }
@@ -73,10 +64,10 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   const debouncedSearchEvents = debounce(async (value: string, id: string) => {
     try {
       const response = await myInstance.get(
-        `/organization/event-control/search/event?eventName=${value}&clusterUlid=${id}`
+        `/organization/event-control/event/cluster/search?name=${value}&clusterId=${id}`
       );
 
-      setEventList(response.data.data);
+      setEventList(response.data.responseData||[]);
     } catch (err) {
       console.log(err);
     }
@@ -102,12 +93,12 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     setMainLoading(true);
     const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
       if (approval.selected) {
-        acc.push(approval.approval_ulid);
+        acc.push(approval.id);
       }
       return acc;
     }, []);
 
-    console.log(approvalUlids);
+    
 
     if (approvalUlids.length === 0) {
       toast.info("Please select atleast one approval to approve");
@@ -120,7 +111,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
       const response = await myInstance.post(
         "/organization/approval-control/approve",
         {
-          approvalUlids: approvalUlids,
+          approvalCertificateIds: approvalUlids,
         }
       );
       if (response.data.success) {
@@ -139,7 +130,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     setMainLoading(true);
     const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
       if (approval.selected) {
-        acc.push(approval.approval_ulid);
+        acc.push(approval.id);
       }
       return acc;
     }, []);
@@ -156,7 +147,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
       const response = await myInstance.put(
         "/organization/approval-control/reject",
         {
-          approvalUlids: approvalUlids,
+          approvalCertificateIds: approvalUlids,
         }
       );
 
@@ -271,10 +262,10 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
         >
           {clusterList.map((cluster) => (
             <AutocompleteItem
-              value={cluster.cluster_name}
-              key={cluster.cluster_ulid}
+              value={cluster.name.toString()}
+              key={cluster.id.toString()}
             >
-              {cluster.cluster_name}
+              {cluster.name}
             </AutocompleteItem>
           ))}
         </Autocomplete>
@@ -292,8 +283,8 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           onSelectionChange={(key) => handleEventSelection(key as string)}
         >
           {eventList.map((event) => (
-            <AutocompleteItem value={event.event_name} key={event.event_ulid}>
-              {event.event_name}
+            <AutocompleteItem value={event.name} key={event.id}>
+              {event.name}
             </AutocompleteItem>
           ))}
         </Autocomplete>

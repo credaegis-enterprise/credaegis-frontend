@@ -9,23 +9,24 @@ import CreateMember from "./actions/createMember";
 import { Spinner, user } from "@nextui-org/react";
 import { MemberType } from "@/types/global.types";
 import { useState } from "react";
+import { MemberInfoType } from "@/types/clusterInfo.types";
 
 interface MemberInfoProps {
-  members: MemberType[];
+  members: MemberInfoType[];
   fetchClusterInfo: () => void;
-  clusterUlid: string;
+  clusterId: string;
   loading: boolean;
 }
 
 const MemberInfo: React.FC<MemberInfoProps> = ({
   members,
   fetchClusterInfo,
-  clusterUlid,
+  clusterId,
   loading,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const [selectedMember, setSelectedMember] = useState<MemberType>({} as MemberType);
+  const [selectedMember, setSelectedMember] = useState<MemberInfoType>();
   return (
     <div className="h-full w-full flex flex-col ">
       <div className="flex justify-between p-2">
@@ -56,7 +57,7 @@ const MemberInfo: React.FC<MemberInfoProps> = ({
           {members &&
             members.map((member, index) => (
               <motion.div
-                key={member.member_ulid}
+                key={member.id}
                 initial={{ opacity: 0, y: 3 }} 
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.15, delay: index * 0.05 }}
@@ -74,10 +75,10 @@ const MemberInfo: React.FC<MemberInfoProps> = ({
                 <div className="flex justify-between">
                   <div className="flex flex-col">
                     <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                      {member.member_name}
+                      {member.username}
                     </h3>
                     <p className="text-sm text-gray-400">
-                      {member.member_email}
+                      {member.email}
                     </p>
                   </div>
                   <div>
@@ -103,7 +104,7 @@ const MemberInfo: React.FC<MemberInfoProps> = ({
           content={
             <CreateMember
               fetchClusterInfo={fetchClusterInfo}
-              clusterUlid={clusterUlid}
+              clusterId={clusterId}
               setIsOpen={setIsOpen}
             />
           }
@@ -121,7 +122,7 @@ const MemberInfo: React.FC<MemberInfoProps> = ({
           backdrop="blur"
           onClose={() => setIsInfoOpen(false)}
           title="Member Info"
-          content={<MemberControl member={selectedMember || undefined} setIsOpen={setIsInfoOpen} fetchClusterInfo={fetchClusterInfo}/>}
+          content={selectedMember && <MemberControl member={selectedMember} setIsOpen={setIsInfoOpen} fetchClusterInfo={fetchClusterInfo}/>}
           button1={undefined}
           button2={undefined}
           onOpen={() => {

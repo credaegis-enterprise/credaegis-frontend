@@ -44,30 +44,31 @@ const LoginForm = () => {
     try {
       if (selected === "organization") {
         response = await myInstance.post("/organization/auth/login", {
-          organizationEmail: email,
-          organizationPassword: password,
+          email: email,
+          password: password,
         });
       } else {
         response = await myInstance.post("/member/auth/login", {
-          memberEmail: email,
-          memberPassword: password,
+          email: email,
+          password: password,
         });
       }
 
-      if (response.data.twoFa) setIsOpen(true);
+      console.log(response);
+
+      if (response.data.responseData.mfaEnabled) setIsOpen(true);
       else {
         localStorage.setItem("currentPath","dashboard");
         toast.success(response.data.message);
-        const role = response.data.loginInfo.role;
-        if(role === "admin"|| role ==="clusterAdmin")
-        router.push(`/credaegis/${response.data.loginInfo.accountType}/dashboard`);
+        const role = response.data.responseData.role;
+        if(role === "ADMIN"|| role ==="CLUSTER_ADMIN")
+        router.push(`/credaegis/${response.data.responseData.accountType}/dashboard`);
         else
-        router.push(`/credaegis/${response.data.loginInfo.accountType}/certificates`);
+        router.push(`/credaegis/${response.data.responseData.accountType}/certificates`);
       }
 
       setIsLoading(false);
     } catch (error: any) {
-
       setIsLoading(false);
     }
   };
@@ -77,15 +78,15 @@ const LoginForm = () => {
     let response;
     try {
       if (selected === "organization") {
-        response = await myInstance.post("/organization/auth/login/twofa", {
-          organizationEmail: email,
-          organizationEnteredPassword: password,
+        response = await myInstance.post("/organization/auth/mfa/login", {
+          email: email,
+          password: password,
           otp: otp,
         });
       } else{
-      response = await myInstance.post("/auth/login/twofa", {
-        memberEmail: email,
-        memberEnteredPassword: password,
+      response = await myInstance.post("/member/auth/mfa/login", {
+        email: email,
+        password: password,
         otp: otp,
       });
     }
@@ -95,11 +96,11 @@ const LoginForm = () => {
       setIsLoading(false);
       setIsOpen(false);
 
-      const role = response.data.loginInfo.role;
-      if(role === "admin"|| role ==="clusterAdmin")
-      router.push(`/credaegis/${response.data.loginInfo.accountType}/dashboard`);
+      const role = response.data.responseData.role;
+      if(role === "ADMIN"|| role ==="CLUSTER_ADMIN")
+      router.push(`/credaegis/${response.data.responseData.accountType}/dashboard`);
       else
-      router.push(`/credaegis/${response.data.loginInfo.accountType}/certificates`);
+      router.push(`/credaegis/${response.data.responseData.accountType}/certificates`);
       
     } catch (error: any) {
       if (error.response?.status === 429) setIsOpen(false);

@@ -10,23 +10,23 @@ import { MemberType } from "@/types/global.types";
 
 import CreateMember from "./actions/createMember";
 import React from "react";
+import { MemberInfoType } from "@/types/clusterInfo.types";
 
 interface MemberViewProps {
-  members: MemberType[];
-  clusterAdminUlid: string;
+  members: MemberInfoType[];
+
 }
 
 const MemberView: React.FC<MemberViewProps> = ({
   members,
-  clusterAdminUlid,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const [selectedMember, setSelectedMember] = useState<MemberType>(
-    {} as MemberType
+  const [selectedMember, setSelectedMember] = useState<MemberInfoType>(
+    {} as MemberInfoType
   );
 
-  console.log(clusterAdminUlid)
+
   return (
     <div className="lg:h-full h-[300px] w-full flex flex-col ">
       <div className="flex justify-between p-2">
@@ -53,9 +53,9 @@ const MemberView: React.FC<MemberViewProps> = ({
           {members &&
             members.map((member, index) => (
               <>
-              {member.member_ulid !== clusterAdminUlid && (
+         
               <motion.div
-                key={member.member_ulid}
+                key={member.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.1, delay: index * 0.015 }}
@@ -73,10 +73,10 @@ const MemberView: React.FC<MemberViewProps> = ({
                 <div className="flex justify-between">
                   <div className="flex flex-col">
                     <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                      {member.member_name}
+                      {member.username}
                     </h3>
                     <p className="text-sm text-gray-400">
-                      {member.member_email}
+                      {member.email}
                     </p>
                   </div>
                   <div>
@@ -84,19 +84,19 @@ const MemberView: React.FC<MemberViewProps> = ({
                   </div>
                 </div>
               </motion.div>
-              )}
+              
               </>
             ))}
         </div>
       </div>
       {isOpen && (
         <MyModal
-          size="md"
+          size="lg"
           isOpen={isOpen}
           backdrop="blur"
           onClose={() => setIsOpen(false)}
           title="Add Member"
-          content={<CreateMember cluster_ulid={"1"} setIsOpen={setIsOpen} />}
+          content={<CreateMember  setIsOpen={setIsOpen} />}
           button1={<button onClick={() => setIsOpen(false)}>Close</button>}
           button2={undefined}
           onOpen={() => {
@@ -106,7 +106,7 @@ const MemberView: React.FC<MemberViewProps> = ({
       )}
       {isInfoOpen && (
         <MyModal
-          size="sm"
+          size="lg"
           isOpen={isInfoOpen}
           backdrop="blur"
           onClose={() => setIsInfoOpen(false)}

@@ -2,14 +2,15 @@
 import { Tab, Tabs } from "@nextui-org/react";
 import { useState } from "react";
 import ApproveCertificates from "./approveCertificates/approveCertifcates";
-import { ApprovalsType,issuedCertificatesType } from "@/types/global.types";
 import ApprovedCertificates from "./approvedCertificates/approvedCertificates";
+import { ApprovalInfoType } from "@/types/approvalInfo.type";
+import { CertificateInfoType } from "@/types/issuedCertificateInfo.types";
 
 
 interface ManageAllProps {
-    approvalsInfo: ApprovalsType[];
-    issuedInfo: issuedCertificatesType[];
-    issuedCount: number;
+    approvalsInfo: ApprovalInfoType[];
+       issuedInfo: CertificateInfoType[]
+       issuedCount: number;
 }
 
 

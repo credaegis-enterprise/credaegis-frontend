@@ -53,18 +53,9 @@ export interface ApprovalsType {
   selected: boolean;
 }
 
-export interface ClusterType {
-  cluster_ulid: string;
-  cluster_name: string;
-  organization_ulid: string;
-  created_at: string;
-  deactivated: number;
-  updated_at: string;
-  member_ulid: string;
-  cluster_admin_ulid: string;
-  deleted: number;
-  cluster_admin_email: string;
-  cluster_admin_name: string;
+export interface ClusterNamesIdType {
+ name:string;
+ id:string;
 }
 
 export interface FileInfo {

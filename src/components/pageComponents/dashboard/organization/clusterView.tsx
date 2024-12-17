@@ -7,10 +7,10 @@ import { useTabContext } from "@/context/tabContext";
 import { useState } from "react";
 import MyModal from "@/components/modals/mymodal";
 import CreateCluster from "./info/infoCards/actions/createCluster";
-import { ClusterType } from "@/types/global.types";
+import { ClusterNamesIdType } from "@/types/global.types";
 
 interface ClusterListProps {
-  clusters: ClusterType[];
+  clusters: ClusterNamesIdType[];
 }
 
 const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
@@ -48,7 +48,7 @@ const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
           ) : (
             clusters.map((cluster, index) => (
               <motion.div
-                key={cluster.cluster_ulid}
+                key={cluster.id}
     
             initial={{ opacity: 0, y: 3 }} 
             animate={{ opacity: 1, y: 0 }}
@@ -58,13 +58,13 @@ const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
                   boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
                 }}
                 whileTap={{ scale: 0.98 }}
-                className={`${selectedTab.id===cluster.cluster_ulid?"bg-gray-200 dark:bg-stone-700":"bg-white dark:bg-stone-900"} rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer`}
+                className={`${selectedTab.id===cluster.id?"bg-gray-200 dark:bg-stone-700":"bg-white dark:bg-stone-900"} rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer`}
                 onClick={() => {
-                  setSelectedTab({ type: "cluster", id: cluster.cluster_ulid });
+                  setSelectedTab({ type: "cluster", id: cluster.id });
                 }}
               >
                 <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                  {cluster.cluster_name}
+                  {cluster.name}
                 </h3>
               </motion.div>
             ))
