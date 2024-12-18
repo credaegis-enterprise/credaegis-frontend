@@ -1,5 +1,6 @@
 "use server";
 
+import { cookies } from "next/headers";
 import {myInstanceNEXT} from "../Axios/axios";
 import getCookies from "../cookies/getCookies";
 
@@ -25,6 +26,7 @@ const authenticator = async(accountType:string,cookieName:string)=>{
     }
     catch(e)
     {
+
         return {
             isAuthenticated:false,
             accountType:"",

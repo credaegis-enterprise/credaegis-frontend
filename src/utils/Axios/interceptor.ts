@@ -5,6 +5,7 @@ import  { AxiosError } from 'axios';
 import { myInstance } from './axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import Cookies from 'js-cookie';
 
 function ResponseInterceptor() {
   const interceptorId = useRef<number | null>(null);
@@ -22,6 +23,7 @@ function ResponseInterceptor() {
               router.push('/login');
             break;
             case 401:
+    
               console.error("Unauthorized request");
               router.push('/login');
               toast.error((error.response.data as any)?.message);

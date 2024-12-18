@@ -24,6 +24,7 @@
     "ulid": "^2.3.0"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.17.7",
     "@types/node": "^22.5.0",
     "@types/react": "^18.3.4",
