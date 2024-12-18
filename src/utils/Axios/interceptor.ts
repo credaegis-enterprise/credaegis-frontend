@@ -18,10 +18,13 @@ function ResponseInterceptor() {
           console.error("Error response from the server:", error.response);
           switch (error.response.status) {
             case 403:
+
               router.push('/login');
             break;
             case 401:
-              toast.error("Invalid credentials");
+              console.error("Unauthorized request");
+              router.push('/login');
+              toast.error((error.response.data as any)?.message);
               break;
             default:
               toast.error((error.response.data as any)?.message || "An error occurred");

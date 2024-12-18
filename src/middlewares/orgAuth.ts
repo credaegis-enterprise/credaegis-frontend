@@ -11,6 +11,7 @@ export const orgAuth: MiddlewareFactory = (next) => {
       ["/credaegis/organization"]?.some((path) => pathname.startsWith(path))
     ) {
       const authInfo = await authenticator("organization", "ORGANIZATION_SESSION");
+      console.log("AUTH INFO");
       console.log(authInfo);
 
       if(authInfo && !authInfo.isAuthenticated){

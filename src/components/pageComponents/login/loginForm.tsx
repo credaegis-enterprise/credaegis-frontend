@@ -24,6 +24,7 @@ const LoginForm = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isEmailInvalid, setIsEmailInvalid] = useState(false);
+  const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
 
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -32,11 +33,19 @@ const LoginForm = () => {
   const handleLogin = async () => {
     setIsLoading(true);
     setIsEmailInvalid(false);
+    setIsPasswordInvalid(false);
 
     let response;
     if (!emailValidator(email)) {
       setIsEmailInvalid(true);
       toast.error("please enter a valid email");
+      setIsLoading(false);
+      return;
+    }
+
+    if(password.length===0){
+      setIsPasswordInvalid(true);
+      toast.error("please enter a valid password");
       setIsLoading(false);
       return;
     }
@@ -69,6 +78,8 @@ const LoginForm = () => {
 
       setIsLoading(false);
     } catch (error: any) {
+
+    
       setIsLoading(false);
     }
   };
@@ -173,6 +184,8 @@ const LoginForm = () => {
           label="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          isInvalid={isPasswordInvalid}
+          errorMessage="Please enter a valid password"
           endContent={
             <button
               className="focus:outline-none"

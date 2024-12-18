@@ -25,7 +25,11 @@ const authenticator = async(accountType:string,cookieName:string)=>{
     }
     catch(e)
     {
-        return false
+        return {
+            isAuthenticated:false,
+            accountType:"",
+            role:""
+        }
     }
 }
 
