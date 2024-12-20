@@ -107,9 +107,11 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
 
     setLoading(true);
 
+
+    //on chain approval- for off chain approval, we need to call another api without /blockchain
     try {
       const response = await myInstance.post(
-        "/organization/approval-control/approve",
+        "/organization/approval-control/blockchain/approve",
         {
           approvalCertificateIds: approvalUlids,
         }
