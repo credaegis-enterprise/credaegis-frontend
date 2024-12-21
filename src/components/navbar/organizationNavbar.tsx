@@ -16,6 +16,11 @@ import Link from "next/link";
 import { myInstance } from "@/utils/Axios/axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { BiBell } from "react-icons/bi";
+import MyModal from "../modals/mymodal";
+import { NotificationType } from "@/types/notificationTypes";
+import NotifBox from "../notification/NotifBox";
+import { set } from "lodash";
 
 export default function OrganizationNavbar() {
   const router = useRouter();
@@ -23,18 +28,28 @@ export default function OrganizationNavbar() {
   const [role, setRole] = useState<string>("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selected, setSelected] = useState<string>("");
+  const [notificationPopup, setNotificationPopup] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationType[]>([]);
+  const [notificationCount, setNotificationCount] = useState<number>(0);
+
+
+
 
   useEffect(() => {
+    getNotifications();
+  }, []);
 
 
-    if(!router)
-      return
+  useEffect(() => {
+    if (!router) return;
 
     const currentPath = localStorage.getItem("currentPath");
     setSelected(currentPath || "");
     const getUserRoles = async () => {
       try {
-        const response = await myInstance.get("organization/auth/session-check");
+        const response = await myInstance.get(
+          "organization/auth/session-check"
+        );
         console.log(response.data);
         setAccountType(response.data.responseData.accountType);
         setRole(response.data.responseData.role);
@@ -47,6 +62,17 @@ export default function OrganizationNavbar() {
 
   console.log(accountType, role);
 
+
+  const getNotifications = async () => {
+    try {
+      const response = await myInstance.get("organization/account/notifications");
+      setNotificationCount(response.data.responseData.length);
+      setNotifications(response.data.responseData);
+    } catch (error: any) {
+      console.log(error);
+    }
+  }
+
   const handleLogout = async () => {
     try {
       const response = await myInstance.post("/organization/auth/logout");
@@ -57,54 +83,57 @@ export default function OrganizationNavbar() {
     }
   };
 
-  const isSelected = (menuItem: string) => selected === menuItem ? "text-green-500" : "hover:text-green-400";
+  const isSelected = (menuItem: string) =>
+    selected === menuItem ? "text-green-500" : "hover:text-green-400";
 
   return (
-    <Navbar className="justify-end" maxWidth="full" onMenuOpenChange={setIsMenuOpen} 
+    <Navbar
+      className="justify-end"
+      maxWidth="full"
+      onMenuOpenChange={setIsMenuOpen}
     >
-     <NavbarBrand>
-      <NavbarContent justify="start">
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden"
-        />
-      </NavbarContent>
+      <NavbarBrand>
+        <NavbarContent justify="start">
+          <NavbarMenuToggle
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            className="sm:hidden"
+          />
+        </NavbarContent>
       </NavbarBrand>
-    
+
       <NavbarContent className="hidden sm:flex gap-12" justify="end">
-    
-          <NavbarItem>
-            <Link
-              href={`/credaegis/${accountType}/dashboard`}
-              className={`${isSelected("dashboard")} transition-colors`}
-              onClick={() => {setSelected("dashboard");
-                localStorage.setItem("currentPath", "dashboard");
-              }}
-            >
-              dashboard
-            </Link>
-          </NavbarItem>
-        
+        <NavbarItem>
+          <Link
+            href={`/credaegis/${accountType}/dashboard`}
+            className={`${isSelected("dashboard")} transition-colors`}
+            onClick={() => {
+              setSelected("dashboard");
+              localStorage.setItem("currentPath", "dashboard");
+            }}
+          >
+            dashboard
+          </Link>
+        </NavbarItem>
 
-
-
-          <NavbarItem>
-            <Link
-              href={`/credaegis/organization/approvals`}
-              className={`${isSelected("approvals")} transition-colors`}
-              onClick={() => {setSelected("approvals");
-                localStorage.setItem("currentPath", "approvals");
-              }}
-            >
-              approvals
-            </Link>
-          </NavbarItem>
+        <NavbarItem>
+          <Link
+            href={`/credaegis/organization/approvals`}
+            className={`${isSelected("approvals")} transition-colors`}
+            onClick={() => {
+              setSelected("approvals");
+              localStorage.setItem("currentPath", "approvals");
+            }}
+          >
+            approvals
+          </Link>
+        </NavbarItem>
 
         <NavbarItem>
           <Link
             href={`/credaegis/organization/certificates`}
             className={`${isSelected("certificates")} transition-colors`}
-            onClick={() => {setSelected("certificates");
+            onClick={() => {
+              setSelected("certificates");
               localStorage.setItem("currentPath", "certificates");
             }}
           >
@@ -116,8 +145,9 @@ export default function OrganizationNavbar() {
           <Link
             href={`/credaegis/organization/settings`}
             className={`${isSelected("settings")} transition-colors`}
-            onClick={() => {setSelected("settings"),
-            localStorage.setItem("currentPath", "settings")
+            onClick={() => {
+              setSelected("settings"),
+                localStorage.setItem("currentPath", "settings");
             }}
           >
             settings
@@ -126,11 +156,9 @@ export default function OrganizationNavbar() {
 
         <NavbarItem
           onClick={() => {
-            localStorage.setItem("path",window.location.pathname);
+            localStorage.setItem("path", window.location.pathname);
           }}
         >
-
-   
           <Link
             href={`/verification`}
             className={`${isSelected("verification")} transition-colors`}
@@ -138,41 +166,48 @@ export default function OrganizationNavbar() {
           >
             verification
           </Link>
-
-        
         </NavbarItem>
       </NavbarContent>
 
-    
       <NavbarMenu>
-
-          <NavbarMenuItem className="">
-            <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
-          </NavbarMenuItem>
-        
-
-        
-          <NavbarMenuItem>
-            <Link href={`/credaegis/${accountType}/approvals`}>approvals</Link>
-          </NavbarMenuItem>
-        
+        <NavbarMenuItem className="">
+          <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
+        </NavbarMenuItem>
 
         <NavbarMenuItem>
-          <Link href={`/credaegis/${accountType}/certificates`}>certificates</Link>
+          <Link href={`/credaegis/${accountType}/approvals`}>approvals</Link>
+        </NavbarMenuItem>
+
+        <NavbarMenuItem>
+          <Link href={`/credaegis/${accountType}/certificates`}>
+            certificates
+          </Link>
         </NavbarMenuItem>
 
         <NavbarMenuItem>
           <Link href={`/credaegis/${accountType}/settings`}>settings</Link>
         </NavbarMenuItem>
- 
 
         <NavbarMenuItem>
           <Link href={`/verification`}>verification</Link>
         </NavbarMenuItem>
-    
       </NavbarMenu>
 
       <NavbarContent justify="end" className="gap-4">
+        <NavbarItem
+          onClick={() => {
+            setNotificationPopup(true);
+            getNotifications();
+
+          }}
+        >
+
+          <span className="bg-red-500 text-white text-xs rounded-full p-1">
+            {notificationCount}
+          </span>
+          <BiBell className="text-2xl dark:text-white-600 hover:text-blue-500 dark:hover:text-green-500 hover:scale-110 transition duration-300 cursor-pointer" />
+          
+        </NavbarItem>
         <NavbarItem>
           <ThemeSwitcher />
         </NavbarItem>
@@ -190,6 +225,18 @@ export default function OrganizationNavbar() {
           </MyButton>
         </NavbarItem>
       </NavbarContent>
+      {notificationPopup && (
+        <MyModal
+          title=""
+          onClose={() => setNotificationPopup(false)}
+          size="md"
+          isOpen={notificationPopup}
+          backdrop="opaque"
+          content={<NotifBox notfications={notifications} />} button1={undefined} button2={undefined} onOpen={function (): void {
+            throw new Error("Function not implemented.");
+          } }        />
+      )
+        }
     </Navbar>
   );
 }

@@ -239,7 +239,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({
                {approval.issued_to_email}
               </td> */}
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      {/* {approval.expiryDate ? approval.expiryDate : "N/A"} */}
+                  
                       {approval.expiryDate ? new Date(approval.expiryDate).toLocaleDateString() : "N/A"}
                     </td>
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
