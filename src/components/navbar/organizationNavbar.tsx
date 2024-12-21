@@ -194,20 +194,19 @@ export default function OrganizationNavbar() {
       </NavbarMenu>
 
       <NavbarContent justify="end" className="gap-4">
-        <NavbarItem
-          onClick={() => {
-            setNotificationPopup(true);
-            getNotifications();
+      <NavbarItem
+  onClick={() => {
+    setNotificationPopup(true);
+    getNotifications();
+  }}
+  className="flex items-center gap-2"  
+>
 
-          }}
-        >
-
-          <span className="bg-red-500 text-white text-xs rounded-full p-1">
-            {notificationCount}
-          </span>
-          <BiBell className="text-2xl dark:text-white-600 hover:text-blue-500 dark:hover:text-green-500 hover:scale-110 transition duration-300 cursor-pointer" />
-          
-        </NavbarItem>
+  <BiBell className="text-2xl dark:text-white-600 hover:text-blue-500 dark:hover:text-green-500 hover:scale-110 transition duration-300 cursor-pointer" />
+  <span className="bg-red-500 text-white text-xs rounded-full p-1 flex items-center justify-center">
+    {notificationCount}
+  </span>
+</NavbarItem>
         <NavbarItem>
           <ThemeSwitcher />
         </NavbarItem>
@@ -232,7 +231,7 @@ export default function OrganizationNavbar() {
           size="md"
           isOpen={notificationPopup}
           backdrop="opaque"
-          content={<NotifBox notfications={notifications} />} button1={undefined} button2={undefined} onOpen={function (): void {
+          content={<NotifBox notfications={notifications} getNotifications={getNotifications} />} button1={undefined} button2={undefined} onOpen={function (): void {
             throw new Error("Function not implemented.");
           } }        />
       )

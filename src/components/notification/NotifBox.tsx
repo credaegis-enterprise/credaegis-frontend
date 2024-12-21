@@ -1,14 +1,44 @@
 import React from "react";
 import { NotificationType } from "@/types/notificationTypes";
 import { MyButton } from "../buttons/mybutton";
+import { myInstance } from "@/utils/Axios/axios";
+import { toast } from "sonner";
 
 interface NotifBoxProps {
   notfications: NotificationType[];
-
+  getNotifications: () => void;
 
 }
 
-const NotifBox: React.FC<NotifBoxProps> = ({ notfications }) => {
+
+
+
+const NotifBox: React.FC<NotifBoxProps> = ({ notfications,getNotifications }) => {
+
+
+    const deleteAllNotifications = async () => {
+        try{
+            const response = await myInstance.delete("organization/account/delete/notifications/all");
+            toast.success(response.data.message);
+            getNotifications();
+        }
+        catch(error: any){
+            console.log(error);
+        }
+    }
+
+
+    const deleteOneNotification = async (id: string) => {
+        try{
+            const response = await myInstance.delete(`organization/account/delete/notifications/${id}`);
+            toast.success(response.data.message);
+            getNotifications();
+        }
+        catch(error: any){
+            console.log(error);
+        }
+    }
+
   return (
     <div className="flex flex-col gap-4">
         <div className="flex items-center gap-3">
@@ -37,7 +67,7 @@ const NotifBox: React.FC<NotifBoxProps> = ({ notfications }) => {
                         className="bg-black dark:bg-white text-white dark:text-black"
                         size="sm"
                         color="default"
-                        onClick={() => console.log("clicked")}
+                        onClick={() => deleteOneNotification(notif.id)}
                         >
                             Mark as read
                         </MyButton>
@@ -54,13 +84,15 @@ const NotifBox: React.FC<NotifBoxProps> = ({ notfications }) => {
         <div className="text-gray-400 text-center">No notifications found</div>
       )}
     </div>
+    {notfications.length > 0 && (
       <MyButton
         className=" bg-black dark:bg-white text-white dark:text-black"
         size="md"
-        onClick={() => console.log("clicked")}
+        onClick={() => deleteAllNotifications()}
         >
             Mark all as read
         </MyButton>
+    )}
     </div>
   );
 };
