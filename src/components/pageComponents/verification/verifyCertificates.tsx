@@ -69,7 +69,7 @@ const VerifyCertificates = () => {
           <div className="col-span-2 border dark:border-stone-800 rounded-lg overflow-auto ">
             <CertificateInfo fileUrl={fileUrl} verificationStatus={verificationStatus} />
           </div>
-          <div className="col-span-3 border dark:border-stone-800 rounded-lg">
+          {/* <div className="col-span-3 border dark:border-stone-800 rounded-lg">
             {fileUrl ? (
               <iframe
                 src={fileUrl?.fileurl || ""}
@@ -82,7 +82,7 @@ const VerifyCertificates = () => {
                 </h1>
               </div>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

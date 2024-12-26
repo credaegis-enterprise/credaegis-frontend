@@ -19,7 +19,7 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
   verificationStatus,
   fileUrl,
 }) => {
-  const [info, setInfo] = useState<verificationResponseType| null>(null);
+  const [info, setInfo] = useState<verificationResponseType | null>(null);
   const [verificationStatusPresent, setVerificationStatusPresent] =
     useState<boolean>(false);
   const [isIssued, setIsIssued] = useState<boolean>(false);
@@ -29,6 +29,8 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
   const [authenticityStatus, setAuthenticityStatus] = useState<string>("");
 
   useEffect(() => {
+
+    console.log("verificationStatus", verificationStatus);
     if (fileUrl && verificationStatus) {
       const fileInfo = verificationStatus.find(
         (status) => status.certificateName === fileUrl.filename
@@ -40,8 +42,6 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
         setVerificationStatusPresent(true);
         if (fileInfo.isIssued) setIsIssued(true);
         else setIsIssued(false);
-
-
 
         if (fileInfo.info?.revoked === true) {
           setAuthenticityStatus("This certificate has been revoked.");
@@ -59,6 +59,7 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
           setExpired(false);
         }
 
+        console.log("fileInfo", fileInfo);
         setInfo(fileInfo);
       }
     }
@@ -90,9 +91,9 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
             size="sm"
           />
 
-          {verificationStatusPresent ? (
+          {info ? (
             <>
-              {info && isIssued ? (
+              {info && info.infoFound ? (
                 <div className="flex flex-col gap-3">
                   <Input
                     label="Authenticity Status"
@@ -114,7 +115,11 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                     <DatePicker
                       isReadOnly
                       label="Revoked Date"
-                      value={parseDate(info.info.revokedDate)}
+                      value={parseDate(
+                        new Date(info.info.revokedDate)
+                          .toISOString()
+                          .split("T")[0]
+                      )}
                       size="sm"
                     />
                   )}
@@ -133,7 +138,11 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                   {info.info?.issuedDate && (
                     <DatePicker
                       label="Issued Date"
-                      value={parseDate(info.info.issuedDate)}
+                      value={parseDate(
+                        new Date(info.info.issuedDate)
+                          .toISOString()
+                          .split("T")[0]
+                      )}
                       isReadOnly
                       size="sm"
                     />
@@ -175,21 +184,50 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                   />
                 </div>
               ) : (
-                <div className="flex flex-col items-center p-4 mt-20 gap-4 border  border-gray-300  dark:border-stone-800 rounded-lg shadow-md max-w-md mx-auto">
-                  <div className="flex items-center gap-3">
-                    <BsExclamationTriangleFill
-                      size={25}
-                      className="text-yellow-400"
-                    />
-                    <div className="text-xl font-semibold ">Not issued</div>
-                  </div>
-                  <div className="text-center text-sm ">
-                    This certificate is not issued or verified by any registered
-                    organizations in Credaegis. Please ensure you have uploaded
-                    the correct file or contact the issuing organization for
-                    more information.
-                  </div>
-                </div>
+                <>
+                  {info && !info.isIssued ? (
+                    <div className="flex flex-col items-center p-4 mt-20 gap-4 border  border-gray-300  dark:border-stone-800 rounded-lg shadow-md max-w-md mx-auto">
+                      <div className="flex items-center gap-3">
+                        <BsExclamationTriangleFill
+                          size={25}
+                          className="text-yellow-400"
+                        />
+                        <div className="text-xl font-semibold ">Not issued</div>
+                      </div>
+                      <div className="text-center text-sm ">
+                        This certificate is not issued or verified by any
+                        registered organizations in Credaegis. Please ensure you
+                        have uploaded the correct file or contact the issuing
+                        organization for more information.
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-5 items-center justify-center h-full">
+                      <div className="text-lg  text-gray-800 dark:text-gray-200">
+                        <Input
+                          label="Authenticity Status"
+                          disabled
+                          size="sm"
+                          color={isAuthentic ? "success" : "default"}
+                          value={"This certificate is verified and original."}
+                          isReadOnly
+                        />
+
+                        <div className="mt-10 p-2 bg-stone-850 dark:bg-stone-900 border dark:border-stone-800 rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <BsExclamationTriangleFill
+                            size={25}
+                            className="text-yellow-400"
+                          />
+                          <div className="text-xl font-semibold ">
+                            Not additional information is found
+                          </div>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </>
               )}
             </>
           ) : (

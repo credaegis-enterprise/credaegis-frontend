@@ -2,6 +2,7 @@ export interface verificationResponseType {
     certificateName: string;
     isIssued: boolean;
     info: CertificateInfo | null;
+    infoFound: boolean;
   }
   
   export interface CertificateInfo {

@@ -51,7 +51,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
 
     try {
       const response = await myInstance.post(
-        "/organization/external/verify",
+        "/organization/external/blockchain/verify",
         formData,
         {
           headers: {
@@ -59,6 +59,8 @@ const CertificateList: React.FC<MyFileListProps> = ({
           },
         }
       );
+
+      console.log("response", response);
 
       if (response.data.success) {
         setVerificationStatus(response.data.responseData);
