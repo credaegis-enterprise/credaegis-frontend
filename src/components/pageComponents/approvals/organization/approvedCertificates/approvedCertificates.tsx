@@ -324,7 +324,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                       {certificate.revoked
                         ? "Revoked"
                         : certificate.expiryDate &&
-                          new Date(certificate.expiryDate) < new Date()
+                          new Date(certificate.expiryDate) < new Date()       
                         ? "Expired"
                         : "Valid"}
                     </td>

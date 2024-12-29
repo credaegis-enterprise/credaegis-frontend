@@ -94,7 +94,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     setLoading(true);
 
     try {
-      const response = await myInstance.post("/member/approval-control/approve", {
+      const response = await myInstance.post("/member/approval-control/blockchain/approve", {
         approvalCertificateIds: approvalUlids,
       });
       if (response.data.success) {

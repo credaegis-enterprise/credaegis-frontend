@@ -94,7 +94,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
     setLoading(true);
 
     try {
-      const response = await myInstance.put("/member/certificate-control/revoke", {
+      const response = await myInstance.put("/member/certificate-control/blockchain/revoke", {
         certificateIds: issuedCertificatesUlids,
       });
 
