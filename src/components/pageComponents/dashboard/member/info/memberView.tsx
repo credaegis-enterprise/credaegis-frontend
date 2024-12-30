@@ -50,43 +50,39 @@ const MemberView: React.FC<MemberViewProps> = ({
       </div>
       <div className=" mt-2 h-full overflow-auto">
         <div className="space-y-2 p-2 mt-1 h-full ">
-          {members &&
-            members.map((member, index) => (
-              <>
-         
-              <motion.div
-                key={member.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.1, delay: index * 0.015 }}
-                whileHover={{
-                  scale: 1.01,
-                  boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
-                }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => {
-                  setSelectedMember(member);
-                  setIsInfoOpen(true);
-                }}
-                className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
-              >
-                <div className="flex justify-between">
-                  <div className="flex flex-col">
-                    <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                      {member.username}
-                    </h3>
-                    <p className="text-sm text-gray-400">
-                      {member.email}
-                    </p>
-                  </div>
-                  <div>
-                  
-                  </div>
-                </div>
-              </motion.div>
-              
-              </>
-            ))}
+        {members && members.length > 0 ? (
+  members.map((member, index) => (
+    <motion.div
+      key={member.id}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.1, delay: index * 0.015 }}
+      whileHover={{
+        scale: 1.01,
+        boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
+      }}
+      whileTap={{ scale: 0.98 }}
+      onClick={() => {
+        setSelectedMember(member);
+        setIsInfoOpen(true);
+      }}
+      className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
+    >
+      <div className="flex justify-between">
+        <div className="flex flex-col">
+          <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
+            {member.username}
+          </h3>
+          <p className="text-sm text-gray-400">
+            {member.email}
+          </p>
+        </div>
+      </div> 
+    </motion.div>
+  ))
+) : (
+  <div className="text-gray-400 text-center h-full flex flex-col justify-center">No members found</div>
+)}
         </div>
       </div>
       {isOpen && (
