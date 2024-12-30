@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { BiBell } from "react-icons/bi";
 import MyModal from "../modals/mymodal";
 import { NotificationType } from "@/types/notificationTypes";
-import NotifBox from "../notification/NotifBox";
+import NotifBoxOrganization from "../notification/notifBoxOrganization";
 import { set } from "lodash";
 
 export default function OrganizationNavbar() {
@@ -231,7 +231,7 @@ export default function OrganizationNavbar() {
           size="md"
           isOpen={notificationPopup}
           backdrop="opaque"
-          content={<NotifBox notfications={notifications} getNotifications={getNotifications} />} button1={undefined} button2={undefined} onOpen={function (): void {
+          content={<NotifBoxOrganization notfications={notifications} getNotifications={getNotifications} />} button1={undefined} button2={undefined} onOpen={function (): void {
             throw new Error("Function not implemented.");
           } }        />
       )

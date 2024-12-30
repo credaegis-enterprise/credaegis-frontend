@@ -9,6 +9,7 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react";
+import { BiBell } from "react-icons/bi";
 import { MyButton } from "../buttons/mybutton";
 import { Spinner } from "@nextui-org/react";
 import { ThemeSwitcher } from "../themes/themeSwitcher";
@@ -16,6 +17,10 @@ import Link from "next/link";
 import { myInstance } from "@/utils/Axios/axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { NotificationType } from "@/types/notificationTypes";
+import MyModal from "../modals/mymodal";
+import NotifBoxMember from "../notification/notifBoxMember";
+
 
 export default function OrganizationNavbar() {
   const router = useRouter();
@@ -24,6 +29,14 @@ export default function OrganizationNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selected, setSelected] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [notificationCount, setNotificationCount] = useState<number>(0);
+  const [notificationPopup, setNotificationPopup] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationType[]>([]);
+
+
+  useEffect(() => {
+    getNotifications();
+  }, []);
 
   useEffect(() => {
     if (!router) return;
@@ -46,6 +59,18 @@ export default function OrganizationNavbar() {
   }, [router]);
 
   console.log(accountType, role);
+
+    const getNotifications = async () => {
+      try {
+        const response = await myInstance.get("member/account/notifications");
+        setNotificationCount(response.data.responseData.length);
+        setNotifications(response.data.responseData);
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
+  
+   
 
   const handleLogout = async () => {
     try {
@@ -203,6 +228,19 @@ export default function OrganizationNavbar() {
       </NavbarMenu>
 
       <NavbarContent justify="end" className="gap-4">
+         <NavbarItem
+          onClick={() => {
+            setNotificationPopup(true);
+            getNotifications();
+          }}
+          className="flex items-center gap-2"  
+        >
+        
+          <BiBell className="text-2xl dark:text-white-600 hover:text-blue-500 dark:hover:text-green-500 hover:scale-110 transition duration-300 cursor-pointer" />
+          <span className="bg-red-500 text-white text-xs rounded-full p-1 flex items-center justify-center">
+            {notificationCount}
+          </span>
+        </NavbarItem>
         <NavbarItem>
           <ThemeSwitcher />
         </NavbarItem>
@@ -220,6 +258,18 @@ export default function OrganizationNavbar() {
           </MyButton>
         </NavbarItem>
       </NavbarContent>
+      {notificationPopup && (
+        <MyModal
+          title=""
+          onClose={() => setNotificationPopup(false)}
+          size="md"
+          isOpen={notificationPopup}
+          backdrop="opaque"
+          content={<NotifBoxMember notfications={notifications} getNotifications={getNotifications} />} button1={undefined} button2={undefined} onOpen={function (): void {
+            throw new Error("Function not implemented.");
+          } }        />
+      )
+        }
     </Navbar>
   );
 }

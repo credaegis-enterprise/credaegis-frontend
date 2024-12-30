@@ -4,7 +4,7 @@ import { MyButton } from "../buttons/mybutton";
 import { myInstance } from "@/utils/Axios/axios";
 import { toast } from "sonner";
 
-interface NotifBoxProps {
+interface NotifBoxMemberProps {
   notfications: NotificationType[];
   getNotifications: () => void;
 
@@ -13,12 +13,12 @@ interface NotifBoxProps {
 
 
 
-const NotifBox: React.FC<NotifBoxProps> = ({ notfications,getNotifications }) => {
+const NotifBoxMember: React.FC<NotifBoxMemberProps> = ({ notfications,getNotifications }) => {
 
 
     const deleteAllNotifications = async () => {
         try{
-            const response = await myInstance.delete("organization/account/delete/notifications/all");
+            const response = await myInstance.delete("member/account/delete/notifications/all");
             toast.success(response.data.message);
             getNotifications();
         }
@@ -30,7 +30,7 @@ const NotifBox: React.FC<NotifBoxProps> = ({ notfications,getNotifications }) =>
 
     const deleteOneNotification = async (id: string) => {
         try{
-            const response = await myInstance.delete(`organization/account/delete/notifications/${id}`);
+            const response = await myInstance.delete(`member/account/delete/notifications/${id}`);
             toast.success(response.data.message);
             getNotifications();
         }
@@ -97,4 +97,4 @@ const NotifBox: React.FC<NotifBoxProps> = ({ notfications,getNotifications }) =>
   );
 };
 
-export default NotifBox;
+export default NotifBoxMember;
