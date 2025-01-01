@@ -63,14 +63,16 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
         router.refresh();
       }
 
-      if (result?.data.responseData.length === 0 && issuedList.length === 0) {
+      if (result?.data.responseData.certificates.length === 0 && issuedList.length === 0) {
         toast.info("No certficates found for selected filters ");
       }
       if (result) {
         
-        const updatedResult: CertificateInfoType[] = result.data.responseData
+        const updatedResult: CertificateInfoType[] = result.data.responseData.certificates
 
-        const count = issuedCount === 0 ? 1 : issuedCount;
+        console.log("updated result");
+        console.log(updatedResult);
+        const count = result.data.responseData.count === 0 ? 1 : result.data.responseData.count;
         setTotalCount(count);
         setIssuedList(updatedResult);
         setFilterOn(true);
@@ -150,14 +152,14 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
         );
       }
 
-      if (result?.data.responseData.length === 0 && issuedList.length === 0) {
+      if (result?.data.responseData.certificates.length === 0 && issuedList.length === 0) {
         toast.info("No certficates found for selected filters ");
       }
       if (result) {
-        const updatedResult: CertificateInfoType[] = result.data.responseData
+        const updatedResult: CertificateInfoType[] = result.data.responseData.certificates
         setIssuedList(updatedResult);
 
-        const count = issuedCount === 0 ? 1 : issuedCount;
+        const count = result.data.responseData.count === 0 ? 1 : result.data.responseData.count;
         if (filterOn) {
           setTotalCount(count);
         }

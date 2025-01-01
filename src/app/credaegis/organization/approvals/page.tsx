@@ -55,7 +55,7 @@ const fetchIssuedCertificates = async () => {
         
 
         }
-        return response.data.responseData
+        return response.data.responseData.certificates
 
     
     } catch (error: any) {

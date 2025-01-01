@@ -57,7 +57,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
         router.refresh();
       }
 
-      if (result?.data.responseData.length === 0 && issuedList.length === 0) {
+      if (result?.data.responseData.certificates.length === 0 && issuedList.length === 0) {
         toast.info("No certficates found for selected filters ");
       }
       if (result) {
