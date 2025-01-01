@@ -57,6 +57,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
       setError(false);
       router.refresh();
       setIsLoading(false);
+      fetchBrandLogo();
     } catch (error: any) {
       console.log(error);
     }
@@ -125,6 +126,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
       toast.success(response.data.message);
       setError(true);
       setIsOpen(false);
+      fetchBrandLogo();
 
     } catch (error: any) {
 
