@@ -298,7 +298,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                       </div>
                     </td>
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      {certificate.issuedDate}
+                    {certificate.issuedDate ? new Date(certificate.issuedDate).toLocaleDateString() : "N/A"}
                     </td>
                     <td
                       className={`px-6 py-4 font-medium text-center 
