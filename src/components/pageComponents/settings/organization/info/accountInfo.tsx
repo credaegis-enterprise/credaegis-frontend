@@ -10,6 +10,7 @@ import { myInstance } from '@/utils/Axios/axios';
 import { set, toArray } from 'lodash';
 import { useRouter } from 'next/navigation';
 import { AccountInfoType } from '@/types/accountInfo.types';
+import { url } from 'inspector';
 
 
 interface AccountInfoProps {
@@ -26,7 +27,10 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
   const [name, setName] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [nameError, setNameError] = useState<boolean>(false);
+  const [url, setUrl] = useState<string>("");
   useEffect(() => {
+
+    fetchBrandLogo();
     setName(settings.organizationInfo.name);
     setUserName(settings.userInfo.username);
   }, [settings.organizationInfo.name]);
@@ -63,6 +67,25 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
       inputRef.current.value = "";
     }
   }
+
+
+  const fetchBrandLogo = async () => {
+    setIsLoading(true);
+    setError(false); 
+    try {
+      const response = await myInstance.get("/organization/account/serve/brand-logo", {
+        responseType: "arraybuffer", 
+      });
+      const blob = new Blob([response.data], { type: "image/png" }); 
+      const objectUrl = URL.createObjectURL(blob); 
+      setUrl(objectUrl); 
+    } catch (err) {
+      console.error("Error fetching brand logo:", err);
+      setError(true); 
+    } finally {
+      setIsLoading(false); 
+    }
+  };
 
 
   const handleInfoUpdate = async () => {
@@ -127,7 +150,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
 
             {!isLoading ? (
             <img
-              src={`${process.env.NEXT_PUBLIC_devbackendurl}/organization/account/serve/brand-logo`}
+              src={url}
               alt="Brand logo not found"
               className="w-48 h-48 object-cover rounded-full shadow-md"
               onError={() => setError(true)}
