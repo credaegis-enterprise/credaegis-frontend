@@ -46,12 +46,12 @@ const fetchIssuedCertificates = async () => {
                 cookie: `MEMBER_SESSION=${cookie}`
             }
         })
-        if(response.data.responseData?.length === 0){
+        if(response.data.responseData?.certificates.length === 0){
             return []
         }
        
 
-        return response.data.responseData
+        return response.data.responseData.certificates
     
     } catch (error: any) {
         console.log(error)

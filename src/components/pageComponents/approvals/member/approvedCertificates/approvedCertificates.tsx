@@ -65,9 +65,9 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
         console.log(result.data.data);
        
 
-        const count = issuedCount === 0 ? 1 : issuedCount;
+        const count = result.data.responseData.count === 0 ? 1 : result.data.responseData.count;
         setTotalCount(count);
-        setIssuedList(result.data.responseData);
+        setIssuedList(result.data.responseData.certificates);
         setFilterOn(true);
         setCurrentPage(1);
       }
@@ -133,7 +133,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
       if (filterOn) {
         if (selectedEvent) {
           result = await myInstance.get(
-            `/member/certificate-control/${selectedEvent}/event/get-latest?page=${pageNumber-1}&size=${rowCount}`
+            `/member/certificate-control/event/${selectedEvent}/get-latest?page=${pageNumber-1}&size=${rowCount}`
           );
 
           console.log(result);
@@ -144,13 +144,13 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
         );
       }
 
-      if (result?.data.responseData.length === 0 && issuedList.length === 0) {
+      if (result?.data.responseData.certificates.length === 0 && issuedList.length === 0) {
         toast.info("No certficates found for selected filters ");
       }
       if (result) {
        
-        setIssuedList(result.data.responseData);
-       const count = issuedCount === 0 ? 1 : issuedCount;
+        setIssuedList(result.data.responseData.certificates);
+       const count = result.data.responseData.count === 0 ? 1 : result.data.responseData.count;
         if (filterOn) {
           setTotalCount(count);
         }
