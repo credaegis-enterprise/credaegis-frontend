@@ -21,14 +21,35 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
   const [error, setError] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [url, setUrl] = useState<string>("");
 
   const [isLoading,setIsLoading] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [nameError, setNameError] = useState<boolean>(false);
   useEffect(() => {
+    fetchBrandLogo();
     setName(settings.userInfo.username);
   }, [settings.userInfo.username]);
 
+
+
+  const fetchBrandLogo = async () => {
+    setIsLoading(true);
+    setError(false); 
+    try {
+      const response = await myInstance.get("/member/account/serve/brand-logo", {
+        responseType: "arraybuffer", 
+      });
+      const blob = new Blob([response.data], { type: "image/png" }); 
+      const objectUrl = URL.createObjectURL(blob); 
+      setUrl(objectUrl); 
+    } catch (err) {
+      console.error("Error fetching brand logo:", err);
+      setError(true); 
+    } finally {
+      setIsLoading(false); 
+    }
+  };
 
 
   const handleInfoUpdate = async () => {
@@ -39,7 +60,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
       return;
     }
 
-    
+      
     setIsLoading(true);
     try {
       const response = await myInstance.put("/member/account/update-info", {
@@ -75,7 +96,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ settings }) => {
             <>
             {!isLoading ? (
             <img
-              src={`${process.env.NEXT_PUBLIC_devbackendurl}/member/account/serve/brand-logo`}
+              src={url}
               alt="Brand logo not found"
               className="w-48 h-48 object-cover rounded-full shadow-md"
               onError={() => setError(true)}

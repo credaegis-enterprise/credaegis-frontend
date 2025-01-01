@@ -1,6 +1,7 @@
 import MyModal from "@/components/modals/mymodal";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { MyButton } from "@/components/buttons/mybutton";
+import { myInstance } from "@/utils/Axios/axios";
 
 interface ApprovalViewerProps {
 
@@ -13,11 +14,40 @@ interface ApprovalViewerProps {
 const ApprovalViewer: React.FC<ApprovalViewerProps> = ({
   approvalId,
   approvalFileName,
-  
   isOpen,
   setIsOpen,
 }) => {
 
+
+
+    const [url, setUrl] = useState<string>("");
+  
+  
+    useEffect(() => {
+      fetchApprovalFile();
+    }, [approvalId]);
+  
+  
+  
+    const fetchApprovalFile = async () => {
+      try {
+        const response = await myInstance.get(
+          `/member/approval-control/view/${approvalId}`
+        ,{
+          responseType: 'arraybuffer',
+        });
+  
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        setUrl(url);
+        console.log(response);
+        
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
+  
+  
 
   return (
   
@@ -32,7 +62,7 @@ const ApprovalViewer: React.FC<ApprovalViewerProps> = ({
     </div>
     
     <iframe
-      src={`${process.env.NEXT_PUBLIC_devbackendurl}/member/approval-control/view/${approvalId}`}
+      src={url}
       className="h-full w-full"
     />
 
