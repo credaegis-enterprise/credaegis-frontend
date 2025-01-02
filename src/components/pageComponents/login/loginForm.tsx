@@ -219,11 +219,11 @@ const LoginForm = () => {
           </span>
           
         </MyButton>
-        <div className="flex justify-end">
+        {/* <div className="flex justify-end">
           <div className="flex text-sm items-center dark:hover:text-green-400 hover:text-blue-600  transition-colors duration-300 cursor-pointer">
             Forgot password?
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const Page =  () => {
         <div className="grid grid-cols-1 md:grid-cols-2 h-full w-full">
           <div className="bg-neutral-950 dark:bg-zinc-800 flex items-center justify-center p-6 md:order-1 order-2">
             <div className="text-white text-center">
-              <div className="text-3xl font-bold mb-2">Credaegis Alpha  V2</div>
+              <div className="text-3xl font-bold mb-2">Credaegis</div>
               <div className="text-2xl font-medieum">Secure your documents from Anywhere.</div>
             </div>
           </div>
