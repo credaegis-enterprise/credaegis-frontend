@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { NotificationType } from "@/types/notificationTypes";
 import MyModal from "../modals/mymodal";
 import NotifBoxMember from "../notification/notifBoxMember";
+import { get } from "lodash";
 
 
 export default function OrganizationNavbar() {
@@ -34,9 +35,7 @@ export default function OrganizationNavbar() {
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
 
 
-  useEffect(() => {
-    getNotifications();
-  }, []);
+
 
   useEffect(() => {
     if (!router) return;
@@ -50,6 +49,10 @@ export default function OrganizationNavbar() {
         console.log(response.data);
         setAccountType(response.data.responseData.accountType);
         setRole(response.data.responseData.role);
+        if(response.data.responseData.role === "CLUSTER_ADMIN"){
+          getNotifications();
+        }
+
         setLoading(false);
       } catch (error: any) {
         console.log(error);
@@ -57,6 +60,8 @@ export default function OrganizationNavbar() {
     };
     getUserRoles();
   }, [router]);
+
+
 
   console.log(accountType, role);
 
@@ -228,6 +233,8 @@ export default function OrganizationNavbar() {
       </NavbarMenu>
 
       <NavbarContent justify="end" className="gap-4">
+
+        {role && role === "CLUSTER_ADMIN" && (
          <NavbarItem
           onClick={() => {
             setNotificationPopup(true);
@@ -241,6 +248,7 @@ export default function OrganizationNavbar() {
             {notificationCount}
           </span>
         </NavbarItem>
+        )}
         <NavbarItem>
           <ThemeSwitcher />
         </NavbarItem>
@@ -258,7 +266,7 @@ export default function OrganizationNavbar() {
           </MyButton>
         </NavbarItem>
       </NavbarContent>
-      {notificationPopup && (
+      {notificationPopup && role === "CLUSTER_ADMIN" && (
         <MyModal
           title=""
           onClose={() => setNotificationPopup(false)}
