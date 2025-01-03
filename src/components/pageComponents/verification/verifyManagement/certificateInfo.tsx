@@ -202,8 +202,8 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                       </div>
                     </div>
                   ) : (
-                    <div className="flex flex-col gap-5 items-center justify-center h-full">
-                      <div className="text-lg  text-gray-800 dark:text-gray-200">
+                    
+                      <div className="flex flex-col text-lg  text-gray-800 dark:text-gray-200">
                         <Input
                           label="Authenticity Status"
                           disabled
@@ -213,8 +213,8 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                           isReadOnly
                         />
 
-                        <div className="mt-10 p-2 bg-stone-850 dark:bg-stone-900 border dark:border-stone-800 rounded-lg">
-                        <div className="flex items-center gap-3">
+                        <div className="mt-10 p-2 bg-stone-850 dark:bg-stone-900 border dark:border-stone-800 rounded-lg ">
+                        <div className="flex items-center gap-3 w-full">
                           <BsExclamationTriangleFill
                             size={25}
                             className="text-yellow-400"
@@ -225,7 +225,7 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                         </div>
                         </div>
                       </div>
-                    </div>
+        
                   )}
                 </>
               )}
