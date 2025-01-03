@@ -70,7 +70,6 @@ const CertificateList: React.FC<MyFileListProps> = ({
       }
     } catch (error: any) {
       console.error("Verification error:", error);
-      toast.error(error.response?.data.message || "An error occurred");
     }
     setPopUp(false);
   };
