@@ -14,6 +14,7 @@ import MyModal from "@/components/modals/mymodal";
 import { MdWarning } from "react-icons/md";
 import { ApprovalInfoType } from "@/types/approvalInfo.type";
 import { EventSearchInfoType } from "@/types/event.types";
+import { Checkbox } from "@nextui-org/react";
 
 
 interface ApproveCertificatesProps {
@@ -39,6 +40,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
 
 
   const router = useRouter();
+  const [persistance, setPersistance] = useState(false);
   const [eventList, setEventList] = useState<EventSearchInfoType[]>([]);
   const [loading, setLoading] = useState(false);
   const [approveModal, setApproveModal] = useState(false);
@@ -94,7 +96,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     setLoading(true);
 
     try {
-      const response = await myInstance.post("/member/approval-control/blockchain/approve", {
+      const response = await myInstance.post(`/member/approval-control/blockchain/approve?persist=${persistance}`, {
         approvalCertificateIds: approvalUlids,
       });
       if (response.data.success) {
@@ -162,7 +164,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           onOpen={() => {
             setRejectModal(true);
           }}
-          title="Revoke Certificates"
+          title="Reject Certificates"
           content={
             <div className="flex gap-2">
               <MdWarning size={30} className="text-yellow-500" />
@@ -201,14 +203,32 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           onOpen={() => {
             setApproveModal(true);
           }}
-          title="Revoke Certificates"
+          title="Approve Certificates"
+
           content={
-            <div className="flex gap-2">
-              <MdWarning size={30} className="text-yellow-500" />
-              <div className="text-lg font-semibold text-yellow-500">
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2">
+              <MdWarning size={60} className="text-red-500" />
+              <div className="text-lg font-semibold text-red-500">
                 Are you sure you want to Approve the selected certificates? This
                 will shown as issued by this user.
               </div>
+              </div>
+              <div className="flex items-center gap-2">
+              <Checkbox
+                            isSelected={persistance}
+                            onValueChange={() => {
+                              setPersistance(!persistance);
+                            }}
+                            className="form-checkbox text-neutral-600 dark:text-neutral-300"
+                            color="success"
+                          />
+      
+                
+                <div className="text-lg font-semibold text-yellow-500">
+                Do you want to persist the file storage of these selected approvals? Otherwise it will be deleted.
+                </div>
+                </div>
             </div>
           }
           button1={

@@ -72,7 +72,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
   const handleEventSelection = (key: string) => {
   
     setSelectedEvent(key);
-  };
+  }; 
 
   const handleRevoke = async () => {
 
@@ -88,7 +88,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
 
     if (issuedCertificatesUlids.length === 0) {
       toast.info("Please select atleast one certificate to revoke");
-      return;
+      return; 
     }
 
     setLoading(true);

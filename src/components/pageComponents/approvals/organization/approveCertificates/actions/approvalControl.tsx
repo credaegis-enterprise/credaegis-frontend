@@ -15,6 +15,7 @@ import { MdWarning } from "react-icons/md";
 import { count } from "console";
 import { ApprovalInfoType } from "@/types/approvalInfo.type";
 import { ClusterSearchInfoType } from "@/types/clusterInfo.types";
+import { Checkbox } from "@nextui-org/react";
 import { EventSearchInfoType } from "@/types/event.types";
 
 interface ApproveCertificatesProps {
@@ -46,6 +47,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
   const [loading, setLoading] = useState(false);
   const [approveModal, setApproveModal] = useState(false);
   const [rejectModal, setRejectModal] = useState(false);
+  const [persistance, setPersistance] = useState(false);
   // const [selectedCluster, setSelectedCluster] = useState<string | null>();
   // const [selectedEvent, setSelectedEvent] = useState<string | null>("");
 
@@ -111,7 +113,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     //on chain approval- for off chain approval, we need to call another api without /blockchain
     try {
       const response = await myInstance.post(
-        "/organization/approval-control/blockchain/approve",
+        `/organization/approval-control/blockchain/approve?persist=${persistance}`,
         {
           approvalCertificateIds: approvalUlids,
         }
@@ -165,6 +167,10 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     setMainLoading(false);
   };
 
+
+  console.log("persistance")
+  console.log(persistance)
+
   return (
     <div className="flex flex-col border dark:border-stone-800 border-gray-200 mb-2 rounded-lg p-2 ">
       {rejectModal && (
@@ -174,17 +180,18 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           backdrop="blur"
           onClose={() => {
             setRejectModal(false);
+          
           }}
           onOpen={() => {
             setRejectModal(true);
           }}
-          title="Revoke Certificates"
+          title="Reject Certificates"
           content={
             <div className="flex gap-2">
               <MdWarning size={30} className="text-yellow-500" />
               <div className="text-lg font-semibold text-yellow-500">
                 Are you sure you want to reject the selected certificates? This
-                will shown as rejected by this user.
+                will shown as rejected by this user, file data will be deleted.
               </div>
             </div>
           }
@@ -213,18 +220,36 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           backdrop="blur"
           onClose={() => {
             setApproveModal(false);
+            setPersistance(false);
           }}
           onOpen={() => {
             setApproveModal(true);
           }}
-          title="Revoke Certificates"
+          title="Approve Certificates"
           content={
-            <div className="flex gap-2">
-              <MdWarning size={30} className="text-yellow-500" />
-              <div className="text-lg font-semibold text-yellow-500">
+            <div className="flex flex-col gap-2">
+              <div className="flex gap-2">
+              <MdWarning size={60} className="text-red-500" />
+              <div className="text-lg font-semibold text-red-500">
                 Are you sure you want to Approve the selected certificates? This
                 will shown as issued by this user.
               </div>
+              </div>
+              <div className="flex items-center gap-2">
+              <Checkbox
+                            isSelected={persistance}
+                            onValueChange={() => {
+                              setPersistance(!persistance);
+                            }}
+                            className="form-checkbox text-neutral-600 dark:text-neutral-300"
+                            color="success"
+                          />
+      
+                
+                <div className="text-lg font-semibold text-yellow-500">
+                Do you want to persist the file storage of these selected approvals? Otherwise it will be deleted.
+                </div>
+                </div>
             </div>
           }
           button1={
