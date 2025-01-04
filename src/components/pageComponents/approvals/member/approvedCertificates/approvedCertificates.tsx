@@ -12,6 +12,7 @@ import { IoMdStats } from "react-icons/io";
 import { Spinner } from "@nextui-org/react";
 import { Pagination } from "@nextui-org/react";
 
+import ApprovalViewer from "../approveCertificates/actions/approvalViewer";
 import { toast } from "sonner";
 import { myInstance } from "@/utils/Axios/axios";
 import { CertificateInfoType } from "@/types/issuedCertificateInfo.types";
@@ -34,6 +35,11 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
   const [selectedCount, setSelectedCount] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filterOn, setFilterOn] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedCertificate, setSelectedCertificate] = useState<CertificateInfoType | null>(
+    null
+  );
+
 
   useEffect(() => {
     setIssuedList(issuedInfo);
@@ -320,11 +326,29 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                     </td>
                     <td className="px-6 py-4 text-center">
                       <div className="flex justify-center gap-4">
-                        {/* <MyButton size="sm" className="bg-black dark:bg-white">
-                        <span className="dark:text-black text-white text-md font-medium">
-                          View
-                        </span>
-                      </MyButton> */}
+                      <MyButton
+                          size="sm"
+                          className={`${
+                            !certificate.persisted
+                              ? "bg-gray-300 cursor-not-allowed opacity-50"
+                              : "bg-black dark:bg-white"
+                          }`}
+                          onClick={() => {
+                            if (!certificate.persisted) {
+                              toast.info("Certificate file is not available");
+                              return;
+                            } else {
+                              setSelectedCertificate(certificate);
+                              setIsOpen(true);
+                            }
+                          }}
+                          disabled={!certificate.persisted} 
+                        >
+                          <span className="dark:text-black text-white text-md font-medium">
+                            View
+                          </span>
+                        </MyButton>
+
                         {!certificate.revoked && (
                           <Checkbox
                             isSelected={certificate.selected}
@@ -374,6 +398,15 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
           onChange={(e) => pageChange(e)}
         />
       </div>
+      {isOpen && selectedCertificate && (
+        <ApprovalViewer
+          approvalId={selectedCertificate.id}
+          approvalFileName={selectedCertificate.certificateName}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+       
+        />
+      )}
     </div>
   );
 };

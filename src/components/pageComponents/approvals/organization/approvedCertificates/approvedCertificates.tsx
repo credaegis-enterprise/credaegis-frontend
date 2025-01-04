@@ -362,7 +362,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                               setIsOpen(true);
                             }
                           }}
-                          disabled={!certificate.persisted} // Disable the button if persisted is false
+                          disabled={!certificate.persisted} 
                         >
                           <span className="dark:text-black text-white text-md font-medium">
                             View
