@@ -7,12 +7,17 @@ import { toast } from "sonner";
 import { FaArrowLeft } from "react-icons/fa";
 import { myInstance } from "@/utils/Axios/axios";
 import { useRouter } from "next/navigation"
+import { set } from "lodash";
 
 const ResetPasswordPage = () => {
   const [resetToken, setResetToken] = useState<string | null>("");
   const router = useRouter();
   const [email, setEmail] = useState<string | null>("");
   const [newPassword, setNewPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
+  const [isConfirmPasswordInvalid, setIsConfirmPasswordInvalid] = useState(false);
+  const [Loading, setLoading] = useState(false);
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -23,6 +28,20 @@ const ResetPasswordPage = () => {
   }, []);
 
   const handleResetPassword = async () => {
+
+    setLoading(true);
+    setIsPasswordInvalid(false);
+    setIsConfirmPasswordInvalid(false);
+    if(newPassword.length===0){
+      setIsPasswordInvalid(true);
+      toast.error("please enter a valid password");
+      return;
+    }
+    if(confirmPassword.length===0){
+      setIsConfirmPasswordInvalid(true);
+      toast.error("please enter a valid password");
+      return;
+    }
     try {
       const response = await myInstance.post(
         "/organization/auth/reset-password",
@@ -30,12 +49,15 @@ const ResetPasswordPage = () => {
           email,
           resetToken,
           newPassword,
+            confirmPassword,
         }
       );
 
       toast.success(response.data.message);
+      setLoading(false);
         router.push("/login")
     } catch (e) {
+        setLoading(false);
       console.error(e);
     }
   };
@@ -54,7 +76,7 @@ const ResetPasswordPage = () => {
           </div>
         </button>
         <h2 className="text-2xl font-medium text-white mb-6">Reset Password</h2>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 justify-start">
           <Input
             label="Email"
             type="email"
@@ -76,6 +98,18 @@ const ResetPasswordPage = () => {
             placeholder="Enter your new password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
+            isInvalid={isPasswordInvalid}
+            errorMessage={"please enter a valid password"}
+
+          />
+           <Input
+            label="confirm Password"
+            type="password"
+            placeholder="Enter your new password"
+            value={confirmPassword}
+            isInvalid={isConfirmPasswordInvalid}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            errorMessage={"please enter a valid password"}
             className=""
           />
           <Button
