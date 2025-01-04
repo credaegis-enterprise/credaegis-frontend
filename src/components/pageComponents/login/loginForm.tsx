@@ -24,6 +24,8 @@ const LoginForm = () => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isEmailInvalid, setIsEmailInvalid] = useState(false);
+  const [isForgotEmailInvalid, setIsForgotEmailInvalid] = useState(false);
+  const [forgotPasswordPopup, setForgotPasswordPopup] = useState(false);
   const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
 
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -119,6 +121,29 @@ const LoginForm = () => {
     }
   };
 
+
+  const handleForgotPassword = async () => {
+
+    setIsLoading(true);
+    setIsForgotEmailInvalid(false);
+
+    if (!emailValidator(email)) {
+      setIsForgotEmailInvalid(true);
+      toast.error("please enter a valid email");
+      setIsLoading(false);
+      return;
+    }
+    let response;
+    try {
+  
+        response = await myInstance.post(`/organization/auth/forgot-password?email=${email}`);
+      toast.success(response.data.message);
+      setIsLoading(false);
+      setForgotPasswordPopup(false);
+    } catch (error: any) {
+      setIsLoading(false);
+    }
+  }
   return (
     <div>
       <MyModal
@@ -219,12 +244,62 @@ const LoginForm = () => {
           </span>
           
         </MyButton>
-        {/* <div className="flex justify-end">
-          <div className="flex text-sm items-center dark:hover:text-green-400 hover:text-blue-600  transition-colors duration-300 cursor-pointer">
+        <div className="flex justify-end">
+          <div 
+          onClick={() => {
+            setForgotPasswordPopup(true);
+          }}
+          className="flex text-sm items-center dark:hover:text-green-400 hover:text-blue-600  transition-colors duration-300 cursor-pointer">
             Forgot password?
           </div>
-        </div> */}
+        </div>
+
+        {forgotPasswordPopup && (
+
+          <MyModal
+            size="md"
+            isOpen={forgotPasswordPopup}
+            backdrop="blur"
+            onClose={() => {
+              setForgotPasswordPopup(false);
+            }}
+            onOpen={() => {
+              setForgotPasswordPopup(true);
+            }}
+            title="Forgot Password"
+            content={
+              <div>
+                <Input
+                  type="email"
+                  label="Email"
+                  value={email}
+                  isInvalid={isForgotEmailInvalid}
+                  errorMessage="Please enter a valid email"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+            }
+            button1={
+              <MyButton
+                className="bg-black dark:bg-white"
+                size="sm"
+                spinner={<Spinner size="sm" color="default" />}
+                isLoading={isLoading}
+                onClick={() => {
+                  handleForgotPassword();
+                }}
+              >
+                <span className="dark:text-black text-white text-md font-medium">
+                  Send Reset Link
+                </span>
+              </MyButton>
+            }
+            button2={undefined}
+          />
+          )}
       </div>
+
+    
     </div>
   );
 };
