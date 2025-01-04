@@ -8,6 +8,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { myInstance } from "@/utils/Axios/axios";
 import { useRouter } from "next/navigation"
 import { set } from "lodash";
+import { Spinner } from "@nextui-org/react";
 
 const ResetPasswordPage = () => {
   const [resetToken, setResetToken] = useState<string | null>("");
@@ -17,7 +18,7 @@ const ResetPasswordPage = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
   const [isConfirmPasswordInvalid, setIsConfirmPasswordInvalid] = useState(false);
-  const [Loading, setLoading] = useState(false);
+  const [loading, setisLoading] = useState(false);
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -29,12 +30,13 @@ const ResetPasswordPage = () => {
 
   const handleResetPassword = async () => {
 
-    setLoading(true);
+    setisLoading(true);
     setIsPasswordInvalid(false);
     setIsConfirmPasswordInvalid(false);
     if(newPassword.length===0){
       setIsPasswordInvalid(true);
       toast.error("please enter a valid password");
+      setisLoading(false);
       return;
     }
     if(confirmPassword.length===0){
@@ -54,10 +56,10 @@ const ResetPasswordPage = () => {
       );
 
       toast.success(response.data.message);
-      setLoading(false);
+      setisLoading(false);
         router.push("/login")
     } catch (e) {
-        setLoading(false);
+       setisLoading(false);
       console.error(e);
     }
   };
@@ -113,7 +115,10 @@ const ResetPasswordPage = () => {
             className=""
           />
           <Button
-            className="w-full bg-blue-500 hover:bg-blue-600 text-black font-semibold py-2 px-4 rounded-md"
+            className="bg-black dark:bg-white text-black"
+            size="sm"
+            spinner={<Spinner size="sm" color="default" />}
+            isLoading={loading}
             onClick={() => {
               handleResetPassword();
             }}
