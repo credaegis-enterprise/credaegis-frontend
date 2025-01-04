@@ -132,6 +132,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
 
   const handleFileRemove = (index: number) => {
     const newFiles = [...selectedFiles];
+    console.log("newFiles", newFiles);
     newFiles.splice(index, 1);
     const updatedVerificationStatus = verificationStatus.filter(
       (status) => status.certificateName !== selectedFiles[index].name
@@ -223,14 +224,16 @@ const CertificateList: React.FC<MyFileListProps> = ({
 
                   <div className="flex items-center gap-4">
                     <div className="group">
-                      <div className="flex items-center justify-center h-8 w-8 rounded-full transition-colors duration-300 group-hover:bg-red-500 dark:group-hover:bg-red-700 ">
+                      <div
+                       onClick={(event) => {
+                        event.stopPropagation();
+                        handleFileRemove(index);
+                      }}
+                       className="flex items-center justify-center h-8 w-8 rounded-full transition-colors duration-300 group-hover:bg-red-500 dark:group-hover:bg-red-700 ">
                         <MdClose
                           size={20}
                           className="dark:text-white text-black group-hover:text-black dark:group-hover:text-white"
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            handleFileRemove(index);
-                          }}
+                         
                         />
                       </div>
                     </div>

@@ -91,7 +91,7 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
             size="sm"
           />
 
-          {info ? (
+          {info && verificationStatusPresent ? (
             <>
               {info && info.infoFound ? (
                 <div className="flex flex-col gap-3">
