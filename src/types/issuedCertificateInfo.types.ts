@@ -8,6 +8,7 @@ export interface  CertificateInfoType  {
   clusterName: string;
   eventName: string;
   revoked: boolean;
+  persisted: boolean;
   issuedDate: string;
   revokedDate: string | null;
   certificateName: string;

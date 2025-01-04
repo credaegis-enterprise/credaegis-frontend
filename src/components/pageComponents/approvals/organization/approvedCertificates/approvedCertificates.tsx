@@ -17,6 +17,7 @@ import { myInstance } from "@/utils/Axios/axios";
 import { Pagination } from "@nextui-org/react";
 import { start } from "repl";
 import { filter, set } from "lodash";
+import ApprovalViewer from "../approveCertificates/actions/approvalViewer";
 import { CertificateInfoType } from "@/types/issuedCertificateInfo.types";
 
 interface ApprovedCertificatesProps {
@@ -37,6 +38,9 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
   const [selectedCount, setSelectedCount] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [filterOn, setFilterOn] = useState<boolean>(false);
+  const [selectedCertificate, setSelectedCertificate] =
+    useState<CertificateInfoType>();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setIssuedList(issuedInfo);
@@ -49,7 +53,6 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
     let result;
     try {
       if (selectedEvent) {
-     
         result = await myInstance.get(
           `/organization/certificate-control/event/${selectedEvent}/get-latest?page=0&size=5`
         );
@@ -63,16 +66,22 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
         router.refresh();
       }
 
-      if (result?.data.responseData.certificates.length === 0 && issuedList.length === 0) {
+      if (
+        result?.data.responseData.certificates.length === 0 &&
+        issuedList.length === 0
+      ) {
         toast.info("No certficates found for selected filters ");
       }
       if (result) {
-        
-        const updatedResult: CertificateInfoType[] = result.data.responseData.certificates
+        const updatedResult: CertificateInfoType[] =
+          result.data.responseData.certificates;
 
         console.log("updated result");
         console.log(updatedResult);
-        const count = result.data.responseData.count === 0 ? 1 : result.data.responseData.count;
+        const count =
+          result.data.responseData.count === 0
+            ? 1
+            : result.data.responseData.count;
         setTotalCount(count);
         setIssuedList(updatedResult);
         setFilterOn(true);
@@ -82,11 +91,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
       console.log(err);
     }
     setLoading(false);
-
   }, [selectedCluster, selectedEvent, router, issuedList]);
-
-
-  
 
   const handleSelectOne = (index: number) => {
     const updateList = [...issuedList];
@@ -123,8 +128,8 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
   console.log("total count", totalCount);
 
   const pageChange = async (pageNumber: number) => {
-    console.log("pageChange function called"+ pageNumber);
- 
+    console.log("pageChange function called" + pageNumber);
+
     if (pageNumber === currentPage) {
       return;
     }
@@ -132,34 +137,44 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
     const rowCount = 5;
     let result;
 
-
     try {
       if (filterOn) {
         if (selectedEvent) {
           result = await myInstance.get(
-            `/organization/certificate-control/event/${selectedEvent}/get-latest?page=${pageNumber-1}&size=${rowCount}`
+            `/organization/certificate-control/event/${selectedEvent}/get-latest?page=${
+              pageNumber - 1
+            }&size=${rowCount}`
           );
-
-
         } else if (selectedCluster) {
           result = await myInstance.get(
-            `/organization/certificate-control/cluster/${selectedCluster}/get-latest?page=${pageNumber-1}&size=${rowCount}`
+            `/organization/certificate-control/cluster/${selectedCluster}/get-latest?page=${
+              pageNumber - 1
+            }&size=${rowCount}`
           );
         }
       } else {
         result = await myInstance.get(
-          `/organization/certificate-control/get-latest?page=${pageNumber-1}&size=${rowCount}`
+          `/organization/certificate-control/get-latest?page=${
+            pageNumber - 1
+          }&size=${rowCount}`
         );
       }
 
-      if (result?.data.responseData.certificates.length === 0 && issuedList.length === 0) {
+      if (
+        result?.data.responseData.certificates.length === 0 &&
+        issuedList.length === 0
+      ) {
         toast.info("No certficates found for selected filters ");
       }
       if (result) {
-        const updatedResult: CertificateInfoType[] = result.data.responseData.certificates
+        const updatedResult: CertificateInfoType[] =
+          result.data.responseData.certificates;
         setIssuedList(updatedResult);
 
-        const count = result.data.responseData.count === 0 ? 1 : result.data.responseData.count;
+        const count =
+          result.data.responseData.count === 0
+            ? 1
+            : result.data.responseData.count;
         if (filterOn) {
           setTotalCount(count);
         }
@@ -301,24 +316,23 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                     </td>
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
                       <div className="flex flex-col gap-2">
-                        <span>
-                          {certificate.issuerName}
-                        </span>
+                        <span>{certificate.issuerName}</span>
                         <span className="text-xs text-gray-700 dark:text-gray-300">
                           {certificate.issuerEmail}
                         </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                    {certificate.issuedDate ? new Date(certificate.issuedDate).toLocaleDateString() : "N/A"}
+                      {certificate.issuedDate
+                        ? new Date(certificate.issuedDate).toLocaleDateString()
+                        : "N/A"}
                     </td>
                     <td
                       className={`px-6 py-4 font-medium text-center 
   ${
     certificate.revoked
       ? "text-red-400 dark:text-red-400"
-      : certificate.expiryDate &&
-        new Date(certificate.expiryDate) < new Date()
+      : certificate.expiryDate && new Date(certificate.expiryDate) < new Date()
       ? "text-yellow-500 dark:text-yellow-400"
       : "text-green-500 dark:text-green-400"
   }`}
@@ -326,17 +340,35 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                       {certificate.revoked
                         ? "Revoked"
                         : certificate.expiryDate &&
-                          new Date(certificate.expiryDate) < new Date()       
+                          new Date(certificate.expiryDate) < new Date()
                         ? "Expired"
                         : "Valid"}
                     </td>
                     <td className="px-6 py-4 text-center">
                       <div className="flex justify-center gap-4">
-                        {/* <MyButton size="sm" className="bg-black dark:bg-white">
-                        <span className="dark:text-black text-white text-md font-medium">
-                          View
-                        </span>
-                      </MyButton> */}
+                        <MyButton
+                          size="sm"
+                          className={`${
+                            !certificate.persisted
+                              ? "bg-gray-300 cursor-not-allowed opacity-50"
+                              : "bg-black dark:bg-white"
+                          }`}
+                          onClick={() => {
+                            if (!certificate.persisted) {
+                              toast.info("Certificate file is not available");
+                              return;
+                            } else {
+                              setSelectedCertificate(certificate);
+                              setIsOpen(true);
+                            }
+                          }}
+                          disabled={!certificate.persisted} // Disable the button if persisted is false
+                        >
+                          <span className="dark:text-black text-white text-md font-medium">
+                            View
+                          </span>
+                        </MyButton>
+
                         {!certificate.revoked && (
                           <Checkbox
                             isSelected={certificate.selected}
@@ -386,6 +418,17 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
           onChange={(e) => pageChange(e)}
         />
       </div>
+
+      {isOpen && selectedCertificate && (
+        <ApprovalViewer
+          approval_file_ulid={selectedCertificate.id}
+          approval_file_name={selectedCertificate.certificateName}
+          setIsOpen={setIsOpen}
+          isOpen={isOpen}
+          cluster_ulid={""}
+          event_ulid={""}
+        />
+      )}
     </div>
   );
 };
