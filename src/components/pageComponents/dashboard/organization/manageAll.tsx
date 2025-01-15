@@ -5,6 +5,7 @@ import { useTabContext } from "@/context/tabContext";
 import Info from "./info/info";
 import Stats from "./statistics/stats";
 import { StatisticsType } from "@/types/global.types";
+import InfoPage from "./Blockchain/InfoPage"
 
 
 interface ManageAllProps {
@@ -30,8 +31,8 @@ const ManageAll: React.FC<ManageAllProps> = ({ stats }) => {
             className="mt-2 lg:mt-0 lg:w-auto w-full"
           >
             {/* <Tab key="certificates" title="Certificates" /> */}
-            {/* <Tab key="statistics" title="Statistics" /> */}
             <Tab key="info" title="Info" />
+            <Tab key="Blockchain" title="Blockchain" />
           </Tabs>
         </div>
 
@@ -49,7 +50,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ stats }) => {
             )
           ) : (
             <div className="flex flex-col h-full overflow-hidden mt-4">
-              {/* <Stats stats={stats} /> */}
+              <InfoPage/>
             </div>
           )}
         </div>
