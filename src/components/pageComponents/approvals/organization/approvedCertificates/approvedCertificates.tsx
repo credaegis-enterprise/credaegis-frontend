@@ -342,7 +342,9 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                         : certificate.expiryDate &&
                           new Date(certificate.expiryDate) < new Date()
                         ? "Expired"
-                        : "Valid"}
+                        : certificate.status === "privateVerified" ?
+                        "verified in private Chain, waiting for public verification" :
+                        "Verified"}
                     </td>
                     <td className="px-6 py-4 text-center">
                       <div className="flex justify-center gap-4">

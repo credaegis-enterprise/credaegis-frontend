@@ -5,7 +5,27 @@ import { myInstanceNEXT } from "@/utils/Axios/axios";
 import getCookies from "@/utils/cookies/getCookies";
 import ClusterView from "@/components/pageComponents/dashboard/organization/clusterView";
 import ManageAll from "@/components/pageComponents/dashboard/organization/manageAll";
-import { StatisticsType } from "@/types/global.types";
+
+
+
+
+const fetchWeb3Info = async () => {
+  const cookies = getCookies("ORGANIZATION_SESSION");
+  try{
+  const response = await myInstanceNEXT.get("/organization/web3/public/info",{
+    headers: {
+        cookie:`ORGANIZATION_SESSION=${cookies}`
+    }
+    
+  });
+  
+  return response.data.responseData;
+  }
+  catch(error: any){
+    console.log(error);
+  }
+  
+}
 
 const fetchClusters = async () => {
 
@@ -21,7 +41,7 @@ const fetchClusters = async () => {
   console.log(response.data);
   }
   catch(error: any){
-    // console.log(error);
+    console.log(error);
   }
   
 }
@@ -49,7 +69,8 @@ const  Page =async () => {
 
   const clustersPromise = fetchClusters();
   const statsPromise = fetchStats();
-  const [clusters,stats] = await Promise.all([clustersPromise,statsPromise]);
+  const web3InfoPromise = fetchWeb3Info();
+  const [clusters,stats,web3Info] = await Promise.all([clustersPromise,statsPromise,web3InfoPromise]);
   console.log(clusters);
 
 
@@ -62,7 +83,7 @@ const  Page =async () => {
       <ClusterView clusters={clusters}/>
       </div>
       <div className="lg:col-span-6 p-2 h-full overflow-auto col-span-full rounded-lg flex flex-col gap-4 border border-gray-200 dark:border-stone-800">
-         <ManageAll stats={stats}  />
+         <ManageAll stats={stats} web3Info={web3Info}  />
       </div>
      </div>
     </div>

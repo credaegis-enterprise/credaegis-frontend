@@ -6,13 +6,16 @@ import Info from "./info/info";
 import Stats from "./statistics/stats";
 import { StatisticsType } from "@/types/global.types";
 import InfoPage from "./Blockchain/InfoPage"
+import Web3InfoType from "@/types/web3info.types";
+
 
 
 interface ManageAllProps {
   stats: StatisticsType;
+  web3Info: Web3InfoType;
 }
 
-const ManageAll: React.FC<ManageAllProps> = ({ stats }) => {
+const ManageAll: React.FC<ManageAllProps> = ({ stats,web3Info }) => {
   const { selectedTab } = useTabContext();
   const [selected, setSelected] = useState<string>("info");
 
@@ -50,7 +53,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ stats }) => {
             )
           ) : (
             <div className="flex flex-col h-full overflow-hidden mt-4">
-              <InfoPage/>
+              <InfoPage web3Info={web3Info}/>
             </div>
           )}
         </div>

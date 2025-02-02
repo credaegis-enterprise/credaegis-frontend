@@ -53,6 +53,7 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
           setAuthenticityStatus("Your certificate has expired.");
           setExpired(true);
         } else {
+
           setAuthenticityStatus("Your certificate is verified and original.");
           setIsAuthentic(true);
           setRevoked(false);

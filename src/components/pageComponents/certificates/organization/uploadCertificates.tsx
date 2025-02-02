@@ -13,8 +13,8 @@ const UploadCertificates = () => {
   const [fileUrl, setFileUrl] = useState<FileInfo | null>(null);
   const [fileCount, setFileCount] = useState<number>(0);
   const [filesMetaInfo, setFilesMetaInfo] = useState<filesMetaType[]>([]);
- const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
- const [loading, setLoading] = useState<boolean>(false);
+  const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const uploadCertificatesForApproval = async (
     selectedFiles: MyFileType[],
