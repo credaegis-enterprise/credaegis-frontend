@@ -1,6 +1,8 @@
 export interface verificationResponseType {
     certificateName: string;
     isIssued: boolean;
+    isPublicVerified: boolean;
+    merkleRoot: string | null;
     info: CertificateInfo | null;
     infoFound: boolean;
   }

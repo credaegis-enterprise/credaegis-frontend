@@ -33,7 +33,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ stats,web3Info }) => {
             aria-label="options"
             className="mt-2 lg:mt-0 lg:w-auto w-full"
           >
-            {/* <Tab key="certificates" title="Certificates" /> */}
+
             <Tab key="info" title="Info" />
             <Tab key="Blockchain" title="Blockchain" />
           </Tabs>

@@ -9,6 +9,7 @@ import { BsExclamationTriangleFill } from "react-icons/bs";
 import { FileInfo } from "@/types/global.types";
 import React from "react";
 import { Textarea } from "@nextui-org/react";
+import { MyButton } from "@/components/buttons/mybutton";
 
 interface CertificateInfoProps {
   verificationStatus: verificationResponseType[] | null;
@@ -26,6 +27,7 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
   const [expired, setExpired] = useState<boolean>(false);
   const [revoked, setRevoked] = useState<boolean>(false);
   const [isAuthentic, setIsAuthentic] = useState<boolean>(false);
+  const [isPublicVerified, setIsPublicVerified] = useState<boolean>(false);
   const [authenticityStatus, setAuthenticityStatus] = useState<string>("");
 
   useEffect(() => {
@@ -54,7 +56,11 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
           setExpired(true);
         } else {
 
-          setAuthenticityStatus("Your certificate is verified and original.");
+          setAuthenticityStatus("Pending verification to public blockchain.");
+
+          if(fileInfo.isPublicVerified){ setIsPublicVerified(true);
+            setAuthenticityStatus("Your certificate is verified and original.");
+          }
           setIsAuthentic(true);
           setRevoked(false);
           setExpired(false);
@@ -100,7 +106,7 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                     label="Authenticity Status"
                     disabled
                     size="sm"
-                    color={isAuthentic ? "success" : "default"}
+                    color={isAuthentic ? (isPublicVerified ? "success" : "warning") : "default" }
                     value={authenticityStatus}
                     isReadOnly
                     isInvalid={revoked || expired}
@@ -112,6 +118,18 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                         : ""
                     }
                   />
+                  {info?.isPublicVerified && (
+                    <MyButton
+                      size="sm"
+                      className="bg-black dark:bg-white"
+                      onClick={() => {
+                        console.log("clicked");
+                      }}
+                    >
+                      view Additional Info
+                    </MyButton>
+                    )
+                  }
                   {revoked && info.info?.revokedDate && (
                     <DatePicker
                       isReadOnly
@@ -209,8 +227,8 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                           label="Authenticity Status"
                           disabled
                           size="sm"
-                          color={isAuthentic ? "success" : "default"}
-                          value={"This certificate is verified and original."}
+                          color= {isAuthentic ? (isPublicVerified ? "success" : "warning") : "default" }
+                          value= {authenticityStatus}
                           isReadOnly
                         />
 
