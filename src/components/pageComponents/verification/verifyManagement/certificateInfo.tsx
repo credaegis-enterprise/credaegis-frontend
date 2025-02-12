@@ -129,7 +129,9 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                       isInvalid={expired}
                       isReadOnly
                       label="Expiry Date"
-                      value={parseDate(info.info.expiryDate)}
+                      value={parseDate(
+                        new Date(info.info.expiryDate).toISOString().split("T")[0]
+                      )}
                       errorMessage={"This certificate has expired."}
                       size="sm"
                     />

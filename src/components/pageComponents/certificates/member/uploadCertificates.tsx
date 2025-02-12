@@ -21,7 +21,7 @@ const UploadCertificates = () => {
     event_ulid: string
   ) => {
     
-   
+    try {
 
     if(selectedFiles.length !== filesMetaInfo.length){
         toast.error("Please fill in the metadata for all the files");
@@ -36,9 +36,9 @@ const UploadCertificates = () => {
     const formData = new FormData();
     selectedFiles.forEach((file) => {
       if(file.size > 1000000){
-        toast.error(`File ${file.name}  size should be less than 1MB`);
         setLoading(false);
-        return;
+        throw new Error(`File ${file.name}  size should be less than 1MB`);
+
       }
       formData.append("approvals", file);
     });
@@ -56,7 +56,7 @@ const UploadCertificates = () => {
     formData.append("info", JSON.stringify(meta));
     console.log(event_ulid);
 
-    try {
+  
       const response = await myInstance.post(
         `/member/approval-control/upload/${event_ulid}`,
         formData,
@@ -72,8 +72,8 @@ const UploadCertificates = () => {
         setUploadSuccess((prev) => !prev);
         
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      toast.error(error.message);
     }
     setLoading(false);
   };

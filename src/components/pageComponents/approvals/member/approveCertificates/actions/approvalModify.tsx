@@ -63,9 +63,9 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
         try{ 
 
             const response = await myInstance.put("/member/approval-control/modify",{
-                approvalUlid: approval.id,
-                name: name,
-                email: email,
+                approvalId: approval.id,
+                recipientName: name,
+                recipientEmail: email,
                 comments: comments,
                 expiryDate: expiryDate
             })
@@ -128,7 +128,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
           />
 
           <DatePicker
-            value={expiryDate ? parseDate(expiryDate) : null}
+            value={expiryDate ? parseDate(new Date(expiryDate).toISOString().split("T")[0]) : null}
             onChange={(e) => setExpiryDate(e?.toString() || null)}
             label="Expiry Date"
             description="Fill this if the certificate has an expiry date"
