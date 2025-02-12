@@ -35,6 +35,11 @@ const UploadCertificates = () => {
     setLoading(true);
     const formData = new FormData();
     selectedFiles.forEach((file) => {
+      if(file.size > 1000000){
+        toast.error(`File ${file.name}  size should be less than 1MB`);
+        setLoading(false);
+        return;
+      }
       formData.append("approvals", file);
     });
 

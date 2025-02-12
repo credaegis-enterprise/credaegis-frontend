@@ -65,20 +65,35 @@ const MyFileList: React.FC<MyFileListProps> = ({
         toast.info("No file selected. Please choose a file.");
         return;
       }
+     
       if (e.target.files) {
-        const filesArray = Array.from(e.target.files).map((file) => {
+        const filesArray = Array.from(e.target.files)
+        .filter((file) => {
+          if (file.type !== "application/pdf") {
+            toast.warning(`"${file.name}" is not a PDF file. Please upload only PDFs.`);
+            return false;
+          }
+          return true;
+        })
+        .map((file) => {
           const newFile = file as MyFileType;
           newFile.id = ulid();
           return newFile;
         });
 
-        if (selectedFiles && selectedFiles.length === 1) {
-          setFileUrl({
-            filename: filesArray[0].name,
-            fileurl: URL.createObjectURL(filesArray[0]),
-            fileindex: filesArray[0].id,
-          });
-        }
+      if (filesArray.length === 0) {
+        return; // No valid PDF files selected
+      }
+
+      if (selectedFiles && selectedFiles.length === 0) {
+        setFileUrl({
+          filename: filesArray[0].name,
+          fileurl: URL.createObjectURL(filesArray[0]),
+          fileindex: filesArray[0].id,
+        });
+      }
+
+
 
         if (selectedFiles.length < 10) {
           if (filesArray.length + selectedFiles.length > 10) {

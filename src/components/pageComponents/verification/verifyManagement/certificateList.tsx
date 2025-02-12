@@ -42,14 +42,19 @@ const CertificateList: React.FC<MyFileListProps> = ({
   const inputFile = useRef<HTMLInputElement>(null);
 
   const handleVerifyCertificates = async () => {
+    try {
     if (selectedFiles.length === 0) {
       toast.warning("Please upload files to verify");
       return;
     }
     const formData = new FormData();
-    selectedFiles.forEach((file) => formData.append("certificates", file));
+    selectedFiles.forEach((file) => {
+      if (file.size > 1000000) {
+       throw new Error(`File ${file.name}  size should be less than 1MB`);
+      }
+      formData.append("certificates", file)});
 
-    try {
+  
       const response = await myInstance.post(
         "/organization/external/blockchain/verify",
         formData,
@@ -69,7 +74,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
         );
       }
     } catch (error: any) {
-      console.error("Verification error:", error);
+      toast.error(error.message);
     }
     setPopUp(false);
   };
@@ -83,11 +88,19 @@ const CertificateList: React.FC<MyFileListProps> = ({
         return;
       }
 
-      const filesArray = Array.from(e.target.files || []).map((file) => {
+      const filesArray = Array.from(files).map((file) => {
+        if (file.type !== "application/pdf") {
+          toast.warning(`"${file.name}" is not a PDF file. Please upload only PDF files.`);
+          return null;
+        }
         const newFile = file as MyFileType;
         newFile.id = ulid();
         return newFile;
-      });
+      }).filter((file): file is MyFileType => file !== null); 
+  
+      if (filesArray.length === 0) {
+        return; 
+      }
 
       if (selectedFiles.length === 0) {
         setFileUrl({
