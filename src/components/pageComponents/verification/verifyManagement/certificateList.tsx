@@ -50,6 +50,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
     const formData = new FormData();
     selectedFiles.forEach((file) => {
       if (file.size > 1000000) {
+        toast.error(`File ${file.name}  size should be less than 1MB`);
        throw new Error(`File ${file.name}  size should be less than 1MB`);
       }
       formData.append("certificates", file)});
