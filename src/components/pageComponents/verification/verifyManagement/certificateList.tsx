@@ -55,6 +55,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
       formData.append("certificates", file)});
 
   
+      console.log("fosssssssaaa");
       const response = await myInstance.post(
         "/organization/external/blockchain/verify",
         formData,
@@ -65,7 +66,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
         }
       );
 
-      console.log("response", response);
+      console.log("respons sssss?e", response);
 
       if (response.data.success) {
         setVerificationStatus(response.data.responseData);
@@ -74,7 +75,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
         );
       }
     } catch (error: any) {
-      toast.error(error.message);
+      console.log("error ssss", error);
     }
     setPopUp(false);
   };
