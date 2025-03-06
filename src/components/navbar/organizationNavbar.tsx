@@ -93,8 +93,11 @@ export default function OrganizationNavbar() {
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarBrand>
-        <NavbarContent justify="start">
+        <NavbarContent
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            justify="start">
           <NavbarMenuToggle
+
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             className="sm:hidden"
 
@@ -112,7 +115,7 @@ export default function OrganizationNavbar() {
               localStorage.setItem("currentPath", "dashboard");
             }}
           >
-            dashboard
+            Dashboard
           </Link>
         </NavbarItem>
 
@@ -125,7 +128,7 @@ export default function OrganizationNavbar() {
               localStorage.setItem("currentPath", "approvals");
             }}
           >
-            approvals
+            Approvals
           </Link>
         </NavbarItem>
 
@@ -138,7 +141,7 @@ export default function OrganizationNavbar() {
               localStorage.setItem("currentPath", "certificates");
             }}
           >
-            certificates
+            Certificates
           </Link>
         </NavbarItem>
 
@@ -151,7 +154,7 @@ export default function OrganizationNavbar() {
                 localStorage.setItem("currentPath", "settings");
             }}
           >
-            settings
+            Settings
           </Link>
         </NavbarItem>
 
@@ -165,32 +168,65 @@ export default function OrganizationNavbar() {
             className={`${isSelected("verification")} transition-colors`}
             onClick={() => setSelected("verification")}
           >
-            verification
+            Verification
           </Link>
         </NavbarItem>
       </NavbarContent>
-
+{/*//mobile view*/}
       <NavbarMenu>
         <NavbarMenuItem className="">
-          <Link href={`/credaegis/${accountType}/dashboard`}>dashboard</Link>
+          <Link
+              className={`${isSelected("dashboard")} transition-colors`}
+            href={`/credaegis/${accountType}/dashboard`}
+              onClick={() => {
+                setSelected("dashboard");
+                    localStorage.setItem("currentPath", "dashboard");
+                    setIsMenuOpen(false);
+
+              }}
+            >Dashboard</Link>
         </NavbarMenuItem>
 
         <NavbarMenuItem>
-          <Link href={`/credaegis/${accountType}/approvals`}>approvals</Link>
+          <Link
+                className={`${isSelected("approvals")} transition-colors`}
+              onClick={() => {
+                setSelected("approvals");
+                    localStorage.setItem("currentPath", "approvals");
+                    setIsMenuOpen(false);
+              }}
+              href={`/credaegis/${accountType}/approvals`}>Approvals</Link>
         </NavbarMenuItem>
 
         <NavbarMenuItem>
-          <Link href={`/credaegis/${accountType}/certificates`}>
-            certificates
+          <Link
+              className={`${isSelected("certificates")} transition-colors`}
+              onClick={() => {
+                setSelected("certificates");
+                    localStorage.setItem("currentPath", "certificates");
+                    setIsMenuOpen(false);
+              }}
+              href={`/credaegis/${accountType}/certificates`}>
+            Certificates
           </Link>
         </NavbarMenuItem>
 
         <NavbarMenuItem>
-          <Link href={`/credaegis/${accountType}/settings`}>settings</Link>
+          <Link
+                className={`${isSelected("settings")} transition-colors`}
+                onClick={() => {
+                    setSelected("settings"),
+                        localStorage.setItem("currentPath", "settings");
+                        setIsMenuOpen(false);
+                }}
+              href={`/credaegis/${accountType}/settings`}>Settings</Link>
         </NavbarMenuItem>
 
         <NavbarMenuItem>
-          <Link href={`/verification`}>verification</Link>
+          <Link
+              className={`${isSelected("verification")} transition-colors`}
+              onClick={() => setSelected("verification")}
+              href={`/verification`}>Verification</Link>
         </NavbarMenuItem>
       </NavbarMenu>
 
