@@ -362,14 +362,14 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                               setIsOpen(true);
                             }
                           }}
-                          disabled={!certificate.persisted} 
+                          disabled={!certificate.persisted}
                         >
                           <span className="dark:text-black text-white text-md font-medium">
                             View
                           </span>
                         </MyButton>
 
-                        {!certificate.revoked && (
+                        {!certificate.revoked ? (
                           <Checkbox
                             isSelected={certificate.selected}
                             onValueChange={() => {
@@ -378,6 +378,8 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                             className="form-checkbox text-neutral-600 dark:text-neutral-300"
                             color="success"
                           />
+                        ):(
+                           <div className="w-6"/>
                         )}
                       </div>
                     </td>
