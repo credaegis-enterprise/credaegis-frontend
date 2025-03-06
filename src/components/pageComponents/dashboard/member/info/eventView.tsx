@@ -47,7 +47,7 @@ const EventView: React.FC<EventsViewProps> = ({ events }) => {
       </div>
       <div className=" mt-2 flex flex-col h-full  overflow-auto">
         <div className="space-y-2 p-2 mt-1 h-full">
-          {!events? (
+          {!events || events.length === 0? (
             <div className="text-gray-400 text-center h-full flex flex-col justify-center">
               No events available.
             </div>
