@@ -193,8 +193,8 @@ const LoginForm = () => {
             selectedKey={selected}
             onSelectionChange={(key) => setSelected(key as string)}
           >
-            <Tab key="member" title="member" />
-            <Tab key="organization" title="organization" />
+            <Tab key="member" title="Member" />
+            <Tab key="organization" title="Organization" />
           </Tabs>
         </div>
         <Input
@@ -206,7 +206,7 @@ const LoginForm = () => {
           onChange={(e) => setEmail(e.target.value)}
         />
         <Input
-          label="password"
+          label="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           isInvalid={isPasswordInvalid}
@@ -240,7 +240,7 @@ const LoginForm = () => {
         >
 
           <span className="dark:text-black text-white text-md font-medium">
-            login to your account
+            Login
           </span>
           
         </MyButton>
@@ -250,7 +250,7 @@ const LoginForm = () => {
             setForgotPasswordPopup(true);
           }}
           className="flex text-sm items-center dark:hover:text-green-400 hover:text-blue-600  transition-colors duration-300 cursor-pointer">
-            Forgot password?
+            Forgot Password?
           </div>
         </div>
 

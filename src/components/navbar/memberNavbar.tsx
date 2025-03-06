@@ -99,16 +99,13 @@ export default function OrganizationNavbar() {
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarBrand>
-        <NavbarContent justify="start">
-          <div
-              className="sm:hidden w-16 h-16 flex items-center justify-center rounded-md bg-gray-100 dark:bg-black cursor-pointer"
-              onClick={() => setIsMenuOpen((prev) => !prev)}
-          >
-            <NavbarMenuToggle
-                className="sm:hidden"
-                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            />
-          </div>
+        <NavbarContent
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            justify="start">
+          <NavbarMenuToggle
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            className="sm:hidden"
+          />
         </NavbarContent>
       </NavbarBrand>
 
@@ -262,12 +259,11 @@ export default function OrganizationNavbar() {
           }}
           className="flex items-center gap-2"  
         >
-        <div className="flex gap-2">
+        
           <BiBell className="text-2xl dark:text-white-600 hover:text-blue-500 dark:hover:text-green-500 hover:scale-110 transition duration-300 cursor-pointer" />
           <span className="bg-red-500 text-white text-xs rounded-full p-1 flex items-center justify-center">
             {notificationCount}
           </span>
-        </div>
         </NavbarItem>
         )}
         <NavbarItem>

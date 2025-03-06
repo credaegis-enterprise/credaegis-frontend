@@ -8,6 +8,7 @@ import { useState } from "react";
 import MyModal from "@/components/modals/mymodal";
 import CreateCluster from "./info/infoCards/actions/createCluster";
 import { ClusterNamesIdType } from "@/types/global.types";
+import { GrAdd } from "react-icons/gr";
 
 interface ClusterListProps {
   clusters: ClusterNamesIdType[];
@@ -29,13 +30,13 @@ const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
         </div>
         <MyButton
           className="bg-black dark:bg-white"
-          size="sm"
+          size="xs"
           onClick={() => {
             setIsOpen(true);
           }}
         >
           <span className="dark:text-black text-white text-md font-medium">
-            Add
+          <GrAdd />
           </span>
         </MyButton>
       </div>
