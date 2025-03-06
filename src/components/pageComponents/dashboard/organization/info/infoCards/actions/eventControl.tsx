@@ -62,9 +62,9 @@ const [eventName, setEventName] = useState(event.name);
       return;
     }
     try {
-      const response = await myInstance.put(`/organization/event-control/rename`, {
-        newEventName: eventName,
-        eventUlid: event.id
+      const response = await myInstance.put(`/organization/event-control/update/${event.id}`, {
+        eventName: eventName,
+        eventDescription: event.description,
       });
       toast.success(response.data.message);
       setIsOpen(false);
