@@ -7,15 +7,23 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import ResponseInterceptor from "@/utils/Axios/interceptor";
-
+import type {Viewport} from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 const baloo = Baloo_Chettan_2({ subsets: ["latin"] });
 
 
 export const metadata: Metadata = {
-  title: "CredAegis",
-  description: "BAsed",
+  title: "Credaegis",
+  description: "secure. simple. scalable.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 1,
+  userScalable: false
 };
 
 export default function RootLayout({
