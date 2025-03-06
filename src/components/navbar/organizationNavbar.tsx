@@ -97,6 +97,7 @@ export default function OrganizationNavbar() {
           <NavbarMenuToggle
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             className="sm:hidden"
+
           />
         </NavbarContent>
       </NavbarBrand>

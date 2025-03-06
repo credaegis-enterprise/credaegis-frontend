@@ -63,7 +63,6 @@ const MemberActions: React.FC<MemberActionProps> = ({ member,setIsOpen}) => {
       setIsOpen(false);
   
     } catch (error: any) {
-      toast.error(error.response?.data.message || "An error occurred");
       console.log(error);
     }
 
@@ -77,7 +76,6 @@ const MemberActions: React.FC<MemberActionProps> = ({ member,setIsOpen}) => {
       setIsOpen(false);
      
     } catch (error: any) {
-      toast.error(error.response?.data.message || "An error occurred");
       console.log(error);
     }
 
