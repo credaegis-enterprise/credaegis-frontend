@@ -47,34 +47,37 @@ const EventView: React.FC<EventsViewProps> = ({ events }) => {
       </div>
       <div className=" mt-2 flex flex-col h-full  overflow-auto">
         <div className="space-y-2 p-2 mt-1 h-full">
-          {!events || events.length === 0? (
-            <div className="text-gray-400 text-center h-full flex flex-col justify-center">
-              No events available.
-            </div>
-          ) : (
-         
-          
-          events && events.map((event, index) => (
-            <motion.div
-              key={event.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.1, delay: index * 0.015 }}
-              whileHover={{
-                scale: 1.01,
-                boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
-              }}
-              onClick={() => {setSelectedEvent(event); setIsInfoOpen(true);}}
-              whileTap={{ scale: 0.98 }}
-              className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
-            >
-              <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                {event.name}
-              </h3>
-            </motion.div>
-          ))
-      
-          )}
+            {
+                (events && events.length > 0) ? (
+                    events.map((event, index) => (
+                        <motion.div
+                            key={event.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.1, delay: index * 0.015 }}
+                            whileHover={{
+                                scale: 1.01,
+                                boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
+                            }}
+                            onClick={() => { setSelectedEvent(event); setIsInfoOpen(true); }}
+                            whileTap={{ scale: 0.98 }}
+                            className="bg-white dark:bg-stone-900 rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer"
+                        >
+                            <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                {event.name}
+                            </h3>
+                        </motion.div>
+                    ))
+                ) : (
+                    <div className="flex h-full justify-center items-center text-lg">
+                        No events available.
+                    </div>
+                )
+            }
+
+
+
+
         </div>
 
       
