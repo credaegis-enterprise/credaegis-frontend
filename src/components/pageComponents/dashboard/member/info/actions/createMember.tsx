@@ -45,6 +45,7 @@ const CreateMember: React.FC<CreateMemberProps> = ({
       const response = await myInstance.post("/member/member-control/create", {
         username: memberName,
         email: memberEmail,
+        clusterId: "not required",
       });
 
       toast.success(response.data.message);
