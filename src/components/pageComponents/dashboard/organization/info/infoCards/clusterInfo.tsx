@@ -179,9 +179,15 @@ const ClusterInfo: React.FC<ClusterInfoProps> = ({
             <div className="row-span-1">
               <div className="flex lg:justify-start justify-end lg:ml-12 mt-4 lg:mt-0">
                 <MyButton
-                  className="bg-black dark:bg-white"
+                    className={`${
+                        clusterDetails.members.length < 2
+                            ? "bg-gray-300 cursor-not-allowed opacity-50"
+                            : "bg-black dark:bg-white"
+                    }`}
                   size="sm"
                   onClick={() => handleOpenModal("changeAdmin")}
+                  isDisabled={clusterDetails.members.length < 2}
+
                 >
                   <span className="dark:text-black text-white text-md font-medium">
                     Change Admin
