@@ -6,12 +6,8 @@ import { MiddlewareFactory } from "./types";
 export const memberAuth: MiddlewareFactory = (next) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
     const pathname = request.nextUrl.pathname;
-
-
     if (pathname.startsWith("/credaegis/member")) {
-      const authInfo = await authenticator("member","MEMBER_SESSION");
-
- 
+      const authInfo = await authenticator("member","CREDAEGIS_SESSION");
       if (!authInfo || !authInfo.isAuthenticated) {
         return NextResponse.redirect(new URL("/login", request.url));
       }

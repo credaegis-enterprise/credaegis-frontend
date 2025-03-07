@@ -9,11 +9,11 @@ import { StatisticsType } from "@/types/global.types";
 
 const fetchClusters = async () => {
 
-  const cookies = getCookies("ORGANIZATION_SESSION");
+  const cookies = getCookies("CREDAEGIS_SESSION");
   try{
   const response = await myInstanceNEXT.get("/organization/cluster-control/get-clusters",{
     headers: {
-        cookie:`ORGANIZATION_SESSION=${cookies}`
+        cookie:`CREDAEGIS_SESSION=${cookies}`
     }
     
   });
@@ -27,11 +27,11 @@ const fetchClusters = async () => {
 }
 
 const fetchStats = async () => {
-  const cookies = getCookies("ORGANIZATION_SESSION");
+  const cookies = getCookies("CREDAEGIS_SESSION");
   try{
   const response = await myInstanceNEXT.get("/organization/cluster-control/statistics/get-all",{
     headers: {
-        cookie:`ORGANIZATION_SESSION=${cookies}`
+        cookie:`CREDAEGIS_SESSION=${cookies}`
     }
     
   });

@@ -4,11 +4,11 @@ import ManageAll from "@/components/pageComponents/dashboard/member/manageAll";
 
 
 const fetchMembers = async () => {
-  const cookie = getCookies("MEMBER_SESSION");
+  const cookie = getCookies("CREDAEGIS_SESSION");
   try {
     const response = await myInstanceNEXT.get("/member/member-control/get-all", {
       headers: {
-        cookie: `MEMBER_SESSION=${cookie}`,
+        cookie: `CREDAEGIS_SESSION=${cookie}`,
       },
     });
 
@@ -21,7 +21,7 @@ const fetchMembers = async () => {
 
 
 const fetchStats = async () => {
-  const cookie = getCookies("MEMBER_SESSION");
+  const cookie = getCookies("CREDAEGIS_SESSION");
   try {
     // const response = await myInstanceNEXT.get("/member/member-control/statistics/get-all", {
     //   headers: {
@@ -35,11 +35,11 @@ const fetchStats = async () => {
 }
 
 const fetchEvents = async () => {
-  const cookie = getCookies("MEMBER_SESSION");
+  const cookie = getCookies("CREDAGEIS_SESSION");
   try {
     const response = await myInstanceNEXT.get("/member/event-control/get-all", {
       headers: {
-        cookie: `MEMBER_SESSION=${cookie}`,
+        cookie: `CREDAEGIS_SESSION=${cookie}`,
       },
     });
 

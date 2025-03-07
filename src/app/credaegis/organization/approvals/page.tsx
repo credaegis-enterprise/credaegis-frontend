@@ -9,11 +9,11 @@ import { CertificateInfoType } from "@/types/issuedCertificateInfo.types"
 
 
 const fetchApprovals = async () => {
-    const cookie = getCookies("ORGANIZATION_SESSION")
+    const cookie = getCookies("CREDAEGIS_SESSION")
     try {
         const response = await myInstanceNEXT.get("/organization/approval-control/get-all", {
             headers: {
-                cookie: `ORGANIZATION_SESSION=${cookie}`
+                cookie: `CREDAEGIS_SESSION=${cookie}`
             }
         })
         if(response.data.responseData.length === 0){
@@ -28,11 +28,11 @@ const fetchApprovals = async () => {
 
 
 const fetchIssuedCount = async () => {
-    const cookie = getCookies("ORGANIZATION_SESSION")
+    const cookie = getCookies("CREDAEGIS_SESSION")
     try {
         const response = await myInstanceNEXT.get("/organization/certificate-control/issued/get-count", {
             headers: {
-                cookie: `ORGANIZATION_SESSION=${cookie}`
+                cookie: `CREDAEGIS_SESSION=${cookie}`
             }
         })
         return response.data.responseData.count
@@ -43,11 +43,11 @@ const fetchIssuedCount = async () => {
 
 
 const fetchIssuedCertificates = async () => {
-    const cookie = getCookies("ORGANIZATION_SESSION")
+    const cookie = getCookies("CREDAEGIS_SESSION")
     try {
         const response = await myInstanceNEXT.get("/organization/certificate-control/get-latest?page=0&size=5", {
             headers: {
-                cookie: `ORGANIZATION_SESSION=${cookie}`
+                cookie: `CREDAEGIS_SESSION=${cookie}`
             }
         })
         if(response.data.responseData?.length === 0){
