@@ -285,7 +285,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
               }}
             >
               <span className="dark:text-black text-white text-md font-medium">
-                upload to check authenticity
+               check authenticity
               </span>
             </MyButton>
           </div>
