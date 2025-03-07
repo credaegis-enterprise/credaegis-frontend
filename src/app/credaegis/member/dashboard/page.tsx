@@ -3,6 +3,24 @@ import getCookies from "@/utils/cookies/getCookies";
 import ManageAll from "@/components/pageComponents/dashboard/member/manageAll";
 
 
+
+const fetchEvents = async () => {
+  const cookie = getCookies("CREDAEGIS_SESSION");
+  try {
+    const response = await myInstanceNEXT.get("/member/event-control/get-all", {
+      headers: {
+        cookie: `CREDAEGIS_SESSION=${cookie}`,
+      },
+    });
+
+
+    return response.data.responseData;
+  } catch (error: any) {
+    console.log(error.message);
+  }
+};
+
+
 const fetchMembers = async () => {
   const cookie = getCookies("CREDAEGIS_SESSION");
   try {
@@ -12,7 +30,7 @@ const fetchMembers = async () => {
       },
     });
 
-    console.log(response.data);
+
     return response.data.responseData.members;
   } catch (error: any) {
     console.log(error);
@@ -34,22 +52,6 @@ const fetchStats = async () => {
   }
 }
 
-const fetchEvents = async () => {
-  const cookie = getCookies("CREDAGEIS_SESSION");
-  try {
-    const response = await myInstanceNEXT.get("/member/event-control/get-all", {
-      headers: {
-        cookie: `CREDAEGIS_SESSION=${cookie}`,
-      },
-    });
-
-    console.log(response.data);
-
-    return response.data.responseData;
-  } catch (error: any) {
-    console.log(error);
-  }
-};
 
 const Page = async () => {
   
@@ -57,6 +59,8 @@ const Page = async () => {
   const eventsPromise = fetchEvents();
   const statsPromise = fetchStats();
   const [members, events,stats] = await Promise.all([membersPromise, eventsPromise,statsPromise]);
+  console.log("skkskskskss")
+  console.log(members)
   console.log(events)
   
 

@@ -37,6 +37,7 @@ const CreateEvent: React.FC<CreateEventProps> = ({
       const response = await myInstance.post("/member/event-control/create", {
         eventName: eventName,
         description: description,
+        clusterId: "not required"
       });
 
       toast.success(response.data.message);
