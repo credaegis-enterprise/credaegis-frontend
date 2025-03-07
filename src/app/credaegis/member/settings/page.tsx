@@ -10,11 +10,11 @@ import { AccountInfoType } from "@/types/accountInfo.types";
 
 const fetchSettings = async () => {
 
-    const cookies = getCookies("MEMBER_SESSION");
+    const cookies = getCookies("CREDAEGIS_SESSION");
     try {
         const response = await myInstanceNEXT.get("/member/account/me",{
             headers: {
-                cookie:`MEMBER_SESSION=${cookies}`
+                cookie:`CREDAEGIS_SESSION=${cookies}`
             }
         });
         return response.data.responseData as AccountInfoType;

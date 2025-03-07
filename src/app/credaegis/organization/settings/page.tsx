@@ -9,11 +9,11 @@ import getCookies from "@/utils/cookies/getCookies";
 
 const fetchSettings = async () => {
 
-    const cookies = getCookies("ORGANIZATION_SESSION");
+    const cookies = getCookies("CREDAEGIS_SESSION");
     try {
         const response = await myInstanceNEXT.get("/organization/account/me",{
             headers: {
-                cookie:`ORGANIZATION_SESSION=${cookies}`
+                cookie:`CREDAEGIS_SESSION=${cookies}`
             }
         });
         return response.data.responseData

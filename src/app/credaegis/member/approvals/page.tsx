@@ -5,11 +5,11 @@ import getCookies from "@/utils/cookies/getCookies"
 
 
 const fetchApprovals = async () => {
-    const cookie = getCookies("MEMBER_SESSION")
+    const cookie = getCookies("CREDAEGIS_SESSION")
     try {
         const response = await myInstanceNEXT.get("/member/approval-control/cluster/get-all", {
             headers: {
-                cookie: `MEMBER_SESSION=${cookie}`
+                cookie: `CREDAEGIS_SESSION=${cookie}`
             }
         })
         if(response.data.responseData.length === 0){
@@ -24,11 +24,11 @@ const fetchApprovals = async () => {
 
 
 const fetchIssuedCount = async () => {
-    const cookie = getCookies("MEMBER_SESSION")
+    const cookie = getCookies("CREDAEGIS_SESSION")
     try {
         const response = await myInstanceNEXT.get("/member/certificate-control/issued/get-count", {
             headers: {
-                cookie: `MEMBER_SESSION=${cookie}`
+                cookie: `CREDAEGIS_SESSION=${cookie}`
             }
         })
         return response.data.responseData.count
@@ -39,11 +39,11 @@ const fetchIssuedCount = async () => {
 
 
 const fetchIssuedCertificates = async () => {
-    const cookie = getCookies("MEMBER_SESSION")
+    const cookie = getCookies("CREDAEGIS_SESSION")
     try {
         const response = await myInstanceNEXT.get("/member/certificate-control/cluster/get-latest?page=0&size=5", {
             headers: {
-                cookie: `MEMBER_SESSION=${cookie}`
+                cookie: `CREDAEGIS_SESSION=${cookie}`
             }
         })
         if(response.data.responseData?.certificates.length === 0){

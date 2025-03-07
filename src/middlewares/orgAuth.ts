@@ -6,11 +6,9 @@ import { MiddlewareFactory } from "./types";
 export const orgAuth: MiddlewareFactory = (next) => {
   return async (request: NextRequest, _next: NextFetchEvent) => {
     const pathname = request.nextUrl.pathname;
-    console.log(request.nextUrl);
-    if (
-      ["/credaegis/organization"]?.some((path) => pathname.startsWith(path))
-    ) {
-      const authInfo = await authenticator("organization", "ORGANIZATION_SESSION");
+    if (pathname.startsWith("/credaegis/organization"))
+    {
+      const authInfo = await authenticator("organization", "CREDAEGIS_SESSION");
       console.log("AUTH INFO");
       console.log(authInfo);
 
