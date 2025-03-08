@@ -108,11 +108,16 @@ export default function OrganizationNavbar() {
                 </Link>
               </NavbarItem>
           ))}
-          <NavbarItem>
+          <NavbarItem
+
+
+          >
             <Link
                 href="/verification"
                 className={`${isSelected("verification")} transition-colors`}
-                onClick={() => setSelected("verification")}
+                onClick={() =>{ setSelected("verification");
+                localStorage.setItem("path",window.location.pathname);
+                }}
             >
               Verification
             </Link>
