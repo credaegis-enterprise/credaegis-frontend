@@ -3,6 +3,8 @@ export interface verificationResponseType {
     isIssued: boolean;
     info: CertificateInfo | null;
     infoFound: boolean;
+    isPublicVerified: boolean;
+
   }
   
   export interface CertificateInfo {

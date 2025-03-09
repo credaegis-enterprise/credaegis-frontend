@@ -26,6 +26,9 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
   const [expired, setExpired] = useState<boolean>(false);
   const [revoked, setRevoked] = useState<boolean>(false);
   const [isAuthentic, setIsAuthentic] = useState<boolean>(false);
+  const [verificationColor, setVerificationColor] =
+      useState<"success" | "warning" | "default" | "primary" | "secondary" | "danger" | undefined>(undefined);
+
   const [authenticityStatus, setAuthenticityStatus] = useState<string>("");
 
   useEffect(() => {
@@ -53,7 +56,15 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
           setAuthenticityStatus("Your certificate has expired.");
           setExpired(true);
         } else {
-          setAuthenticityStatus("Your certificate is verified and original.");
+          if(fileInfo.isPublicVerified) {
+            setVerificationColor("success");
+            setAuthenticityStatus("Your certificate is verified and original.");
+          }
+          else {
+            setVerificationColor("warning");
+            setAuthenticityStatus("Your certificate is pending verification in public chain.");
+          }
+
           setIsAuthentic(true);
           setRevoked(false);
           setExpired(false);
@@ -99,7 +110,7 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                     label="Authenticity Status"
                     disabled
                     size="sm"
-                    color={isAuthentic ? "success" : "default"}
+                    color={verificationColor || "default"}
                     value={authenticityStatus}
                     isReadOnly
                     isInvalid={revoked || expired}
