@@ -44,13 +44,32 @@ const fetchStats = async () => {
 }
 
 
+const fetchWeb3Info = async () => {
+    const cookies = getCookies("CREDAEGIS_SESSION");
+    try{
+        const response = await myInstanceNEXT.get("/organization/web3/public/info",{
+            headers: {
+                cookie:`CREDAEGIS_SESSION=${cookies}`
+            }
+
+        });
+
+        return response.data.responseData;
+    }
+    catch(error: any){
+        console.log(error);
+    }
+
+}
+
+
 const  Page =async () => {
 
 
-  const clustersPromise = fetchClusters();
-  const statsPromise = fetchStats();
-  const [clusters,stats] = await Promise.all([clustersPromise,statsPromise]);
-  console.log(clusters);
+    const clustersPromise = fetchClusters();
+    const statsPromise = fetchStats();
+    const web3InfoPromise = fetchWeb3Info();
+    const [clusters,stats,web3Info] = await Promise.all([clustersPromise,statsPromise,web3InfoPromise]);
 
 
 
@@ -62,7 +81,7 @@ const  Page =async () => {
       <ClusterView clusters={clusters}/>
       </div>
       <div className="lg:col-span-6 p-2 h-full overflow-auto col-span-full rounded-lg flex flex-col gap-4 border border-gray-200 dark:border-stone-800">
-         <ManageAll stats={stats}  />
+         <ManageAll stats={stats} web3Info={web3Info}  />
       </div>
      </div>
     </div>
