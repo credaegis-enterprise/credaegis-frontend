@@ -12,6 +12,7 @@ import {Inconsolata, Roboto_Mono} from "next/font/google";
 import React, {useState} from "react";
 import MyModal from "@/components/modals/mymodal";
 import NotifBoxMember from "@/components/notification/notifBoxMember";
+import {Input} from "@nextui-org/react";
 
 interface InfoPageProps {
     web3Info: Web3InfoType;
@@ -30,7 +31,7 @@ const InfoPage: React.FC<InfoPageProps> = ({ web3Info }) => {
     const [isOpen, SetIsOpen] = useState<boolean>(false);
 
     return (
-        <div className="h-screen flex flex-col p-6 overflow-hidden">
+        <div className="h-screen overflow-auto flex flex-col p-6 ">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border dark:border-stone-800 rounded-lg h-1/2">
                 {/* Connected Info */}
                 <div className="p-4 overflow-auto">
@@ -79,10 +80,6 @@ const InfoPage: React.FC<InfoPageProps> = ({ web3Info }) => {
                         ))}
 
                         <div className="flex justify-end gap-3">
-                            <MyButton onClick={() => SetIsOpen(true)} size="sm"
-                                      className="bg-black text-white dark:text-black dark:bg-white">
-                                View hashes
-                            </MyButton>
 
                             <MyButton size="sm"
                                       className="bg-black text-white dark:text-black dark:bg-white">Push</MyButton>
@@ -91,63 +88,85 @@ const InfoPage: React.FC<InfoPageProps> = ({ web3Info }) => {
                 </div>
             </div>
 
-            {/* Summary Section */}
+
             <div
-                className="grid grid-cols-1 md:grid-cols-2 gap-6 border dark:border-stone-800 rounded-lg mt-2 p-6 flex-grow overflow-hidden">
-                {/* Batch Summary */}
-                <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-auto">
-                    <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Batch Summary</h2>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Batch ID: <span className="font-medium">{batchId}</span></p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Merkle Root: <span className="break-all font-medium">{merkleRoot}</span></p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Hash Count: <span className="font-medium">{batchInfo.hashCount}</span></p>
+                className="grid grid-cols-1 md:grid-cols-2 gap-6 border dark:border-stone-800 rounded-lg mt-2 p-6 flex-grow ">
+                <div className={`md:col-span-2 p-1`}>
+                    <div className={`flex items-center gap-2`}>
+                        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">Batch Information</h2>
+                        <div className="flex items-center gap-2">
+                            <Input placeholder="Enter batch Id" size="sm" />
+                            <MyButton size="sm" className="bg-black text-white dark:text-black dark:bg-white h-7">
+                                Search
+                            </MyButton>
+                        </div>
+                    </div>
+            </div>
+
+
+                <div className="p-4 bg-gray-100 dark:bg-zinc-900 rounded-lg ">
+                    <div className="flex items-center gap-2 mb-4 w-full gap-4">
+                        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 w-1/2">Batch Summary</h2>
+
+                    </div>
+
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Batch ID: <span
+                        className="font-medium">{batchId}</span></p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Merkle Root: <span
+                        className="break-all font-medium">{merkleRoot}</span></p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Hash Count: <span
+                        className="font-medium">{batchInfo.hashCount}</span></p>
                 </div>
 
                 {/* Transaction Details */}
-                <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-auto">
+                <div className="p-4 bg-gray-100 dark:bg-zinc-900 rounded-lg ">
                     <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Transaction Details</h2>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Txn Hash: <span className="break-all font-medium">{batchInfo.txnHash}</span></p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Txn Fee: <span className="font-medium">{batchInfo.txnFee} ETH</span></p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Txn Hash: <span
+                        className="break-all font-medium">{batchInfo.txnHash}</span></p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Txn Fee: <span
+                        className="font-medium">{batchInfo.txnFee} ETH</span></p>
                     <p className={`text-sm font-medium mt-2 ${batchInfo.pushStatus ? 'text-green-600' : 'text-red-600'}`}>
                         Push Status: {batchInfo.pushStatus ? "Success" : "Failed"}
                     </p>
                 </div>
 
-                {/* Hashes List */}
-                <div className="md:col-span-2 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-auto">
+                <div className="md:col-span-2 p-4 bg-gray-100 dark:bg-zinc-900 rounded-lg ">
                     <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Hashes</h2>
                     <div className="mt-2 space-y-2">
                         {hashes.map((hash, index) => (
-                            <p key={index} className="text-sm text-gray-600 dark:text-gray-400 break-all p-2 bg-gray-200 dark:bg-gray-700 rounded-lg">
+                            <p key={index}
+                               className="text-sm text-gray-700 dark:text-white break-all p-2 bg-gray-200 dark:bg-zinc-700 rounded-lg">
                                 {hash}
                             </p>
                         ))}
                     </div>
                 </div>
-            </div>
 
-            {/* Hash Modal */}
-            {isOpen && (
-                <MyModal
 
-                    title="Hashes"
-                    onClose={() => SetIsOpen(false)}
-                    size="md"
-                    isOpen={isOpen}
-                    backdrop="opaque"
-                    content={<div className="flex flex-col gap-4">
-                        {web3Info.currentBatchInfo.hashes.map((hash, index) => (
-                            <div key={index} className="flex items-start gap-4 w-full">
-                                <span className="text-gray-500 font-medium">{index + 1}.</span>
-                                <div
-                                    className="flex flex-col gap-1 p-2 bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm w-full break-all">
-                                    {hash}
+                {/* Hash Modal */}
+                {isOpen && (
+                    <MyModal
+
+                        title="Hashes"
+                        onClose={() => SetIsOpen(false)}
+                        size="md"
+                        isOpen={isOpen}
+                        backdrop="opaque"
+                        content={<div className="flex flex-col gap-4">
+                            {web3Info.currentBatchInfo.hashes.map((hash, index) => (
+                                <div key={index} className="flex items-start gap-4 w-full">
+                                    <span className="text-gray-500 font-medium">{index + 1}.</span>
+                                    <div
+                                        className="flex flex-col gap-1 p-2 bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm w-full break-all">
+                                        {hash}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>} button1={undefined} button2={undefined} onOpen={function (): void {
-                    throw new Error("Function not implemented.");
-                }}                />
-            )}
+                            ))}
+                        </div>} button1={undefined} button2={undefined} onOpen={function (): void {
+                        throw new Error("Function not implemented.");
+                    }}/>
+                )}
+            </div>
         </div>
     );
 };
