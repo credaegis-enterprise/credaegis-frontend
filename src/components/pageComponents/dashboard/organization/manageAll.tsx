@@ -7,15 +7,18 @@ import Stats from "./statistics/stats";
 import { StatisticsType } from "@/types/global.types";
 import InfoPage from "./blockchain/infoPage";
 import Web3InfoType from "@/types/web3info.types";
+import {BatchInfoType} from "@/types/batchInfo.types";
+
 
 
 
 interface ManageAllProps {
-  stats: StatisticsType;
+  batchInfo: BatchInfoType;
   web3Info: Web3InfoType;
+
 }
 
-const ManageAll: React.FC<ManageAllProps> = ({ stats,web3Info }) => {
+const ManageAll: React.FC<ManageAllProps> = ({ batchInfo,web3Info }) => {
   const { selectedTab } = useTabContext();
   const [selected, setSelected] = useState<string>("info");
 
@@ -53,7 +56,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ stats,web3Info }) => {
                 )
             ) : (
                 <div className="flex flex-col h-full overflow-hidden mt-4">
-                  <InfoPage web3Info={web3Info}/>
+                  <InfoPage batchInfo={batchInfo} web3Info={web3Info}/>
                 </div>
             )}
           </div>

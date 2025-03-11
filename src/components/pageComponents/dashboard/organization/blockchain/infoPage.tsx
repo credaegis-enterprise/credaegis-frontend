@@ -13,22 +13,23 @@ import React, {useState} from "react";
 import MyModal from "@/components/modals/mymodal";
 import NotifBoxMember from "@/components/notification/notifBoxMember";
 import {Input} from "@nextui-org/react";
+import {BatchInfoType} from "@/types/batchInfo.types";
 
 interface InfoPageProps {
     web3Info: Web3InfoType;
+    batchInfo: BatchInfoType
 }
 
 const robotoMono = Roboto_Mono({ subsets: ["latin"] });
 const inconsolata = Inconsolata({ subsets: ["latin"] });
 
-const InfoPage: React.FC<InfoPageProps> = ({ web3Info }) => {
-    const { batchId, hashes, merkleRoot, batchInfo } = {
-        batchId: "1",
-        hashes: ["hash1", "hash2", "hash3"],
-        merkleRoot: "root",
-        batchInfo: { hashCount: 3, txnHash: "hash", txnFee: 0.1, pushStatus: true }
-    };
+const InfoPage: React.FC<InfoPageProps> = ({ web3Info,batchInfo }) => {
     const [isOpen, SetIsOpen] = useState<boolean>(false);
+
+
+    console.log(web3Info);
+    console.log(batchInfo);
+
 
     return (
         <div className="h-screen overflow-auto flex flex-col p-6 ">
@@ -105,40 +106,78 @@ const InfoPage: React.FC<InfoPageProps> = ({ web3Info }) => {
 
 
                 <div className="p-4 bg-gray-100 dark:bg-zinc-900 rounded-lg ">
-                    <div className="flex items-center gap-2 mb-4 w-full gap-4">
-                        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 w-1/2">Batch Summary</h2>
-
+                    <div className="flex items-center gap-2 mb-4 w-full gap-6">
+                        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 w-1/2">Summary</h2>
                     </div>
+                    {batchInfo?.isCurrentBatch ? (
+                        <div className={`flex justify-center items-center gap-2 text-gray-500`}>
+                            finalize batch to view information
+                        </div>
+                    ) : (
+                        <div>
+                            {[
+                                { label: "Merkle Root", value: batchInfo.batchInfo?.merkleRoot || "pending", className: "break-words w-full" },
+                                { label: "Hash Count", value: batchInfo.hashes.length, className: "mt-2" },
+                                {
+                                    label: "Push Status",
+                                    value: batchInfo.batchInfo?.pushStatus,
+                                    className: "mt-2"
+                                }
+                            ].map(({ label, value, className }, index) => (
+                                <div key={index} className="flex flex-wrap items-center justify-between gap-1">
+                                    <p className="text-sm text-gray-700 dark:text-gray-300">{label}</p>
+                                    <div
+                                        className={`${robotoMono.className} px-2 py-1 text-sm bg-gray-200 dark:bg-zinc-700 text-gray-700 dark:text-gray-300 rounded-md shadow-sm ${className}`}
+                                    >
+                                        {value}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
 
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Batch ID: <span
-                        className="font-medium">{batchId}</span></p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Merkle Root: <span
-                        className="break-all font-medium">{merkleRoot}</span></p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Hash Count: <span
-                        className="font-medium">{batchInfo.hashCount}</span></p>
+
                 </div>
 
-                {/* Transaction Details */}
+
                 <div className="p-4 bg-gray-100 dark:bg-zinc-900 rounded-lg ">
                     <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Transaction Details</h2>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Txn Hash: <span
-                        className="break-all font-medium">{batchInfo.txnHash}</span></p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">Txn Fee: <span
-                        className="font-medium">{batchInfo.txnFee} ETH</span></p>
-                    <p className={`text-sm font-medium mt-2 ${batchInfo.pushStatus ? 'text-green-600' : 'text-red-600'}`}>
-                        Push Status: {batchInfo.pushStatus ? "Success" : "Failed"}
+                    { !batchInfo?.isCurrentBatch ? (
+                        <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Txn Hash
+                        <span
+                        className={`${robotoMono.className} break-all font-medium`}>{batchInfo.batchInfo?.txnHash || "N/A"}</span></p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Txn Fee  <span
+                        className="font-medium dark:bg-zinc-700">{batchInfo.batchInfo?.txnFee || "N/A"} </span></p>
+                    <p className={`text-sm font-medium mt-2 ${batchInfo.batchInfo?.pushStatus ? 'text-green-600' : 'text-red-600'}`}>
+                        Push Status  {batchInfo.batchInfo?.pushStatus ? "Success" : "Failed"}
                     </p>
+                        </div>
+                    ) : (
+                        <div className="flex justify-center items-center gap-2 text-gray-500 mt-4">
+                            finalize batch to view information
+                        </div>
+                    )}
                 </div>
 
                 <div className="md:col-span-2 p-4 bg-gray-100 dark:bg-zinc-900 rounded-lg ">
                     <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Hashes</h2>
                     <div className="mt-2 space-y-2">
-                        {hashes.map((hash, index) => (
+
+                        {batchInfo && batchInfo.hashes.length > 0 ? (
+                            <>
+                        {batchInfo && batchInfo.hashes.map((hash, index) => (
                             <p key={index}
                                className="text-sm text-gray-700 dark:text-white break-all p-2 bg-gray-200 dark:bg-zinc-700 rounded-lg">
                                 {hash}
                             </p>
                         ))}
+                            </>
+                        ) : (
+                            <div className="flex justify-center items-center gap-2 text-gray-500">
+                                No hashes added to the batch
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -168,6 +207,7 @@ const InfoPage: React.FC<InfoPageProps> = ({ web3Info }) => {
                 )}
             </div>
         </div>
+
     );
 };
 

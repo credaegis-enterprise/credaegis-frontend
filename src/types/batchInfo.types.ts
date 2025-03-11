@@ -1,15 +1,16 @@
 
 
-interface BatchInfoType {
+export interface BatchInfoType {
     hashes : String []
     batchInfo: BatchInfo
+    isCurrentBatch: Boolean;
 }
 
 
 interface BatchInfo {
-    id : BigInteger,
+    batchId : String,
     merkleRoot : String,
-    hashCount : BigInteger,
+    hashCount : String,
     pushTime : String,
     txnHash: String,
     txnFee: String,
