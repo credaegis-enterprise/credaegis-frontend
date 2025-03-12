@@ -22,9 +22,10 @@ import {
     RiFileList2Fill,
     RiCheckboxCircleFill,
     RiCloseCircleFill,
-    RiMoneyDollarCircleFill
+    RiMoneyDollarCircleFill, RiTimeFill
 } from "react-icons/ri";
 import {toast} from "sonner";
+import {IoMdClock, IoMdLink} from "react-icons/io";
 
 
 interface InfoPageProps {
@@ -45,6 +46,7 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
 
 
     useEffect(() => {
+        setSearchBatchId(web3Info.currentBatchInfo.batchId);
         setBatchInfoDisp(batchInfo);
 
     }, [batchInfo]);
@@ -110,7 +112,7 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                             <h2 className="text-xl font-medium text-gray-900 dark:text-white">Connected</h2>
                         </div>
                         {[
-                            {label: "Network Id", value: web3Info.web3Info.networkId},
+                            {label: "chain Id", value: web3Info.web3Info.networkId},
                             {label: "Client Version", value: web3Info.web3Info.clientVersion},
                             {label: "Available Balance", value: `${web3Info.web3Info.balance} AVAX`}
                         ].map(({label, value}, index) => (
@@ -197,7 +199,7 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                                     label: "Merkle Root",
                                     value: batchInfoDisp?.batchInfo?.merkleRoot,
                                     icon: <RiShieldKeyholeFill size={24} className="text-gray-600 dark:text-gray-300"/>,
-                                    className: "break-all max-w-full overflow-hidden text-sm text-ellipsis text-gray-700 dark:text-gray-300 flex-1"
+                                    className: "break-all max-w-full overflow-hidden text-sm text-ellipsis text-gray-700 dark:text-gray-300 flex-1  bg-gray-200 dark:bg-zinc-700"
                                 },
                                 {
                                     label: "Push Status",
@@ -212,6 +214,14 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                                             ? 'bg-green-200 dark:bg-green-400'
                                             : 'bg-red-200 dark:bg-red-400'
                                     }`,
+
+                                },
+                                {
+                                    label: "Push time",
+                                    value: batchInfoDisp?.batchInfo.pushStatus ? batchInfoDisp?.batchInfo.pushTime : "N/A",
+                                    icon: <RiTimeFill size={24} className="text-gray-600 dark:text-gray-300"/>,
+                                    className: "px-2 py-1 text-sm bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm w-auto ml-3"
+
                                 }
                             ].map(({label, value, icon, className}, index) => (
                                 <div key={index} className="flex items-center gap-4">
@@ -222,7 +232,7 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                                     </div>
 
                                     <div
-                                        className={`${robotoMono.className} px-3 py-1 bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm ${className}`}>
+                                        className={`${robotoMono.className} px-3 py-1  rounded-md shadow-sm ${className}`}>
                                         {value}
                                     </div>
                                     {label === "Push Status" && value === "Failed" && (
@@ -252,19 +262,35 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
 
                         <hr/>
 
+                        {batchInfoDisp?.batchInfo?.pushStatus ? (
                         <div className="space-y-3 mt-4">
                             {[
                                 {
                                     label: "Txn Hash",
                                     value: batchInfoDisp?.batchInfo?.txnHash || "N/A",
                                     icon: <RiHashtag size={22} className="text-gray-600 dark:text-gray-400"/>,
-                                    className: "break-all max-w-full overflow-hidden text-sm text-ellipsis text-gray-700 dark:text-gray-300 flex-1"
+                                    className: `break-all max-w-full overflow-hidden text-sm text-ellipsis text-gray-700 dark:text-gray-300 flex-1 px-3 py-1 bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm ${robotoMono.className} `
                                 },
                                 {
                                     label: "Txn Fee",
-                                    value: batchInfoDisp?.batchInfo?.txnFee || "N/A",
+                                    value: `${batchInfoDisp?.batchInfo?.txnFee} AVAX`  || "N/A",
                                     icon: <RiMoneyDollarCircleFill size={22} className="text-gray-600 dark:text-gray-400"/>,
-                                    className: "px-2 py-1 text-sm bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm w-auto text-sm"
+                                    className: `px-2 py-1 text-sm bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm w-auto text-sm ${robotoMono.className} px-3 py-1 bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm `
+                                },
+                                {
+                                    label: "Txn URL",
+                                    icon: <IoMdLink size={22} className={`text-gray-600 dark:text-gray-400`} />,
+                                    className: "py-1 text-sm   rounded-md shadow-sm w-auto text-sm",
+                                    value: <MyButton
+                                        size="xs"
+                                        className="bg-black text-white dark:text-black dark:bg-white"
+                                        onClick={() => {
+                                            window.open(batchInfoDisp?.batchInfo?.txnUrl, "_blank");
+                                        }}
+                                    >
+                                        visit
+                                    </MyButton>
+
                                 }
                             ].map(({ label, value, icon, className }, index) => (
                                 <div key={index} className="flex items-center gap-3">
@@ -274,13 +300,18 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                                         <p className="text-sm text-gray-700 dark:text-gray-300">{label}</p>
                                     </div>
 
-                                    {/* Value */}
-                                    <div className={`px-3 py-1 bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm ${className} ${robotoMono.className}`}>
+
+                                    <div className={`${className} `}>
                                         {value}
                                     </div>
                                 </div>
                             ))}
                         </div>
+                            ):(
+                            <div className="flex justify-center items-center gap-2 text-gray-500 mt-12">
+                                No transaction details available, please push the batch to get the transaction details.
+                            </div>
+                        )}
                     </div>
                 )}
 

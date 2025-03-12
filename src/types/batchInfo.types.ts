@@ -17,5 +17,8 @@ interface BatchInfo {
     pushStatus: boolean,
     createdOn: string,
     updatedOn: string
+    txnUrl: string,
+    publicChainId: string,
+    publicChainName: string
 
 }
