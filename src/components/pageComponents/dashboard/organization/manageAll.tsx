@@ -1,6 +1,6 @@
 "use client";
 import { Tab, Tabs } from "@nextui-org/react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useTabContext } from "@/context/tabContext";
 import Info from "./info/info";
 import Stats from "./statistics/stats";
@@ -8,6 +8,10 @@ import { StatisticsType } from "@/types/global.types";
 import InfoPage from "./blockchain/infoPage";
 import Web3InfoType from "@/types/web3info.types";
 import {BatchInfoType} from "@/types/batchInfo.types";
+import RefreshOnNav from "@/components/funcs/RefreshOnNav";
+import {MyButton} from "@/components/buttons/mybutton";
+import {useRouter} from "next/navigation";
+import {MdRefresh} from "react-icons/md";
 
 
 
@@ -20,6 +24,7 @@ interface ManageAllProps {
 
 const ManageAll: React.FC<ManageAllProps> = ({ batchInfo,web3Info }) => {
   const { selectedTab } = useTabContext();
+  const router = useRouter();
   const [selected, setSelected] = useState<string>("info");
 
   useEffect(() => {
@@ -40,6 +45,13 @@ const ManageAll: React.FC<ManageAllProps> = ({ batchInfo,web3Info }) => {
               <Tab key="info" title="Info" />
               <Tab key="Blockchain" title="Blockchain" />
             </Tabs>
+            <MyButton
+                size={"xs"}
+                className="bg-black dark:bg-white mt-2"
+                onClick={()=> router.refresh()}>
+             <MdRefresh size={20} className="text-white dark:text-black"/>
+
+            </MyButton>
           </div>
 
           <div className="flex flex-col h-full overflow-hidden mt-4">
@@ -60,6 +72,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ batchInfo,web3Info }) => {
                 </div>
             )}
           </div>
+
         </div>
       </div>
   );

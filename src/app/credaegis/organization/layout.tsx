@@ -1,6 +1,8 @@
 import OrganizationNavbar from "@/components/navbar/organizationNavbar";
 import { TabProvider } from "@/context/tabContext";
 
+
+export const fetchCache = 'force-no-store';
 export default function OrganizationLayout({
   children,
 }: {

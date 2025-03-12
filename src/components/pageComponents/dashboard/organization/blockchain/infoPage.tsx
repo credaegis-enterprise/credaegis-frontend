@@ -2,18 +2,30 @@ import {
     MdCircle,
     MdInfo,
     MdOutlineBatchPrediction,
-    MdCheckCircle,
+    MdCheckCircle, MdWarning, MdRefresh,
 } from "react-icons/md";
-import {FaNetworkWired, FaServer} from "react-icons/fa";
+
 
 import Web3InfoType from "@/types/web3info.types";
 import {MyButton} from "@/components/buttons/mybutton";
 import {Inconsolata, Roboto_Mono} from "next/font/google";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import MyModal from "@/components/modals/mymodal";
 import NotifBoxMember from "@/components/notification/notifBoxMember";
-import {Input} from "@nextui-org/react";
+import {Checkbox, Input, Spinner} from "@nextui-org/react";
 import {BatchInfoType} from "@/types/batchInfo.types";
+import {useRouter} from "next/navigation";
+import {myInstance} from "@/utils/Axios/axios";
+import {
+    RiShieldKeyholeFill,
+    RiHashtag,
+    RiFileList2Fill,
+    RiCheckboxCircleFill,
+    RiCloseCircleFill,
+    RiMoneyDollarCircleFill
+} from "react-icons/ri";
+import {toast} from "sonner";
+
 
 interface InfoPageProps {
     web3Info: Web3InfoType;
@@ -24,15 +36,69 @@ const robotoMono = Roboto_Mono({subsets: ["latin"]});
 const inconsolata = Inconsolata({subsets: ["latin"]});
 
 const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
+    const router = useRouter();
     const [isOpen, SetIsOpen] = useState<boolean>(false);
+    const [batchInfoDisp, setBatchInfoDisp] = useState<BatchInfoType | null>(null);
+    const [searchBatchId, setSearchBatchId] = useState<string>(web3Info.currentBatchInfo.batchId);
+    const [openPushWarning, setOpenPushWarning] = useState<boolean>(false);
+    const [pushLoading, setPushLoading] = useState<boolean>(false);
 
 
-    console.log(web3Info);
-    console.log(batchInfo);
+    useEffect(() => {
+        setBatchInfoDisp(batchInfo);
+
+    }, [batchInfo]);
+
+
+    const handleBatchSearchSelection = (value: string) => {
+        if (value === "" || /^\d+$/.test(value)) {
+            setSearchBatchId(value);
+        }
+    };
+
+
+    const initiatePush = async () => {
+
+        setPushLoading(true);
+        try {
+            const response = await myInstance.post(
+                `/organization/web3/public/store/current/merkle-root`,
+            );
+            toast.success(response.data.message);
+        } catch (error: any) {
+            console.log(error);
+        }
+
+        router.refresh();
+        setPushLoading(false);
+
+    }
+
+
+    const fetchBatchInfo = async () => {
+        try {
+            const response = await myInstance.get(`/organization/web3/private/batch/${searchBatchId}`);
+            setBatchInfoDisp(response.data.responseData);
+        } catch (error: any) {
+            console.log(error);
+        }
+
+    }
 
 
     return (
         <div className="h-screen overflow-auto flex flex-col p-6 ">
+
+            {pushLoading && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div className="bg-gray-200 dark:bg-stone-800 p-6 rounded-lg shadow-lg flex items-center space-x-4">
+                        <Spinner size="lg" color="current" className="text-black dark:text-white"/>
+                        <div className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                            Please wait, your request is being processed.
+                        </div>
+                    </div>
+                </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border dark:border-stone-800 rounded-lg ">
                 {/* Connected Info */}
                 <div className="p-4 overflow-auto">
@@ -82,8 +148,13 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
 
                         <div className="flex justify-end gap-3">
 
-                            <MyButton size="sm"
-                                      className="bg-black text-white dark:text-black dark:bg-white">Push</MyButton>
+                            <MyButton
+                                isDisabled={web3Info?.currentBatchInfo?.hashes.length === 0}
+                                onClick={() => {
+                                    setOpenPushWarning(true)
+                                }}
+                                size="sm"
+                                className="bg-black text-white dark:text-black dark:bg-white">Push</MyButton>
                         </div>
                     </div>
                 </div>
@@ -91,118 +162,244 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
 
 
             <div
-                className="grid grid-cols-1 md:grid-cols-2 gap-6 border dark:border-stone-800 rounded-lg mt-2 p-6 flex-grow ">
+                className="grid grid-cols-1 md:grid-cols-2 gap-6 border dark:border-stone-800 rounded-lg mt-2 p-6  ">
                 <div className={`md:col-span-2 p-1`}>
                     <div className={`flex items-center gap-2`}>
                         <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">Batch Information</h2>
                         <div className="flex items-center gap-2">
-                            <Input placeholder="Enter batch Id" size="sm"/>
-                            <MyButton size="sm" className="bg-black text-white dark:text-black dark:bg-white h-7">
+                            <Input placeholder="Enter batch Id" size="sm" value={searchBatchId} onChange={
+                                (e) => handleBatchSearchSelection(e.target.value)
+                            }/>
+                            <MyButton
+                                onClick={() => {
+                                    fetchBatchInfo();
+                                }}
+                                size="sm" className="bg-black text-white dark:text-black dark:bg-white h-7">
                                 Search
                             </MyButton>
                         </div>
                     </div>
                 </div>
 
-                { !batchInfo?.isCurrentBatch && (
-                <div className="p-4 bg-gray-100 dark:bg-zinc-900 rounded-lg ">
-                    <div className="flex items-center gap-2 mb-4 w-full gap-6">
-                        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 w-1/2">Summary</h2>
-                    </div>
 
-                    <div>
-                        {[
-                            {
-                                label: "Merkle Root",
-                                value: batchInfo.batchInfo?.merkleRoot || "pending",
-                                className: "break-words w-full"
-                            },
-                            {label: "Hash Count", value: batchInfo.hashes.length, className: "mt-2"},
-                            {
-                                label: "Push Status",
-                                value: batchInfo.batchInfo?.pushStatus,
-                                className: "mt-2"
-                            }
-                        ].map(({label, value, className}, index) => (
-                            <div key={index} className="flex flex-wrap items-center justify-between gap-1">
-                                <p className="text-sm text-gray-700 dark:text-gray-300">{label}</p>
-                                <div
-                                    className={`${robotoMono.className} px-2 py-1 text-sm bg-gray-200 dark:bg-zinc-700 text-gray-700 dark:text-gray-300 rounded-md shadow-sm ${className}`}
-                                >
-                                    {value}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-                    )}
+                {!batchInfoDisp?.isCurrentBatch && (
+                    <div className="p-5 bg-gray-100 dark:bg-zinc-900 rounded-lg shadow-md">
+                        {/* Header */}
+                        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2 mb-4">
+                            <RiFileList2Fill className="w-6 h-6 text-gray-700 dark:text-gray-300"/> Summary
+                        </h2>
+                        <hr></hr>
 
+                        {/* Details Section */}
+                        <div className="space-y-3 mt-4">
+                            {[
+                                {
+                                    label: "Merkle Root",
+                                    value: batchInfoDisp?.batchInfo?.merkleRoot,
+                                    icon: <RiShieldKeyholeFill size={24} className="text-gray-600 dark:text-gray-300"/>,
+                                    className: "break-all max-w-full overflow-hidden text-sm text-ellipsis text-gray-700 dark:text-gray-300 flex-1"
+                                },
+                                {
+                                    label: "Push Status",
+                                    value: batchInfoDisp?.batchInfo?.pushStatus ? "Success" : "Failed",
+                                    icon: batchInfoDisp?.batchInfo?.pushStatus ? (
+                                        <RiCheckboxCircleFill size={24} className="text-green-500"/>
+                                    ) : (
+                                        <RiCloseCircleFill size={24} className="text-red-500"/>
+                                    ),
+                                    className: `text-sm font-medium text-black px-2 py-1 rounded-md shadow-sm w-auto ${
+                                        batchInfoDisp?.batchInfo?.pushStatus
+                                            ? 'bg-green-200 dark:bg-green-400'
+                                            : 'bg-red-200 dark:bg-red-400'
+                                    }`,
+                                }
+                            ].map(({label, value, icon, className}, index) => (
+                                <div key={index} className="flex items-center gap-4">
+                                    {/* Icon + Label */}
+                                    <div className="flex items-center gap-3 ">
+                                        {icon}
+                                        <p className={`text-sm text-gray-700 dark:text-gray-300 `}>{label}</p>
+                                    </div>
 
-                { !batchInfo?.isCurrentBatch && (
-                <div className="p-4 bg-gray-100 dark:bg-zinc-900 rounded-lg ">
-                    <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Transaction Details</h2>
-
-                    <div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">Txn Hash
-                            <span
-                                className={`${robotoMono.className} break-all font-medium`}>{batchInfo.batchInfo?.txnHash || "N/A"}</span>
-                        </p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">Txn Fee <span
-                            className="font-medium dark:bg-zinc-700">{batchInfo.batchInfo?.txnFee || "N/A"} </span></p>
-                        <p className={`text-sm font-medium mt-2 ${batchInfo.batchInfo?.pushStatus ? 'text-green-600' : 'text-red-600'}`}>
-                            Push Status {batchInfo.batchInfo?.pushStatus ? "Success" : "Failed"}
-                        </p>
-                    </div>
-
-                </div>
-                    )}
-
-
-                <div className="md:col-span-2 p-4 bg-gray-100 dark:bg-zinc-900 rounded-lg ">
-                    <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Hashes</h2>
-                    <div className="mt-2 space-y-2">
-
-                        {batchInfo && batchInfo.hashes.length > 0 ? (
-                            <>
-                                {batchInfo && batchInfo.hashes.map((hash, index) => (
-                                    <p key={index}
-                                       className="text-sm text-gray-700 dark:text-white break-all p-2 bg-gray-200 dark:bg-zinc-700 rounded-lg">
-                                        {hash}
-                                    </p>
-                                ))}
-                            </>
-                        ) : (
-                            <div className="flex justify-center items-center gap-2 text-gray-500">
-                                No hashes added to the batch
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-
-                {/* Hash Modal */}
-                {isOpen && (
-                    <MyModal
-
-                        title="Hashes"
-                        onClose={() => SetIsOpen(false)}
-                        size="md"
-                        isOpen={isOpen}
-                        backdrop="opaque"
-                        content={<div className="flex flex-col gap-4">
-                            {web3Info.currentBatchInfo.hashes.map((hash, index) => (
-                                <div key={index} className="flex items-start gap-4 w-full">
-                                    <span className="text-gray-500 font-medium">{index + 1}.</span>
                                     <div
-                                        className="flex flex-col gap-1 p-2 bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm w-full break-all">
-                                        {hash}
+                                        className={`${robotoMono.className} px-3 py-1 bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm ${className}`}>
+                                        {value}
+                                    </div>
+                                    {label === "Push Status" && value === "Failed" && (
+                                        <MyButton
+                                            size="xs"
+                                            className=" h-7 text-sm font-medium bg-black text-white dark:text-black dark:bg-white rounded-md shadow-sm flex items-center gap-1"
+                                            onClick={() => {
+                                                // handlePushAgain();
+                                            }}
+                                        >
+                                            <MdRefresh size={15}/>
+                                            Retry
+                                        </MyButton>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {!batchInfoDisp?.isCurrentBatch && (
+                    <div className="p-5 bg-gray-100 dark:bg-zinc-900 rounded-lg">
+                        <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2 mb-4">
+                            <RiFileList2Fill className="w-6 h-6 text-gray-700 dark:text-gray-300"/>
+                            Transaction Details
+                        </h2>
+
+                        <hr/>
+
+                        <div className="space-y-3 mt-4">
+                            {[
+                                {
+                                    label: "Txn Hash",
+                                    value: batchInfoDisp?.batchInfo?.txnHash || "N/A",
+                                    icon: <RiHashtag size={22} className="text-gray-600 dark:text-gray-400"/>,
+                                    className: "break-all max-w-full overflow-hidden text-sm text-ellipsis text-gray-700 dark:text-gray-300 flex-1"
+                                },
+                                {
+                                    label: "Txn Fee",
+                                    value: batchInfoDisp?.batchInfo?.txnFee || "N/A",
+                                    icon: <RiMoneyDollarCircleFill size={22} className="text-gray-600 dark:text-gray-400"/>,
+                                    className: "px-2 py-1 text-sm bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm w-auto text-sm"
+                                }
+                            ].map(({ label, value, icon, className }, index) => (
+                                <div key={index} className="flex items-center gap-3">
+                                    {/* Label + Icon */}
+                                    <div className="flex items-center gap-3 w-1/3">
+                                        {icon}
+                                        <p className="text-sm text-gray-700 dark:text-gray-300">{label}</p>
+                                    </div>
+
+                                    {/* Value */}
+                                    <div className={`px-3 py-1 bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm ${className} ${robotoMono.className}`}>
+                                        {value}
                                     </div>
                                 </div>
                             ))}
-                        </div>} button1={undefined} button2={undefined} onOpen={function (): void {
+                        </div>
+                    </div>
+                )}
+
+
+
+                <div className="md:col-span-2 p-4 bg-gray-100 dark:bg-zinc-900 rounded-lg ">
+                    <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2">
+                        Hashes
+                        <span
+                            className="flex items-center justify-center w-6 h-6 text-sm font-medium text-white bg-gray-500 dark:bg-zinc-700 rounded-full">
+            {batchInfoDisp?.hashes.length ?? 0}
+        </span>
+                    </h2>
+                    <div className="mt-2 space-y-2 p-2 overflow-scroll  h-60">
+                        {batchInfoDisp && batchInfoDisp.hashes.length > 0 ? (
+                            <>
+                                {batchInfoDisp.hashes.map((hash, index) => (
+                                    <div
+                                        className="mt-3 flex items-center gap-3 break-all p-2 bg-gray-200 dark:bg-zinc-700 rounded-lg"
+                                        key={index}>
+                                        {/* Numbering */}
+                                        <span
+                                            className="text-gray-600 dark:text-gray-300 font-medium">{index + 1}.</span>
+
+                                        {/* Hash */}
+                                        <p className={`${robotoMono.className} w-full`}>
+                                            {hash}
+                                        </p>
+
+                                        {/* View Button */}
+                                        <MyButton size="xs"
+                                                  className="bg-black text-white dark:text-black dark:bg-white">
+                                            View
+                                        </MyButton>
+                                    </div>
+                                ))}
+                            </>
+                        ) : (
+                            <div className="flex justify-center items-center gap-2 text-gray-500 mt-12">
+                                No hashes added to the batch
+                            </div>
+                        )}
+
+                    </div>
+                </div>
+
+                {openPushWarning && (
+                    <MyModal
+
+                        title="Hashes"
+                        onClose={() => setOpenPushWarning(false)}
+                        size="md"
+                        isOpen={openPushWarning}
+                        backdrop="opaque"
+                        content={
+                            <div className="flex flex-col gap-2">
+                                <div className="flex gap-2">
+                                    <MdWarning size={60} className="text-yellow-500"/>
+                                    <div className="text-lg font-semibold text-yellow-500">
+                                        Are you sure to finalize this batch, this is irreversible.
+                                    </div>
+                                </div>
+                                <div className={`flex justify-center gap-3`}>
+                                    <MyButton
+                                        color="warning"
+                                        size="sm"
+                                        spinner={<Spinner size="sm" color="current"/>}
+                                        isLoading={pushLoading}
+                                        onClick={() => {
+                                            setOpenPushWarning(false);
+                                            initiatePush();
+                                        }}
+                                    >
+                                        push
+                                    </MyButton>
+                                    <MyButton
+                                        size="sm"
+                                        className="bg-black text-white dark:text-black dark:bg-white"
+                                        onClick={() => {
+                                            setOpenPushWarning(false);
+                                        }}
+                                    >
+                                        Cancel
+                                    </MyButton>
+                                </div>
+
+
+                            </div>
+                        } button1={undefined} button2={undefined} onOpen={function (): void {
                         throw new Error("Function not implemented.");
                     }}/>
+
                 )}
+
+
+                <>
+                    {isOpen && (
+                        <MyModal
+
+                            title="Hashes"
+                            onClose={() => SetIsOpen(false)}
+                            size="md"
+                            isOpen={isOpen}
+                            backdrop="opaque"
+                            content={<div className="flex flex-col gap-4">
+                                {web3Info.currentBatchInfo.hashes.map((hash, index) => (
+                                    <div key={index} className="flex items-start gap-4 w-full">
+                                        <span className="text-gray-500 font-medium">{index + 1}.</span>
+                                        <div
+                                            className="flex flex-col gap-1 p-2 bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm w-full break-all">
+                                            {hash}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>} button1={undefined} button2={undefined} onOpen={function (): void {
+                            throw new Error("Function not implemented.");
+                        }}/>
+                    )}
+                </>
             </div>
         </div>
 

@@ -5,7 +5,11 @@ import { myInstanceNEXT } from "@/utils/Axios/axios";
 import getCookies from "@/utils/cookies/getCookies";
 import ClusterView from "@/components/pageComponents/dashboard/organization/clusterView";
 import ManageAll from "@/components/pageComponents/dashboard/organization/manageAll";
-import { StatisticsType } from "@/types/global.types";
+import RefreshOnNav from "@/components/funcs/RefreshOnNav";
+
+
+
+
 
 const fetchClusters = async () => {
 
@@ -13,7 +17,7 @@ const fetchClusters = async () => {
   try{
   const response = await myInstanceNEXT.get("/organization/cluster-control/get-clusters",{
     headers: {
-        cookie:`CREDAEGIS_SESSION=${cookies}`
+        cookie:`CREDAEGIS_SESSION=${cookies} `
     }
     
   });
@@ -28,10 +32,15 @@ const fetchClusters = async () => {
 
 const fetchBatchInfo = async ()=>{
     const cookies = getCookies("CREDAEGIS_SESSION");
+
+    console.log("Nit cahechhehchdhdhdhdhdh")
     try{
         const response = await myInstanceNEXT.get("organization/web3/private/current-batch",{
             headers: {
-                cookie:`CREDAEGIS_SESSION=${cookies}`
+                cookie:`CREDAEGIS_SESSION=${cookies}`,
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
             }
 
         });
@@ -94,6 +103,7 @@ const  Page =async () => {
   return (
     
     <div className="  p-6 h-full bg-gray-50 dark:bg-black transition-colors duration-300 overflow-hidden">
+
      <div className="grid grid-cols-8 h-full gap-4 ">
       <div className="lg:col-span-2 h-full col-span-full overflow-auto border border-gray-200 dark:border-stone-800 rounded-lg p-2">
       <ClusterView clusters={clusters}/>

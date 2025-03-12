@@ -1,21 +1,21 @@
 
 
 export interface BatchInfoType {
-    hashes : String []
+    hashes : string []
     batchInfo: BatchInfo
-    isCurrentBatch: Boolean;
+    isCurrentBatch: boolean
 }
 
 
 interface BatchInfo {
-    batchId : String,
-    merkleRoot : String,
-    hashCount : String,
-    pushTime : String,
-    txnHash: String,
-    txnFee: String,
+    batchId : string,
+    merkleRoot : string,
+    hashCount : string,
+    pushTime : string,
+    txnHash: string,
+    txnFee: string,
     pushStatus: boolean,
-    createdOn: String,
-    updatedOn: String
+    createdOn: string,
+    updatedOn: string
 
 }
