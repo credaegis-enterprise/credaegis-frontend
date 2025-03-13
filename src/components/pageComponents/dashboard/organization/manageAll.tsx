@@ -25,7 +25,8 @@ interface ManageAllProps {
 const ManageAll: React.FC<ManageAllProps> = ({ batchInfo,web3Info }) => {
   const { selectedTab } = useTabContext();
   const router = useRouter();
-  const [selected, setSelected] = useState<string>("info");
+  const [selected, setSelected] = useState<string>("Blockchain");
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedTab.id) setSelected("info");
@@ -47,10 +48,12 @@ const ManageAll: React.FC<ManageAllProps> = ({ batchInfo,web3Info }) => {
             </Tabs>
             <MyButton
                 size="xs"
-                className="bg-black dark:bg-white mt-2 flex items-center justify-center"
-                onClick={() => router.refresh()}
+                className=" bg-black dark:bg-white mt-2 flex items-center justify-center"
+                onClick={() =>
+
+                    router.refresh()}
             >
-              <MdRefresh className="w-5 h-5 text-white dark:text-black"/>
+              <MdRefresh size={20} className=" text-white dark:text-black"/>
             </MyButton>
           </div>
 

@@ -1,9 +1,10 @@
 
 
 export interface BatchInfoType {
-    hashes : string []
-    batchInfo: BatchInfo
-    isCurrentBatch: boolean
+    hashes : string [],
+    batchInfo: BatchInfo | null,
+    isCurrentBatch: boolean,
+    merkleRoot: string
 }
 
 

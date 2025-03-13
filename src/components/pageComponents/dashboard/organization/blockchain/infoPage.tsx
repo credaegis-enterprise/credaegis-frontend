@@ -49,6 +49,7 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
     const [certificateInfo,setCertificateInfo] =  useState<CertificateInfoType|null>(null)
     const [viewHashLoader,setViewHashLoader] = useState<boolean>(false);
     const [batchSearchLoader,setBatchSearchLoader] = useState<Boolean>(false);
+    const [isBatchInfoAvailable,setIsBatchInfoAvailable] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -59,8 +60,11 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
 
 
     const handleBatchSearchSelection = (value: string) => {
-        if (value === "" || /^\d+$/.test(value)) {
-            setSearchBatchId(value);
+
+        if(Number(value) <= 0 && value !== "")
+            return;
+        if (value === "" || /^\d+$/.test(value) ) {
+             setSearchBatchId(value);
         }
     };
 
@@ -87,7 +91,13 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
         setBatchSearchLoader(true);
         try {
             const response = await myInstance.get(`/organization/web3/private/batch/${searchBatchId}`);
-            setBatchInfoDisp(response.data.responseData);
+
+            console.log(response.data.responseData)
+            if(response.data.responseData.batchInfo === null)
+                setBatchInfoDisp(batchInfo)
+            else
+                setBatchInfoDisp(response.data.responseData);
+
         } catch (error: any) {
             console.log(error);
         }
@@ -96,7 +106,22 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
     }
 
 
-    const fetchCertificateInfo =  async (hash:String)=>{
+    const retryPush = async (merkleRoot:string|undefined) => {
+        setPushLoading(true);
+        try {
+            const response = await myInstance.post(
+                `/organization/web3/public/store/${merkleRoot}`,
+            );
+            toast.success(response.data.message);
+        } catch (error: any) {
+            console.log(error);
+        }
+        router.refresh();
+        setPushLoading(false);
+    }
+
+
+    const fetchCertificateInfo =  async (hash:string)=>{
         setViewHashLoader(true);
         setIsOpen(true);
         try {
@@ -136,7 +161,7 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                             <h2 className="text-xl font-medium text-gray-900 dark:text-white">Connected</h2>
                         </div>
                         {[
-                            {label: "chain Id", value: web3Info.web3Info.networkId},
+                            {label: "Chain Id", value: web3Info.web3Info.networkId},
                             {label: "Client Version", value: web3Info.web3Info.clientVersion},
                             {label: "Available Balance", value: `${web3Info.web3Info.balance} AVAX`}
                         ].map(({label, value}, index) => (
@@ -151,7 +176,7 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                     </div>
                 </div>
 
-                {/* Current Batch Info */}
+
                 <div className="p-4 overflow-auto">
 
                     <div className="flex flex-col bg-gray-100 p-2 gap-1 rounded-lg dark:bg-zinc-900">
@@ -180,7 +205,8 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                                     setOpenPushWarning(true)
                                 }}
                                 size="sm"
-                                className="bg-black text-white dark:text-black dark:bg-white">Push</MyButton>
+                                className="bg-black text-white dark:text-black dark:bg-white">Push
+                            </MyButton>
                         </div>
                     </div>
                 </div>
@@ -216,7 +242,7 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                     </div>
                 ) : (
                     <>
-                    {!batchInfoDisp?.isCurrentBatch && (
+                    {!batchInfoDisp?.isCurrentBatch && batchInfoDisp?.batchInfo !== null &&  (
                         <div className="flex flex-col md:flex-row gap-6">
                             {/* Summary Section */}
                             <div className="flex-1 p-5 bg-gray-100 dark:bg-zinc-900 rounded-lg shadow-md">
@@ -228,29 +254,40 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                                     {[
                                         {
                                             label: "Merkle Root",
-                                            value: batchInfoDisp?.batchInfo?.merkleRoot,
-                                            icon: <RiShieldKeyholeFill size={32} className="text-gray-600 dark:text-gray-300"/>,
+                                            value: batchInfoDisp?.merkleRoot,
+                                            icon: <RiShieldKeyholeFill size={24} className="text-gray-600 dark:text-gray-300"/>,
                                             className: "break-all text-sm bg-gray-200 dark:bg-zinc-700 flex-1"
                                         },
                                         {
                                             label: "Push Status",
-                                            value: batchInfoDisp?.batchInfo?.pushStatus ? "Success" : "Failed",
+                                            value: batchInfoDisp?.batchInfo
+                                                ? batchInfoDisp.batchInfo.pushStatus
+                                                    ? "Success"
+                                                    : "Failed"
+                                                : "No info available",
                                             icon: batchInfoDisp?.batchInfo?.pushStatus ? (
                                                 <RiCheckboxCircleFill size={24} className="text-green-500"/>
                                             ) : (
                                                 <RiCloseCircleFill size={24} className="text-red-500"/>
                                             ),
-                                            className: batchInfoDisp?.batchInfo?.pushStatus
-                                                ? "bg-green-200 dark:bg-green-400 dark:text-black"
-                                                : "bg-red-200 dark:bg-red-400 dark:text-black",
+                                            className: batchInfoDisp?.batchInfo
+                                                ? batchInfoDisp.batchInfo.pushStatus
+                                                    ? "bg-green-200 dark:bg-green-400 dark:text-black"
+                                                    : "bg-red-200 dark:bg-red-400 dark:text-black"
+                                                : "bg-gray-200 dark:bg-gray-600 dark:text-white",
                                         },
                                         {
                                             label: "Push Time",
-                                            value: batchInfoDisp?.batchInfo.pushStatus ? batchInfoDisp?.batchInfo.pushTime : "N/A",
+                                            value: batchInfoDisp?.batchInfo
+                                                ? batchInfoDisp.batchInfo.pushStatus
+                                                    ? batchInfoDisp.batchInfo.pushTime
+                                                    : "N/A"
+                                                : "No info available",
+
                                             icon: <RiTimeFill size={24} className="text-gray-600 dark:text-gray-300"/>,
                                             className: "px-2 py-1 bg-gray-200 dark:bg-zinc-700 flex-1"
                                         }
-                                    ].map(({ label, value, icon, className }, index) => (
+                                    ]. map(({ label, value, icon, className }, index) => (
                                         <div key={index} className="flex items-center justify-between gap-4">
                                             <div className="flex items-center gap-3 w-[120px]">
                                                 {icon}
@@ -265,7 +302,7 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                                                     size="xs"
                                                     className=" h-7 text-sm font-medium bg-black text-white dark:text-black dark:bg-white rounded-md shadow-sm flex items-center gap-1"
                                                     onClick={() => {
-                                                        // handlePushAgain();
+                                                        retryPush(batchInfoDisp?.merkleRoot);
                                                     }}
                                                 >
                                                     <MdRefresh size={15}/>
@@ -279,14 +316,13 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
 
 
 
-                                {/* Transaction Details Section */}
                                 <div className="flex-1 p-5 bg-gray-100 dark:bg-zinc-900 rounded-lg shadow-md">
                                     <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2 mb-4">
                                         <RiFileList2Fill className="w-6 h-6 text-gray-700 dark:text-gray-300"/> Transaction Details
                                     </h2>
                                     <hr/>
 
-                                    {batchInfoDisp?.batchInfo?.pushStatus ? (
+                                    {batchInfoDisp?.batchInfo && batchInfoDisp?.batchInfo?.pushStatus ? (
                                         <div className="space-y-3 mt-4">
                                             {[
                                                 {
