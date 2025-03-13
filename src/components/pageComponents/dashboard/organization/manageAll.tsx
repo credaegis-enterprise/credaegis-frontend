@@ -46,11 +46,11 @@ const ManageAll: React.FC<ManageAllProps> = ({ batchInfo,web3Info }) => {
               <Tab key="Blockchain" title="Blockchain" />
             </Tabs>
             <MyButton
-                size={"xs"}
-                className="bg-black dark:bg-white mt-2"
-                onClick={()=> router.refresh()}>
-             <MdRefresh size={20} className="text-white dark:text-black"/>
-
+                size="xs"
+                className="bg-black dark:bg-white mt-2 flex items-center justify-center"
+                onClick={() => router.refresh()}
+            >
+              <MdRefresh className="w-5 h-5 text-white dark:text-black"/>
             </MyButton>
           </div>
 

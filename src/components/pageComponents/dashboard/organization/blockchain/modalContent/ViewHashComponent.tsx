@@ -14,7 +14,6 @@ interface ViewHashComponentProps {
 const ViewHashComponent: React.FC<ViewHashComponentProps> = ({ info }) => {
     if (!info) return <div className="text-center text-gray-700 dark:text-gray-300 text-sm">No Data Found</div>;
 
-    // Function to determine the certificate status
     const getStatus = () => {
         if (info.revoked) {
             return { label: "Revoked", color: "text-red-600", icon: <RiCloseCircleFill size={20} className="text-red-500" /> };
@@ -80,7 +79,7 @@ const ViewHashComponent: React.FC<ViewHashComponentProps> = ({ info }) => {
                                             ? "success"
                                             : value === "Private Verified"
                                                 ? "warning"
-                                                : value === "Revoked"
+                                                : value === "Revoked" || value === "Expired"
                                                     ? "danger"
                                                     : "default")
                                         : "default"

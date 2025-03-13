@@ -262,7 +262,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                   scope="col"
                   className="px-6 py-3 text-neutral-700 dark:text-neutral-200 font-semibold"
                 >
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 ml-7">
                     <IoMdStats size={20} />
                     Status
                   </div>
@@ -299,115 +299,118 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
             {issuedList && issuedList.length > 0 ? (
               <tbody className="">
                 {issuedList.map((certificate, index) => (
-                  <tr key={index} className="">
-                    <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      {certificate.eventName}
-                    </td>
-                    <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      <div className="flex flex-col gap-2">
-                        <span>{certificate.recipientName}</span>
-                        <span className="text-xs text-gray-700 dark:text-gray-300">
+                    <tr key={index} className="">
+                      <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
+                        {certificate.eventName}
+                      </td>
+                      <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
+                        <div className="flex flex-col gap-2">
+                          <span>{certificate.recipientName}</span>
+                          <span className="text-xs text-gray-700 dark:text-gray-300">
                           {certificate.recipientEmail}
                         </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      {certificate.certificateName}
-                    </td>
-                    <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      <div className="flex flex-col gap-2">
-                        <span>{certificate.issuerName}</span>
-                        <span className="text-xs text-gray-700 dark:text-gray-300">
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
+                        {certificate.certificateName}
+                      </td>
+                      <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
+                        <div className="flex flex-col gap-2">
+                          <span>{certificate.issuerName}</span>
+                          <span className="text-xs text-gray-700 dark:text-gray-300">
                           {certificate.issuerEmail}
                         </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
-                      {certificate.issuedDate
-                        ? new Date(certificate.issuedDate).toLocaleDateString()
-                        : "N/A"}
-                    </td>
-                    <td
-                      className={`px-6 py-4 font-medium text-center 
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-neutral-900 dark:text-neutral-100">
+                        {certificate.issuedDate
+                            ? new Date(certificate.issuedDate).toLocaleDateString()
+                            : "N/A"}
+                      </td>
+                      <td
+                          className={`px-6 py-4 font-medium text-center 
   ${
-    certificate.revoked
-      ? "text-red-400 dark:text-red-400"
-      : certificate.expiryDate && new Date(certificate.expiryDate) < new Date()
-      ? "text-yellow-500 dark:text-yellow-400"
-      : "text-green-500 dark:text-green-400"
-  }`}
-                    >
-                      {certificate.revoked
-                        ? "Revoked"
-                        : certificate.expiryDate &&
-                          new Date(certificate.expiryDate) < new Date()
-                        ? "Expired"
-                        : "Valid"}
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <div className="flex justify-center gap-4">
-                        <MyButton
-                          size="sm"
-                          className={`${
-                            !certificate.persisted
-                              ? "bg-gray-300 cursor-not-allowed opacity-50"
-                              : "bg-black dark:bg-white"
+                              certificate.revoked
+                                  ? "text-red-400 dark:text-red-400"
+                                  : certificate.expiryDate && new Date(certificate.expiryDate) < new Date()
+                                      ? "text-red-400 dark:text-red-400"
+                                      : certificate.status === "privateVerified"
+                                          ? "text-amber-400 dark:text-amber-500" // Set yellow for pending verification
+                                          : "text-green-500 dark:text-green-400"
                           }`}
-                          onClick={() => {
-                            if (!certificate.persisted) {
-                              toast.info("Certificate file is not available");
-                              return;
-                            } else {
-                              setSelectedCertificate(certificate);
-                              setIsOpen(true);
-                            }
-                          }}
-                          disabled={!certificate.persisted}
-                        >
+                      >
+                        {certificate.revoked
+                            ? "Revoked"
+                            : certificate.expiryDate && new Date(certificate.expiryDate) < new Date()
+                                ? "Expired"
+                                : certificate.status === "privateVerified"
+                                    ? "Pending Public Verification"
+                                    : "Verified"}
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <div className="flex justify-center gap-4">
+                          <MyButton
+                              size="sm"
+                              className={`${
+                                  !certificate.persisted
+                                      ? "bg-gray-300 cursor-not-allowed opacity-50"
+                                      : "bg-black dark:bg-white"
+                              }`}
+                              onClick={() => {
+                                if (!certificate.persisted) {
+                                  toast.info("Certificate file is not available");
+                                  return;
+                                } else {
+                                  setSelectedCertificate(certificate);
+                                  setIsOpen(true);
+                                }
+                              }}
+                              disabled={!certificate.persisted}
+                          >
                           <span className="dark:text-black text-white text-md font-medium">
                             View
                           </span>
-                        </MyButton>
+                          </MyButton>
 
-                        {!certificate.revoked ? (
-                          <Checkbox
-                            isSelected={certificate.selected}
-                            onValueChange={() => {
-                              handleSelectOne(index);
-                            }}
-                            className="form-checkbox text-neutral-600 dark:text-neutral-300"
-                            color="success"
-                          />
-                        ):(
-                           <div className="w-6"/>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
+                          {!certificate.revoked ? (
+                              <Checkbox
+                                  isSelected={certificate.selected}
+                                  onValueChange={() => {
+                                    handleSelectOne(index);
+                                  }}
+                                  className="form-checkbox text-neutral-600 dark:text-neutral-300"
+                                  color="success"
+                              />
+                          ) : (
+                              <div className="w-6"/>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
                 ))}
               </tbody>
             ) : (
-              <tbody>
+                <tbody>
                 <tr>
                   <td
-                    colSpan={8}
-                    className="text-center text-md py-4 text-neutral-900 dark:text-neutral-100"
+                      colSpan={8}
+                      className="text-center text-md py-4 text-neutral-900 dark:text-neutral-100"
                   >
                     No certificate Issue History found
                   </td>
                 </tr>
-              </tbody>
+                </tbody>
             )}
           </table>
         </div>
       ) : (
-        <div className="flex justify-center items-center h-full">
-          <Spinner
-            size="lg"
-            color="current"
-            className="dark:text-white text-black"
-          />
-        </div>
+          <div className="flex justify-center items-center h-full">
+            <Spinner
+                size="lg"
+                color="current"
+                className="dark:text-white text-black"
+            />
+          </div>
       )}
 
       <div className="flex justify-center items-center p-4  ">
