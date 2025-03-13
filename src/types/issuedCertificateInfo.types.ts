@@ -14,5 +14,6 @@ export interface  CertificateInfoType  {
   certificateName: string;
   recipientEmail: string;
   recipientName: string;
+    status: string;
   };
   

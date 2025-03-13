@@ -26,6 +26,9 @@ import {
 } from "react-icons/ri";
 import {toast} from "sonner";
 import {IoMdClock, IoMdLink} from "react-icons/io";
+import ViewHashComponent
+    from "@/components/pageComponents/dashboard/organization/blockchain/modalContent/ViewHashComponent";
+import {CertificateInfoType} from "@/types/issuedCertificateInfo.types";
 
 
 interface InfoPageProps {
@@ -38,11 +41,13 @@ const inconsolata = Inconsolata({subsets: ["latin"]});
 
 const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
     const router = useRouter();
-    const [isOpen, SetIsOpen] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const [batchInfoDisp, setBatchInfoDisp] = useState<BatchInfoType | null>(null);
     const [searchBatchId, setSearchBatchId] = useState<string>(web3Info.currentBatchInfo.batchId);
     const [openPushWarning, setOpenPushWarning] = useState<boolean>(false);
     const [pushLoading, setPushLoading] = useState<boolean>(false);
+    const [certificateInfo,setCertificateInfo] =  useState<CertificateInfoType|null>(null)
+    const [hash,setHash] = useState<string>("")
 
 
     useEffect(() => {
@@ -82,6 +87,21 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
             const response = await myInstance.get(`/organization/web3/private/batch/${searchBatchId}`);
             setBatchInfoDisp(response.data.responseData);
         } catch (error: any) {
+            console.log(error);
+        }
+
+    }
+
+
+    const fetchCertificateInfo =  async (hash:String)=>{
+
+        setIsOpen(true);
+        try {
+
+            const response = await myInstance.get(`/organization/certificate-control/${hash}`);
+            setCertificateInfo(response.data.responseData);
+        }
+        catch (error: any) {
             console.log(error);
         }
 
@@ -342,7 +362,11 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                                         </p>
 
                                         {/* View Button */}
-                                        <MyButton size="xs"
+                                        <MyButton
+                                                onClick={() => {
+                                                        fetchCertificateInfo(hash);
+                                                }}
+                                            size="xs"
                                                   className="bg-black text-white dark:text-black dark:bg-white">
                                             View
                                         </MyButton>
@@ -411,22 +435,15 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                     {isOpen && (
                         <MyModal
 
-                            title="Hashes"
-                            onClose={() => SetIsOpen(false)}
+                            title="Hash Information"
+                            onClose={() => setIsOpen(false)}
                             size="md"
                             isOpen={isOpen}
                             backdrop="opaque"
-                            content={<div className="flex flex-col gap-4">
-                                {web3Info.currentBatchInfo.hashes.map((hash, index) => (
-                                    <div key={index} className="flex items-start gap-4 w-full">
-                                        <span className="text-gray-500 font-medium">{index + 1}.</span>
-                                        <div
-                                            className="flex flex-col gap-1 p-2 bg-gray-200 dark:bg-zinc-700 rounded-md shadow-sm w-full break-all">
-                                            {hash}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>} button1={undefined} button2={undefined} onOpen={function (): void {
+                            content={
+                                <ViewHashComponent info={certificateInfo} />
+                            }
+                            button1={undefined} button2={undefined} onOpen={function (): void {
                             throw new Error("Function not implemented.");
                         }}/>
                     )}

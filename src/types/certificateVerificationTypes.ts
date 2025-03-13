@@ -20,5 +20,6 @@ export interface verificationResponseType {
     revokedDate: string | null;
     expiryDate: string | null;
     comments: string | null;
+    status: string;
   }
   
