@@ -47,34 +47,34 @@ const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
             </div>
           ) : (
             clusters.map((cluster, index) => (
-              <motion.div
-                key={cluster.id}
-    
-            initial={{ opacity: 0, y: 3 }} 
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.15, delay: index * 0.04 }}
-                whileHover={{
-                  scale: 1.01,
-                  boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
-                }}
-                whileTap={{ scale: 0.98 }}
-                className={`${selectedTab.id===cluster.id?"bg-gray-200 dark:bg-stone-700":"bg-white dark:bg-stone-900"} rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer`}
-                onClick={() => {
-                  setSelectedTab({ type: "cluster", id: cluster.id });
-                }}
-              >
-                <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                  {cluster.name}
+                <motion.div
+                    key={cluster.id}
+
+                    initial={{opacity: 0, y: 3}}
+                    animate={{opacity: 1, y: 0}}
+                    transition={{duration: 0.15, delay: index * 0.04}}
+                    whileHover={{
+                        scale: 1.01,
+                        boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.1)",
+                    }}
+                    whileTap={{scale: 0.98}}
+                    className={`${selectedTab.id === cluster.id ? "bg-gray-200 dark:bg-stone-700" : "bg-white dark:bg-stone-900"} rounded-lg shadow-sm p-4 transition-colors duration-300 hover:bg-gray-100 dark:hover:bg-stone-700 cursor-pointer`}
+                    onClick={() => {
+                        setSelectedTab({type: "cluster", id: cluster.id});
+                    }}
+                >
+                    <h3 className="w-full text-sm font-medium text-gray-900 dark:text-gray-100 break-words overflow-hidden">
+                    {cluster.name}
                 </h3>
-              </motion.div>
+                </motion.div>
             ))
           )}
         </div>
       </div>
-      {isOpen && (
-        <MyModal
-          size="sm"
-          isOpen={isOpen}
+        {isOpen && (
+            <MyModal
+                size="sm"
+                isOpen={isOpen}
           backdrop="blur"
           onClose={() => {
             setIsOpen(false);
