@@ -167,7 +167,7 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
           <DatePicker
             label="Expiry Date"
             description="Fill this if the certificate has an expiry date"
-            minValue={today(getLocalTimeZone())}
+            minValue={today(getLocalTimeZone()).add({ days: 1 })}
             value={expiryDate ? parseDate(expiryDate) : null}
             onChange={(e) => setExpiryDate(e?.toString() || null)}
           />
