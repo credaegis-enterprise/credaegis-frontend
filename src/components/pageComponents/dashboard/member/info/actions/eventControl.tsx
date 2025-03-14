@@ -84,7 +84,7 @@ const EventControl: React.FC<EventControlProps> = ({ event, setIsOpen }) => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col items-start gap-2">
           <div className="text-3xl font-bold ">{event.name}</div>
-          <div className="text-lg  font-normal text-gray-200">{event.description}</div>
+          <div className="text-lg  font-normal text-gray-500 dark:text-zinc-400">{event.description}</div>
           <span className="text-lg ">{}</span>
           <span className="text-sm text-gray-400 ">
             created at: {new Date(event.createdOn).toLocaleString()}

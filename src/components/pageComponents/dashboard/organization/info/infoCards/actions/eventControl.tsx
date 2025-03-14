@@ -78,16 +78,18 @@ const [eventName, setEventName] = useState(event.name);
   return (
     <div className="flex flex-col gap-6 p-6 ">
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col items-start gap-2">
-          <div className="text-3xl font-bold ">{event.name}</div>
-          <span className="text-lg ">{}</span>
-          <span className="text-sm text-gray-400 ">created at: {new Date(event.createdOn).toLocaleString()}</span>
-        </div>
-        <div className="flex justify-center gap-6 mt-4">
+          <div className="flex flex-col items-start gap-2">
+              <div className="text-3xl font-bold ">{event.name}</div>
+              <div className="w-full text-lg font-normal text-gray-500 dark:text-zinc-400 break-words whitespace-pre-wrap">
+                  {event.description}
+              </div>
+              <span className="text-sm text-gray-400 ">created at: {new Date(event.createdOn).toLocaleString()}</span>
+          </div>
+          <div className="flex justify-center gap-6 mt-4">
 
-        {!renamePrompt && 
-  <>
-          {!event.deactivated  ? (
+              {!renamePrompt &&
+                  <>
+                  {!event.deactivated  ? (
             <MyButton color="warning" className="" size="md"
             isLoading={loading}
             spinner={<Spinner size="sm" color="default" />}
