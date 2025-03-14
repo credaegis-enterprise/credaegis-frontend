@@ -84,7 +84,9 @@ const EventControl: React.FC<EventControlProps> = ({ event, setIsOpen }) => {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col items-start gap-2">
           <div className="text-3xl font-bold ">{event.name}</div>
-          <div className="text-lg  font-normal text-gray-500 dark:text-zinc-400">{event.description}</div>
+          <div className="w-full text-lg font-normal text-gray-500 dark:text-zinc-400 break-words whitespace-pre-wrap">
+            {event.description}
+          </div>
           <span className="text-lg ">{}</span>
           <span className="text-sm text-gray-400 ">
             created at: {new Date(event.createdOn).toLocaleString()}
@@ -92,10 +94,10 @@ const EventControl: React.FC<EventControlProps> = ({ event, setIsOpen }) => {
         </div>
         <div className="flex justify-center gap-6 mt-4">
           {!renamePrompt && (
-            <>
-              {!event.deactivated ? (
-                <MyButton
-                  color="warning"
+              <>
+                {!event.deactivated ? (
+                    <MyButton
+                        color="warning"
                   className=""
                   size="md"
                   isLoading={loading}
