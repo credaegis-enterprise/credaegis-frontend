@@ -305,8 +305,9 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           </MyButton>
           <MyButton
             isLoading={loading}
+            isDisabled={approvalsList.length < 1}
             spinner={<Spinner size="sm" color="default" />}
-                  className="bg-black dark:bg-white"
+            className={`bg-black dark:bg-white ${approvalsList.length < 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
             size="sm"
             onClick={() => {
               setApproveModal(true);
@@ -318,11 +319,13 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           </MyButton>
           <MyButton 
           isLoading={loading}
+            isDisabled={approvalsList.length < 1}
           spinner={<Spinner size="sm" color="default" />}
-          className="bg-black dark:bg-white" size="sm" onClick={()=>{
+          size={"sm"}
+          className={`bg-black dark:bg-white ${approvalsList.length < 1 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={()=>{
             setRejectModal(true);
           }}>
-            <span className="dark:text-black text-white text-md font-medium">
+            <span className="dark:text-black text-white text-md font-medium ">
               reject certificates
             </span>
           </MyButton>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import {Baloo_Chettan_2, Inter, Roboto_Mono} from "next/font/google";
 import { GeistSans } from 'geist/font/sans';
-import { GeistMono } from 'geist/font/mono';
 import { Providers } from "./providers";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";

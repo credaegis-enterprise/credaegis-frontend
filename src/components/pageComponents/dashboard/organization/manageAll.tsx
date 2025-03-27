@@ -43,7 +43,7 @@ const ManageAll: React.FC<ManageAllProps> = ({ batchInfo,web3Info }) => {
                 className="mt-2 lg:mt-0 lg:w-auto w-full"
             >
 
-              <Tab key="info" title="Info" />
+              <Tab key="info" title="Cluster Info" />
               <Tab key="Blockchain" title="Blockchain" />
             </Tabs>
             <MyButton

@@ -390,8 +390,11 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                                     batchInfoDisp?.hashes.map((hash, index) => (
                                         <div key={index}
                                              className="flex items-center gap-3 break-all p-2 bg-gray-200 dark:bg-zinc-700 rounded-lg">
-                                            <span
-                                                className="text-gray-600 dark:text-gray-300 font-medium">{index + 1}.</span>
+                                             <span
+                                                 className="text-gray-600 dark:text-gray-300 font-medium min-w-[20px] flex-shrink-0">
+        {index + 1}.
+    </span>
+
                                             <p className={`${robotoMono.className} w-full`}>{hash}</p>
                                             <MyButton size="xs"
                                                       className="bg-black text-white dark:text-black dark:bg-white"

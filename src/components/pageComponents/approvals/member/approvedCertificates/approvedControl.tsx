@@ -74,20 +74,23 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
     setSelectedEvent(key);
   }; 
 
+
+
+  const getIssuedCertificateUlids = () => {
+      return issuedList.reduce<string[]>((acc, issued) => {
+        if (issued.selected && !issued.revoked) {
+          acc.push(issued.id);
+        }
+        return acc;
+      }, []);
+  }
   const handleRevoke = async () => {
 
   
-    const issuedCertificatesUlids = issuedList.reduce<string[]>((acc, issued) => {
-        console.log(issued.revoked)
-      if (issued.selected && !issued.revoked) {
-        console.log(issued.revoked)
-        acc.push(issued.id);
-      }
-      return acc;
-    }, []);
+    const issuedCertificatesUlids = getIssuedCertificateUlids();
 
     if (issuedCertificatesUlids.length === 0) {
-      toast.info("Please select atleast one certificate to revoke");
+      toast.info("Please select at least one certificate to revoke");
       return; 
     }
 
@@ -214,9 +217,10 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
           </MyButton>
           <MyButton
           isLoading={loading}
+          isDisabled={getIssuedCertificateUlids().length > 1}
           spinner={<Spinner color="default" size="md"/>}
-            className="bg-black dark:bg-white"
-            size="sm"
+          className={`bg-black dark:bg-white ${getIssuedCertificateUlids().length < 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+          size="sm"
             onClick={() => {
               setPopUp(true);
             }}
