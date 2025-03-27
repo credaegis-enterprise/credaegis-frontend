@@ -260,13 +260,14 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
           </MyButton>
           <MyButton
           isLoading={loading}
+          isDisabled={selectedCount < 1}
           spinner={<Spinner color="default" size="md"/>}
-            className="bg-black dark:bg-white"
-            size="sm"
+          className={`bg-black dark:bg-white ${selectedCount < 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+          size="sm"
             onClick={() => {
               console.log("selectedCount", selectedCount);
               if(selectedCount === 0){
-                toast.info("Please select atleast one certificate to revoke");
+                toast.info("Please select at least one certificate to revoke");
       
               }
               else

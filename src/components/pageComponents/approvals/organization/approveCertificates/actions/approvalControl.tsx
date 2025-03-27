@@ -91,19 +91,23 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
     setSelectedEvent(key);
   };
 
+
+
+  const getSelectedApprovalUlids = () => {
+    return approvalsList.reduce<string[]>((acc, approval) => {
+        if (approval.selected) {
+            acc.push(approval.id);
+        }
+        return acc;
+    }
+    , []);
+  }
   const handleApprove = async () => {
     setMainLoading(true);
-    const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
-      if (approval.selected) {
-        acc.push(approval.id);
-      }
-      return acc;
-    }, []);
-
-    
+    const approvalUlids = getSelectedApprovalUlids();
 
     if (approvalUlids.length === 0) {
-      toast.info("Please select atleast one approval to approve");
+      toast.info("Please select at least one approval to approve");
       return;
     }
 
@@ -132,14 +136,8 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
 
   const handleReject = async () => {
     setMainLoading(true);
-    const approvalUlids = approvalsList.reduce<string[]>((acc, approval) => {
-      if (approval.selected) {
-        acc.push(approval.id);
-      }
-      return acc;
-    }, []);
+    const approvalUlids = getSelectedApprovalUlids();
 
-    console.log(approvalUlids);
 
     if (approvalUlids.length === 0) {
       toast.info("Please select atleast one approval to reject");
@@ -354,11 +352,12 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           <MyButton
             isLoading={loading}
             spinner={<Spinner size="sm" color="default" />}
-            className="bg-black dark:bg-white"
+            className={`bg-black dark:bg-white ${getSelectedApprovalUlids().length < 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+            isDisabled={getSelectedApprovalUlids().length < 1}
             size="sm"
             onClick={() => {
               if(count === 0){
-                toast.info("Please select atleast one approval to approve");
+                toast.info("Please select at least one approval to approve");
               }
               else{
               setApproveModal(true);
@@ -372,11 +371,12 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           <MyButton
             isLoading={loading}
             spinner={<Spinner size="sm" color="default" />}
-            className="bg-black dark:bg-white"
+            className={`bg-black dark:bg-white ${getSelectedApprovalUlids().length < 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+            isDisabled={getSelectedApprovalUlids().length < 1}
             size="sm"
             onClick={() => {
               if(count === 0){
-                toast.info("Please select atleast one approval to reject");
+                toast.info("Please select at least one approval to reject");
               }
               else{
               setRejectModal(true);
