@@ -205,7 +205,9 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                                     setOpenPushWarning(true)
                                 }}
                                 size="sm"
-                                className="bg-black text-white dark:text-black dark:bg-white">Push
+                                className={`bg-black dark:bg-white ${web3Info?.currentBatchInfo?.hashes.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+
+                            >Push
                             </MyButton>
                         </div>
                     </div>
