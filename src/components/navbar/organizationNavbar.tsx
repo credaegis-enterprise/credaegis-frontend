@@ -85,7 +85,6 @@ export default function OrganizationNavbar() {
           { name: "approvals", icon: GrDocumentVerified, label: "Approvals" },
           { name: "certificates", icon: GrVmware, label: "Certificate Upload" },
           { name: "settings", icon: GrPerformance, label: "Settings" },
-          { name: "verification", icon: GrValidate, label: "Verification" },
         ].map(({ name, icon: Icon, label }) => (
           <NavbarItem key={name}>
             <Link
@@ -111,6 +110,29 @@ export default function OrganizationNavbar() {
             </Link>
           </NavbarItem>
         ))}
+        <NavbarItem >
+          <Link
+              href={`/verification`}
+              className="group flex items-center gap-2 transition-colors"
+              onClick={() => {
+                setSelected("verification");
+                localStorage.setItem("path",window.location.pathname);
+              }}
+          >
+            <GrValidate
+                className={`text-xl transition duration-300 group-hover:text-green-400 ${
+                    selected === "verification" ? "text-green-500" : "text-gray-900 dark:text-white"
+                }`}
+            />
+            <span
+                className={`text-sm font-medium transition duration-300 group-hover:text-green-400 ${
+                    selected === "verification" ? "text-green-500" : "text-gray-900 dark:text-white"
+                }`}
+            >
+                Verification
+              </span>
+          </Link>
+        </NavbarItem>
       </NavbarContent>
 
       <NavbarContent justify="end" className="gap-4">

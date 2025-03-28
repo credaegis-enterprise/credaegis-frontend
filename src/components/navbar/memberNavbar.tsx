@@ -86,7 +86,12 @@ export default function OrganizationNavbar() {
       <NavbarContent className="flex gap-12 justify-center items-center" justify="center">
         {role === "CLUSTER_ADMIN" && (
           <NavbarItem>
-            <Link href={`/credaegis/${accountType}/dashboard`} className={`${isSelected("dashboard")} transition-colors flex items-center gap-2`}>
+            <Link
+                onClick={()=>{
+                  setSelected("dashboard");
+                    localStorage.setItem("currentPath", "dashboard");
+                }}
+                href={`/credaegis/${accountType}/dashboard`} className={`${isSelected("dashboard")} transition-colors flex items-center gap-2`}>
               <GrAppsRounded /> Dashboard
             </Link>
           </NavbarItem>
@@ -94,27 +99,49 @@ export default function OrganizationNavbar() {
 
         {role === "CLUSTER_ADMIN" && (
           <NavbarItem>
-            <Link href={`/credaegis/${accountType}/approvals`} className={`${isSelected("approvals")} transition-colors flex items-center gap-2`}>
+            <Link
+                onClick={()=>{
+                  setSelected("approvals");
+                    localStorage.setItem("currentPath", "approvals");
+                }}
+                href={`/credaegis/${accountType}/approvals`} className={`${isSelected("approvals")} transition-colors flex items-center gap-2`}>
               <GrDocumentVerified /> Approvals
             </Link>
           </NavbarItem>
         )}
 
         <NavbarItem>
-          <Link href={`/credaegis/${accountType}/certificates`} className={`${isSelected("certificates")} transition-colors flex items-center gap-2`}>
+          <Link
+            onClick={()=>{
+                setSelected("certificates");
+                localStorage.setItem("currentPath", "certificates");
+            }}
+              href={`/credaegis/${accountType}/certificates`} className={`${isSelected("certificates")} transition-colors flex items-center gap-2`}>
             <GrVmware />Certificate Upload
           </Link>
         </NavbarItem>
 
         <NavbarItem>
-          <Link href={`/credaegis/${accountType}/settings`} className={`${isSelected("settings")} transition-colors flex items-center gap-2`}>
+          <Link
+            onClick={()=> {
+              setSelected("settings");
+              localStorage.setItem("currentPath", "settings");
+            }}
+              href={`/credaegis/${accountType}/settings`} className={`${isSelected("settings")} transition-colors flex items-center gap-2`}>
             <GrPerformance /> Settings
           </Link>
         </NavbarItem>
 
         {role === "CLUSTER_ADMIN" && (
-          <NavbarItem>
-            <Link href={`/verification`} className={`${isSelected("verification")} transition-colors flex items-center gap-2`}>
+          <NavbarItem
+          onClick={()=>{
+            localStorage.setItem("path",window.location.pathname);
+          }}>
+            <Link
+                onClick={()=>{
+                  setSelected("verification");
+                }}
+                href={`/verification`} className={`${isSelected("verification")} transition-colors flex items-center gap-2`}>
               <GrValidate /> Verification
             </Link>
           </NavbarItem>
@@ -122,7 +149,7 @@ export default function OrganizationNavbar() {
       </NavbarContent>
 
       <NavbarContent justify="end" className="gap-4">
-        {role === "CLUSTER_ADMIN" && (
+        {role && role === "CLUSTER_ADMIN" && (
           <NavbarItem onClick={() => { setNotificationPopup(true); getNotifications(); }}>
             <div className="flex gap-2 items-center cursor-pointer">
               <BiBell className="text-2xl dark:text-white-600 hover:text-blue-500 dark:hover:text-green-500 hover:scale-110 transition duration-300" />
