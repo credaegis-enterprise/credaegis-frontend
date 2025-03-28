@@ -11,10 +11,12 @@ import { MyButton } from "../buttons/mybutton";
 import { Spinner } from "@nextui-org/react";
 import { ThemeSwitcher } from "../themes/themeSwitcher";
 import Link from "next/link";
+import MyModal from "../modals/mymodal";
 import { myInstance } from "@/utils/Axios/axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { BiBell } from "react-icons/bi";
+import NotifBoxOrganization from "../notification/notifBoxOrganization";
 import { GrAppsRounded, GrDocumentVerified, GrVmware, GrPerformance, GrValidate } from "react-icons/gr";
 
 export default function OrganizationNavbar() {
@@ -163,6 +165,17 @@ export default function OrganizationNavbar() {
           </MyButton>
         </NavbarItem>
       </NavbarContent>
+      {notificationPopup && (
+          <MyModal
+              title=""
+              onClose={() => setNotificationPopup(false)}
+              size="md"
+              isOpen={notificationPopup}
+              backdrop="opaque"
+              content={<NotifBoxOrganization notfications={notifications} getNotifications={getNotifications} />} button1={undefined} button2={undefined} onOpen={function (): void {
+            throw new Error("Function not implemented.");
+          } }        />
+      )}
     </Navbar>
   );
 }
