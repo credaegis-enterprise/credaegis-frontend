@@ -139,7 +139,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
           <div className="flex gap-2">
            <MdWarning size={30} className="text-yellow-500" />
             <div className="text-lg font-semibold text-yellow-500">
-              Are you sure you want to revoke the selected certificates?, this is an irrriversible action.
+              Are you sure you want to revoke the selected certificates? This is an irreversible action.
               </div>
           </div>
          }
@@ -165,7 +165,7 @@ const ApprovedControl: React.FC<ApprovedCertificatesProps> = ({
       )}
       <div className="flex text-lg font-medium ml-2">
         <MdSearch size={26} />
-        <div>Search and Filter</div>
+        <div>Search and filter</div>
       </div>
       <div className="flex flex-col lg:flex-row  gap-4 p-2 w-3/4">
         

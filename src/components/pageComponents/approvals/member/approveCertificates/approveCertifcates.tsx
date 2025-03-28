@@ -169,7 +169,7 @@ const ApproveCertificates: React.FC<ApproveCertificatesProps> = ({approvalsInfo}
                         handleDeselectAll();
                     }}>
                         <span className="dark:text-black text-white text-md font-medium">
-                          deselect All
+                          Deselect All
                         </span>
                     </MyButton>
                     </div>

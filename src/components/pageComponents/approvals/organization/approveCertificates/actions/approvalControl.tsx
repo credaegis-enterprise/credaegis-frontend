@@ -140,7 +140,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
 
 
     if (approvalUlids.length === 0) {
-      toast.info("Please select atleast one approval to reject");
+      toast.info("Please select at least one approval to reject");
       return;
     }
     setLoading(true);
@@ -188,8 +188,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
             <div className="flex gap-2">
               <MdWarning size={30} className="text-yellow-500" />
               <div className="text-lg font-semibold text-yellow-500">
-                Are you sure you want to reject the selected certificates? This
-                will shown as rejected by this user, file data will be deleted.
+                Are you sure you want to reject the selected certificates? These certificates will be displayed as rejected by this user and file data will be deleted.
               </div>
             </div>
           }
@@ -204,7 +203,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
               }}
             >
               <span className=" text-white text-md font-medium">
-                Reject certificates
+                Reject Certificates
               </span>
             </MyButton>
           }
@@ -229,8 +228,8 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
               <div className="flex gap-2">
               <MdWarning size={60} className="text-red-500" />
               <div className="text-lg font-semibold text-red-500">
-                Are you sure you want to Approve the selected certificates? This
-                will shown as issued by this user.
+                Are you sure you want to approve the selected certificates? These certificates
+                will be displayed as issued by this user.
               </div>
               </div>
               <div className="flex items-center gap-2">
@@ -245,7 +244,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
       
                 
                 <div className="text-lg font-semibold text-yellow-500">
-                Do you want to persist the file storage of these selected approvals? Otherwise it will be deleted.
+                Do you want to persist the file storage of these certificates to be approved? Otherwise it will be deleted.
                 </div>
                 </div>
             </div>
@@ -261,7 +260,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
               }}
             >
               <span className=" text-black text-md font-medium">
-                Approve certificates
+                Approve Certificates
               </span>
             </MyButton>
           }
@@ -270,12 +269,12 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
       )}
       <div className="flex text-lg font-medium ml-2">
         <MdSearch size={26} />
-        <div>Search and Filter</div>
+        <div>Search and filter</div>
       </div>
       <div className="flex flex-col lg:flex-row  gap-4 p-2">
         <Autocomplete
           label=" Cluster"
-          placeholder="Search a Cluster"
+          placeholder="Search for a cluster"
           size="sm"
           className=""
           onInputChange={searchClusters}
@@ -298,8 +297,8 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
           label=" Event"
           placeholder={`${
             !selectedCluster
-              ? "Search an Event"
-              : `Search a Event under selected cluster `
+              ? "Search for an event"
+              : `Search for an event under the selected cluster `
           }`}
           size="sm"
           className=""
@@ -365,7 +364,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
             }}
           >
             <span className="dark:text-black text-white text-md font-medium">
-              Approve certificates
+              Approve Certificates
             </span>
           </MyButton>
           <MyButton
@@ -384,7 +383,7 @@ const ApprovalControl: React.FC<ApproveCertificatesProps> = ({
             }}
           >
             <span className="dark:text-black text-white text-md font-medium">
-              reject certificates
+              Reject Certificates
             </span>
           </MyButton>
         </div>

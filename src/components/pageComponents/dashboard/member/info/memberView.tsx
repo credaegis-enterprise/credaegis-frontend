@@ -11,6 +11,8 @@ import { MemberType } from "@/types/global.types";
 import CreateMember from "./actions/createMember";
 import React from "react";
 import { MemberInfoType } from "@/types/clusterInfo.types";
+import { GrAdd } from "react-icons/gr";
+
 
 interface MemberViewProps {
   members: MemberInfoType[];
@@ -43,9 +45,8 @@ const MemberView: React.FC<MemberViewProps> = ({
             setIsOpen(true);
           }}
         >
-          <span className="dark:text-black text-white text-md font-medium">
-            Add
-          </span>
+          <GrAdd className="text-xl dark:text-black text-white" />
+
         </MyButton>
       </div>
       <div className=" mt-2 h-full overflow-auto">
@@ -91,9 +92,9 @@ const MemberView: React.FC<MemberViewProps> = ({
           isOpen={isOpen}
           backdrop="blur"
           onClose={() => setIsOpen(false)}
-          title="Add Member"
+          title="Add Members"
           content={<CreateMember  setIsOpen={setIsOpen} />}
-          button1={<button onClick={() => setIsOpen(false)}>Close</button>}
+          button1={undefined}
           button2={undefined}
           onOpen={() => {
             setIsOpen(true);

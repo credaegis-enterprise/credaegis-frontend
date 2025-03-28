@@ -142,8 +142,7 @@ const EventControl: React.FC<EventControlProps> = ({ event, setIsOpen }) => {
               <div className="flex gap-2 ">
                 <MdWarning className="text-yellow-400" size={26} />
                 <span className="text-yellow-500 text-sm font-semibold">
-                  This name will be the new name all the certificates are
-                  registered under
+                  This name will be the new event name for all associated certificates
                 </span>
               </div>
               <Input

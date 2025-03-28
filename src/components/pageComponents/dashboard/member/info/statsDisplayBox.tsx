@@ -50,7 +50,7 @@ const StatsDisplayBox: React.FC<StatsDisplayBoxProps> = ({ stats }) => {
   </div>
   <div className="flex flex-col h-full space-y-4">
     <div className="flex justify-between">
-      <span className="text-sm text-gray-600 dark:text-gray-400">Most active Event</span>
+      <span className="text-sm text-gray-600 dark:text-gray-400">Most active event</span>
       <span
         className={`${
           stats?.event_stats?.event_name

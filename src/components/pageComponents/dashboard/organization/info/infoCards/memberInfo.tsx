@@ -3,13 +3,13 @@
 import { motion } from "framer-motion";
 import { MyButton } from "@/components/buttons/mybutton";
 import { MdPerson } from "react-icons/md";
+import { GrAdd } from "react-icons/gr";
 import MyModal from "@/components/modals/mymodal";
 import MemberControl from "./actions/memberControl";
 import CreateMember from "./actions/createMember";
-import { Spinner, user } from "@nextui-org/react";
-import { MemberType } from "@/types/global.types";
-import { useState } from "react";
+import { Spinner } from "@nextui-org/react";
 import { MemberInfoType } from "@/types/clusterInfo.types";
+import { useState } from "react";
 
 interface MemberInfoProps {
   members: MemberInfoType[];
@@ -35,7 +35,6 @@ const MemberInfo: React.FC<MemberInfoProps> = ({
           <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
             Manage Members
           </h2>
-
         </div>
         {!loading && (
         <MyButton
@@ -45,9 +44,7 @@ const MemberInfo: React.FC<MemberInfoProps> = ({
             setIsOpen(true);
           }}
         >
-          <span className="dark:text-black text-white text-md font-medium">
-            Add
-          </span>
+          <GrAdd size={20} className="dark:text-black text-white" />
         </MyButton>
         )}
       </div>
@@ -108,7 +105,7 @@ const MemberInfo: React.FC<MemberInfoProps> = ({
               setIsOpen={setIsOpen}
             />
           }
-          button1={<button onClick={() => setIsOpen(false)}>Close</button>}
+          button1={undefined}
           button2={undefined}
           onOpen={() => {
             setIsOpen(true);

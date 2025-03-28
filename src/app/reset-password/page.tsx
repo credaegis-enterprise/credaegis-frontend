@@ -74,7 +74,7 @@ const ResetPasswordPage = () => {
         className="absolute top-4 left-4 text-white text-xl hover:text-blue-400 transition-all duration-300">
           <div className="flex gap-3">
             <FaArrowLeft size={30}/>
-            <div className="text-">go back to login</div>
+            <div className="text-">Go back to Login</div>
           </div>
         </button>
         <h2 className="text-2xl font-medium text-white mb-6">Reset Password</h2>
@@ -111,7 +111,7 @@ const ResetPasswordPage = () => {
             value={confirmPassword}
             isInvalid={isConfirmPasswordInvalid}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            errorMessage={"please enter a valid password"}
+            errorMessage={"Please enter a valid password"}
             className=""
           />
           <Button

@@ -125,7 +125,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({settings}) => {
 
                     <Input
                         type="text"
-                        label="your registered Email"
+                        label="Your registered email"
                         size="lg"
                         value={settings.userInfo.email}
                         isDisabled={isEditing}

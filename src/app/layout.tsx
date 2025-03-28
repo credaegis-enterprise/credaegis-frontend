@@ -15,7 +15,7 @@ const baloo = Baloo_Chettan_2({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Credaegis",
-  description: "secure. simple. scalable.",
+  description: "Secure. Simple. Scalable.",
 };
 
 export const viewport: Viewport = {

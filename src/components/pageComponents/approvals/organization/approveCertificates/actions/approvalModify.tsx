@@ -74,7 +74,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
 
             console.log(response.data);
             if(response.data.success){
-                toast.success("Approval Updated successfully");
+                toast.success("Approval updated successfully");
                 setIsModifyOpen(false);
                 getApprovals();
                 
@@ -111,7 +111,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
             errorMessage={"Enter a valid email address"}
             onChange={(e) => setEmail(e.target.value)}
             label="Email"
-            placeholder="Enter Email"
+            placeholder="Enter email"
             className="w-full"
             size="sm"
             isRequired
@@ -134,7 +134,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
               .toISOString()
               .split("T")[0]) : null}
             onChange={(e) => setExpiryDate(e?.toString() || null)}
-            label="Expiry Date"
+            label="Expiry date"
             description="Fill this if the certificate has an expiry date"
             minValue={today(getLocalTimeZone())}
             
@@ -152,7 +152,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
            
             >
               <span className="dark:text-black text-white text-md font-medium">
-                update
+                Update
               </span>
             </MyButton>
             <MyButton
@@ -165,7 +165,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
               }}
               >
                 <span className="dark:text-black text-white text-md font-medium">
-                    reset
+                    Reset
                 </span>
               </MyButton>
               </div>

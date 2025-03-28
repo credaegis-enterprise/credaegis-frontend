@@ -13,6 +13,8 @@ import { FileInfo, filesMetaType, MyFileType } from "@/types/global.types";
 import { ulid } from "ulid";
 import { Spinner } from "@nextui-org/react";
 import { EventSearchInfoType } from "@/types/event.types";
+import { GrAdd } from "react-icons/gr";
+
 
 interface MyFileListProps {
   loading: boolean;
@@ -196,9 +198,8 @@ const MyFileList: React.FC<MyFileListProps> = ({
             handleUploadClick();
           }}
         >
-          <span className="dark:text-black text-white text-md font-medium">
-            Choose files
-          </span>
+          <GrAdd className="text-xl dark:text-black text-white" />
+
         </MyButton>
       </div>
       <div className="flex  p-2">
@@ -295,7 +296,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
               }}
             >
               <span className="dark:text-black text-white text-md font-medium">
-                Clear All
+                Clear 
               </span>
             </MyButton>
             <MyButton
@@ -308,7 +309,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
               }}
             >
               <span className="dark:text-black text-white text-md font-medium">
-                Upload All files
+                Upload 
               </span>
             </MyButton>
           </div>
