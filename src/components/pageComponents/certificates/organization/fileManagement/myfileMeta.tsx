@@ -118,7 +118,7 @@ const MyFileMeta: React.FC<MyFileMetaProps> = ({
         <div className="flex gap-2 mt-1">
           <AiFillCheckCircle size={26} />
           <div className="text-xl font-semibold text-gray-800 dark:text-gray-200">
-            Fill information
+            Certificate Details
           </div>
           {fileUrl && (
   <div className={`ml-3 text-xl font-medium text-gray-800 ${filesMetaInfo && filesMetaInfo.length / fileCount === 1 ? 'dark:text-green-400' : 'dark:text-yellow-400'}`}>

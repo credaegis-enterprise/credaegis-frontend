@@ -37,7 +37,7 @@ const UploadCertificates = () => {
     selectedFiles.forEach((file) => {
       if(file.size > 1000000){
         setLoading(false);
-        throw new Error(`File ${file.name}  size should be less than 1MB`);
+        throw new Error(`File ${file.name} size should be less than 1MB`);
 
       }
       formData.append("approvals", file);
@@ -85,7 +85,7 @@ const UploadCertificates = () => {
           <div className="bg-gray-200 dark:bg-stone-800 p-6 rounded-lg shadow-lg flex items-center space-x-4">
            <Spinner size="lg" color="current" className="text-black dark:text-white" />
             <div className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-              Please wait, the files are uploading for approval.
+              Please wait, the files are being uploaded.
             </div>
           </div>
         </div>

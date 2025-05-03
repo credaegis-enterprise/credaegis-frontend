@@ -15,6 +15,8 @@ import { myInstance } from "@/utils/Axios/axios";
 import { set } from "lodash";
 import { input } from "@nextui-org/react";
 import { verificationResponseType } from "@/types/certificateVerificationTypes";
+import { GrFormUpload } from "react-icons/gr";
+
 
 interface MyFileListProps {
   setFileUrl: (file: FileInfo | null) => void;
@@ -172,6 +174,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
         style={{ display: "none" }}
         onInput={handleFileChange}
         multiple
+        accept="application/pdf"
       />
       <div className="flex justify-between p-2 gap-2">
         <div className="flex gap-2 mt-1 ">
@@ -191,9 +194,8 @@ const CertificateList: React.FC<MyFileListProps> = ({
             inputFile.current?.click();
           }}
         >
-          <span className="dark:text-black text-white text-md font-medium">
-            Choose files
-          </span>
+          <GrFormUpload className="text-xl dark:text-black text-white" />
+
         </MyButton>
       </div>
 
@@ -273,7 +275,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
               }}
             >
               <span className="dark:text-black text-white text-md font-medium">
-                Clear All
+                Clear 
               </span>
             </MyButton>
             <MyButton
@@ -285,7 +287,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
               }}
             >
               <span className="dark:text-black text-white text-md font-medium">
-               check authenticity
+               Check Authenticity
               </span>
             </MyButton>
           </div>

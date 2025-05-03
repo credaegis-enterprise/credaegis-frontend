@@ -72,7 +72,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
 
             console.log(response.data);
             if(response.data.success){
-                toast.success("Approval Updated successfully");
+                toast.success("Approval updated successfully");
                 setIsModifyOpen(false);
                 getApprovals();
                 
@@ -148,7 +148,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
            
             >
               <span className="dark:text-black text-white text-md font-medium">
-                update
+                Update
               </span>
             </MyButton>
             <MyButton
@@ -161,7 +161,7 @@ const ApprovalModify: React.FC<ApprovalModifyProps> = ({ approval,getApprovals,s
               }}
               >
                 <span className="dark:text-black text-white text-md font-medium">
-                    reset
+                    Reset
                 </span>
               </MyButton>
               </div>

@@ -11,6 +11,8 @@ import { EventType } from "@/types/global.types";
 import EventControl from "./actions/eventControl";
 import { set } from "lodash";
 import { EventInfoType } from "@/types/clusterInfo.types";
+import { GrAdd } from "react-icons/gr";
+
 
 interface EventsViewProps {
   events: EventInfoType[];
@@ -40,9 +42,8 @@ const EventView: React.FC<EventsViewProps> = ({ events }) => {
         onClick={()=>{
             setIsOpen(true);
         }}>
-          <span className="dark:text-black text-white text-md font-medium">
-            Add
-          </span>
+          <GrAdd className="text-xl dark:text-black text-white" />
+
         </MyButton>
       </div>
       <div className=" mt-2 flex flex-col h-full  overflow-auto">
@@ -90,9 +91,9 @@ const EventView: React.FC<EventsViewProps> = ({ events }) => {
           isOpen={isOpen}
             backdrop="blur"
             onClose={() => setIsOpen(false)}
-            title="Create an Event"
+            title="Create Events"
             content={<CreateEvent  setIsOpen={setIsOpen}/>}
-            button1={<button onClick={() => setIsOpen(false)}>Close</button>}
+            button1={undefined}
             button2={undefined}
             onOpen={() => {setIsOpen(true);}}
         />
@@ -103,7 +104,7 @@ const EventView: React.FC<EventsViewProps> = ({ events }) => {
           isOpen={isInfoOpen}
           backdrop="blur"
           onClose={() => setIsInfoOpen(false)}
-          title="Event info"
+          title="Event Info"
           content={<EventControl event={selectedEvent || undefined} setIsOpen={setIsInfoOpen} />}
           button1={undefined}
           button2={undefined}

@@ -233,7 +233,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                 >
                   <div className="flex items-center gap-1">
                     <FaCalendarAlt size={20} />
-                    Issued On
+                    Date of Issue
                   </div>
                 </th>
                 <th
@@ -267,7 +267,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                       }}
                     >
                       <span className="dark:text-black text-white text-md font-medium">
-                        deselect All
+                        Deselect All
                       </span>
                     </MyButton>
                   </div>

@@ -10,6 +10,8 @@ import { verificationResponseType } from "@/types/certificateVerificationTypes";
 import { useRouter } from "next/navigation";
 import { Spinner } from "@nextui-org/react";
 import { ThemeSwitcher } from "@/components/themes/themeSwitcher";
+import { GrRevert } from "react-icons/gr";
+
 
 
 const VerifyCertificates = () => {
@@ -44,9 +46,8 @@ const VerifyCertificates = () => {
                   router.push(path)
                 }
           }>
-            <span className="dark:text-black text-white text-md font-medium">
-              go back
-            </span>
+            <GrRevert className="text-xl dark:text-black text-white" />
+
           </MyButton>
           <div className="flex items-center gap-2">
             <MdCheckCircle size={30} className="text-green-500" />

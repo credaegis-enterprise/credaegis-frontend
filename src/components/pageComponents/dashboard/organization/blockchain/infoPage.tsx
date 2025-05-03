@@ -428,7 +428,7 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                             <div className="flex gap-2">
                                 <MdWarning size={60} className="text-yellow-500"/>
                                 <div className="text-lg font-semibold text-yellow-500">
-                                    Are you sure to finalize this batch, this is irreversible.
+                                Warning : Action of finalizing this batch is irreversible.
                                 </div>
                             </div>
                             <div className={`flex justify-center gap-3`}>
@@ -442,7 +442,7 @@ const InfoPage: React.FC<InfoPageProps> = ({web3Info, batchInfo}) => {
                                         initiatePush();
                                     }}
                                 >
-                                    push
+                                    Push
                                 </MyButton>
                                 <MyButton
                                     size="sm"

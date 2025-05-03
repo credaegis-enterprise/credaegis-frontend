@@ -13,6 +13,7 @@ import { FileInfo, filesMetaType, MyFileType } from "@/types/global.types";
 import { ulid } from "ulid";
 import { Spinner } from "@nextui-org/react";
 import { EventSearchInfoType } from "@/types/event.types";
+import {GrFormUpload} from "react-icons/gr";
 
 interface MyFileListProps {
   loading: boolean;
@@ -80,7 +81,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
         });
 
       if (filesArray.length === 0) {
-        return; // No valid PDF files selected
+        return;
       }
 
       if (selectedFiles && selectedFiles.length === 0) {
@@ -184,6 +185,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
           style={{ display: "none" }}
           onChange={handleFileChange}
           multiple
+          accept="application/pdf"
         />
         <MyButton
           className="bg-black dark:bg-white"
@@ -193,7 +195,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
           }}
         >
           <span className="dark:text-black text-white text-md font-medium">
-            Choose files
+            <GrFormUpload className="text-xl dark:text-black text-white" />
           </span>
         </MyButton>
       </div>

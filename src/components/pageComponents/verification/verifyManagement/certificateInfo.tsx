@@ -62,7 +62,7 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
           }
           else {
             setVerificationColor("warning");
-            setAuthenticityStatus("Your certificate is pending verification in public chain.");
+            setAuthenticityStatus("Your certificate is pending verification in public blockchain.");
           }
 
           setIsAuthentic(true);
@@ -233,7 +233,7 @@ const CertificateInfo: React.FC<CertificateInfoProps> = ({
                             className="text-yellow-400"
                           />
                           <div className="text-xl font-semibold ">
-                            Not additional information is found
+                            No additional information is found
                           </div>
                         </div>
                         </div>

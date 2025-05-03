@@ -255,7 +255,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                 >
                   <div className="flex items-center gap-1">
                     <FaCalendarAlt size={20} />
-                    Issued On
+                    Date of Issue
                   </div>
                 </th>
                 <th
@@ -289,7 +289,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                       }}
                     >
                       <span className="dark:text-black text-white text-md font-medium">
-                        deselect All
+                        Deselect All
                       </span>
                     </MyButton>
                   </div>
@@ -396,7 +396,7 @@ const ApprovedCertificates: React.FC<ApprovedCertificatesProps> = ({
                       colSpan={8}
                       className="text-center text-md py-4 text-neutral-900 dark:text-neutral-100"
                   >
-                    No certificate Issue History found
+                    No certificate issue history found
                   </td>
                 </tr>
                 </tbody>

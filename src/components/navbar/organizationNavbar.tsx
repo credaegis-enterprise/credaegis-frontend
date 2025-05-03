@@ -5,21 +5,19 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  NavbarMenu,
-  NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react";
 import { MyButton } from "../buttons/mybutton";
 import { Spinner } from "@nextui-org/react";
 import { ThemeSwitcher } from "../themes/themeSwitcher";
 import Link from "next/link";
+import MyModal from "../modals/mymodal";
 import { myInstance } from "@/utils/Axios/axios";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { BiBell } from "react-icons/bi";
-import MyModal from "../modals/mymodal";
-import { NotificationType } from "@/types/notificationTypes";
 import NotifBoxOrganization from "../notification/notifBoxOrganization";
+import { GrAppsRounded, GrDocumentVerified, GrVmware, GrPerformance, GrValidate } from "react-icons/gr";
 
 export default function OrganizationNavbar() {
   const router = useRouter();
@@ -28,7 +26,7 @@ export default function OrganizationNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selected, setSelected] = useState<string>("");
   const [notificationPopup, setNotificationPopup] = useState(false);
-  const [notifications, setNotifications] = useState<NotificationType[]>([]);
+  const [notifications, setNotifications] = useState([]);
   const [notificationCount, setNotificationCount] = useState<number>(0);
 
   useEffect(() => {
@@ -44,7 +42,7 @@ export default function OrganizationNavbar() {
     const getUserRoles = async () => {
       try {
         const response = await myInstance.get("organization/auth/session-check");
-        setAccountType(response.data.responseData.accountType || "organization"); // ✅ Default value
+        setAccountType(response.data.responseData.accountType || "organization");
         setRole(response.data.responseData.role);
       } catch (error: any) {
         console.log(error);
@@ -73,133 +71,111 @@ export default function OrganizationNavbar() {
     }
   };
 
-  const isSelected = (menuItem: string) =>
-      selected === menuItem ? "text-green-500" : "hover:text-green-400";
-
   return (
-      <Navbar className="justify-end" maxWidth="full" onMenuOpenChange={setIsMenuOpen}>
-        <NavbarBrand>
-          <NavbarContent justify="start">
-            <div
-                className="sm:hidden w-16 h-16 flex items-center justify-center rounded-md bg-gray-100 dark:bg-black cursor-pointer"
-                onClick={() => setIsMenuOpen((prev) => !prev)}
+    <Navbar className="justify-between" maxWidth="full" onMenuOpenChange={setIsMenuOpen}>
+      <NavbarBrand>
+        <NavbarMenuToggle
+          className="sm:hidden"
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+        />
+      </NavbarBrand>
+
+      <NavbarContent className="hidden sm:flex gap-12" justify="center">
+        {[
+          { name: "dashboard", icon: GrAppsRounded, label: "Dashboard" },
+          { name: "approvals", icon: GrDocumentVerified, label: "Approvals" },
+          { name: "certificates", icon: GrVmware, label: "Certificate Upload" },
+          { name: "settings", icon: GrPerformance, label: "Settings" },
+        ].map(({ name, icon: Icon, label }) => (
+          <NavbarItem key={name}>
+            <Link
+              href={`/credaegis/${accountType}/${name}`}
+              className="group flex items-center gap-2 transition-colors"
+              onClick={() => {
+                setSelected(name);
+                localStorage.setItem("currentPath", name);
+              }}
             >
-              <NavbarMenuToggle
-                  className="sm:hidden"
-                  aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              <Icon
+                className={`text-xl transition duration-300 group-hover:text-green-400 ${
+                  selected === name ? "text-green-500" : "text-gray-900 dark:text-white"
+                }`}
               />
-            </div>
-          </NavbarContent>
-        </NavbarBrand>
-
-        {/* Desktop Navigation */}
-        <NavbarContent className="hidden sm:flex gap-12" justify="end">
-          {["dashboard", "approvals", "certificates", "settings"].map((item) => (
-              <NavbarItem key={item}>
-                <Link
-                    href={`/credaegis/${accountType}/${item}`}
-                    className={`${isSelected(item)} transition-colors`}
-                    onClick={() => {
-                      setSelected(item);
-                      localStorage.setItem("currentPath", item);
-                    }}
-                >
-                  {item.charAt(0).toUpperCase() + item.slice(1)}
-                </Link>
-              </NavbarItem>
-          ))}
-          <NavbarItem
-
-
-          >
-            <Link
-                href="/verification"
-                className={`${isSelected("verification")} transition-colors`}
-                onClick={() =>{ setSelected("verification");
+              <span
+                className={`text-sm font-medium transition duration-300 group-hover:text-green-400 ${
+                  selected === name ? "text-green-500" : "text-gray-900 dark:text-white"
+                }`}
+              >
+                {label}
+              </span>
+            </Link>
+          </NavbarItem>
+        ))}
+        <NavbarItem >
+          <Link
+              href={`/verification`}
+              className="group flex items-center gap-2 transition-colors"
+              onClick={() => {
+                setSelected("verification");
                 localStorage.setItem("path",window.location.pathname);
-                }}
+              }}
+          >
+            <GrValidate
+                className={`text-xl transition duration-300 group-hover:text-green-400 ${
+                    selected === "verification" ? "text-green-500" : "text-gray-900 dark:text-white"
+                }`}
+            />
+            <span
+                className={`text-sm font-medium transition duration-300 group-hover:text-green-400 ${
+                    selected === "verification" ? "text-green-500" : "text-gray-900 dark:text-white"
+                }`}
             >
-              Verification
-            </Link>
-          </NavbarItem>
-        </NavbarContent>
+                Verification
+              </span>
+          </Link>
+        </NavbarItem>
+      </NavbarContent>
 
-        {/* Mobile Menu */}
-        <NavbarMenu>
-          {["dashboard", "approvals", "certificates", "settings"].map((item) => (
-              <NavbarMenuItem key={item}>
-                <Link
-                    className={`${isSelected(item)} transition-colors`}
-                    href={`/credaegis/${accountType}/${item}`}
-                    onClick={() => {
-                      setSelected(item);
-                      localStorage.setItem("currentPath", item);
-                      setIsMenuOpen(false); // ✅ Close menu on click
-                    }}
-                >
-                  {item.charAt(0).toUpperCase() + item.slice(1)}
-                </Link>
-              </NavbarMenuItem>
-          ))}
-          <NavbarMenuItem>
-            <Link
-                className={`${isSelected("verification")} transition-colors`}
-                onClick={() => {
-                  setSelected("verification");
-                  setIsMenuOpen(false); // ✅ Close menu on click
-                }}
-                href="/verification"
-            >
-              Verification
-            </Link>
-          </NavbarMenuItem>
-        </NavbarMenu>
-
-        {/* Right Section */}
-        <NavbarContent justify="end" className="gap-4">
-          {/* Notifications */}
-          <NavbarItem onClick={() => { setNotificationPopup(true); getNotifications(); }}>
-            <div className={`flex gap-2`}>
-            <BiBell className="text-2xl dark:text-white-600 hover:text-blue-500 dark:hover:text-green-500 hover:scale-110 transition duration-300 cursor-pointer" />
+      <NavbarContent justify="end" className="gap-4">
+        <NavbarItem onClick={() => { setNotificationPopup(true); getNotifications(); }}>
+          <div className="flex gap-2">
+            <BiBell className="text-2xl text-gray-900 dark:text-white hover:text-green-500 transition duration-300 cursor-pointer" />
             {notificationCount > 0 && (
-                <span className="bg-red-500 text-white text-xs rounded-full p-1 flex items-center justify-center">
-              {notificationCount}
-            </span>
+              <span className="bg-red-500 text-white text-xs rounded-full p-1 flex items-center justify-center">
+                {notificationCount}
+              </span>
             )}
-            </div>
-          </NavbarItem>
+          </div>
+        </NavbarItem>
 
-          {/* Theme Switch */}
-          <NavbarItem>
-            <ThemeSwitcher />
-          </NavbarItem>
+        <NavbarItem>
+          <ThemeSwitcher />
+        </NavbarItem>
 
-          {/* Logout Button */}
-          <NavbarItem>
-            <MyButton
-                className="bg-black dark:bg-white"
-                size="sm"
-                spinner={<Spinner size="sm" color="default" />}
-                color="default"
-                onClick={handleLogout}
-            >
-              <span className="dark:text-black text-white text-md font-medium">Logout</span>
-            </MyButton>
-          </NavbarItem>
-        </NavbarContent>
-
-        {/* Notifications Modal */}
-        {notificationPopup && (
-            <MyModal
-                title=""
-                onClose={() => setNotificationPopup(false)}
-                size="md"
-                isOpen={notificationPopup}
-                backdrop="opaque"
-                content={<NotifBoxOrganization notfications={notifications} getNotifications={getNotifications} />} button1={undefined} button2={undefined} onOpen={function (): void {
-              throw new Error("Function not implemented.");
-            } }        />
-        )}
-      </Navbar>
+        <NavbarItem>
+          <MyButton
+            className="bg-black dark:bg-white"
+            size="sm"
+            spinner={<Spinner size="sm" color="default" />}
+            color="default"
+            onClick={handleLogout}
+          >
+            <span className="dark:text-black text-white text-md font-mediumtext-md font-medium">Logout</span>
+          </MyButton>
+        </NavbarItem>
+      </NavbarContent>
+      {notificationPopup && (
+          <MyModal
+              title=""
+              onClose={() => setNotificationPopup(false)}
+              size="md"
+              isOpen={notificationPopup}
+              backdrop="opaque"
+              content={<NotifBoxOrganization notfications={notifications} getNotifications={getNotifications} />} button1={undefined} button2={undefined} onOpen={function (): void {
+            throw new Error("Function not implemented.");
+          } }        />
+      )}
+    </Navbar>
   );
 }

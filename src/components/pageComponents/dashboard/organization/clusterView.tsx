@@ -1,6 +1,7 @@
 "use client";
 
 import { MdPeople } from "react-icons/md";
+import { GrAdd } from "react-icons/gr";
 import { MyButton } from "@/components/buttons/mybutton";
 import { motion } from "framer-motion";
 import { useTabContext } from "@/context/tabContext";
@@ -16,7 +17,7 @@ interface ClusterListProps {
 const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
 
   const { selectedTab,setSelectedTab } = useTabContext();
- const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   
   return (
     <div className="h-full w-full flex flex-col">
@@ -34,9 +35,7 @@ const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
             setIsOpen(true);
           }}
         >
-          <span className="dark:text-black text-white text-md font-medium">
-            Add
-          </span>
+          <GrAdd size={20} className="dark:text-black text-white" />
         </MyButton>
       </div>
       <div className="flex flex-col mt-2 lg:h-full h-[200px] overflow-auto  ">
@@ -49,7 +48,6 @@ const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
             clusters.map((cluster, index) => (
                 <motion.div
                     key={cluster.id}
-
                     initial={{opacity: 0, y: 3}}
                     animate={{opacity: 1, y: 0}}
                     transition={{duration: 0.15, delay: index * 0.04}}
@@ -84,7 +82,7 @@ const ClusterView: React.FC<ClusterListProps> = ({ clusters }) => {
           }}
           title="Create Cluster"
           content={<CreateCluster setIsOpen={setIsOpen}/>}
-          button1={<button onClick={() => setIsOpen(false)}>Close</button>}
+          button1={undefined}
           button2={undefined}
         />
       )}

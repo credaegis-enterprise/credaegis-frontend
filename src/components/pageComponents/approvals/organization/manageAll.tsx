@@ -30,7 +30,7 @@ const ManageAll: React.FC<ManageAllProps> = ({approvalsInfo,issuedCount,issuedIn
           aria-label="options"
           className="mt-2 lg:mt-0 lg:w-auto w-full"
         >
-          <Tab key="Approval requests" title="Approval requests" />
+          <Tab key="Approval requests" title="Approval Requests" />
           <Tab key="Approval history" title="Approval History" />
 
         </Tabs>
