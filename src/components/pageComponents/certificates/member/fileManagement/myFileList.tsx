@@ -190,6 +190,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
           style={{ display: "none" }}
           onChange={handleFileChange}
           multiple
+            accept="application/pdf"
         />
         <MyButton
           className="bg-black dark:bg-white"

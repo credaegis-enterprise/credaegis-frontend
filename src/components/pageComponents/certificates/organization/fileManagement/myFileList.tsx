@@ -81,7 +81,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
         });
 
       if (filesArray.length === 0) {
-        return; // No valid PDF files selected
+        return;
       }
 
       if (selectedFiles && selectedFiles.length === 0) {
@@ -185,6 +185,7 @@ const MyFileList: React.FC<MyFileListProps> = ({
           style={{ display: "none" }}
           onChange={handleFileChange}
           multiple
+          accept="application/pdf"
         />
         <MyButton
           className="bg-black dark:bg-white"

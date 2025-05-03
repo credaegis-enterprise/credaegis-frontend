@@ -174,6 +174,7 @@ const CertificateList: React.FC<MyFileListProps> = ({
         style={{ display: "none" }}
         onInput={handleFileChange}
         multiple
+        accept="application/pdf"
       />
       <div className="flex justify-between p-2 gap-2">
         <div className="flex gap-2 mt-1 ">
